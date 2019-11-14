@@ -6,7 +6,6 @@
 #include <glimac/glm.hpp>
 #include <glimac/Image.hpp>
 #include <glimac/Sphere.hpp>
-#include <glimac/TrackballCamera.hpp>
 #include <glimac/Geometry.hpp>
 #include <cstddef>
 #include <vector>
@@ -15,7 +14,7 @@ using namespace glimac;
 
 int main(int argc, char** argv) {
     // Initialize SDL and open a window
-    SDLWindowManager windowManager(800, 600, "GLImac");
+    SDLWindowManager windowManager(800, 800, "GLImac");
 
     glewExperimental = GL_TRUE;
 
@@ -29,17 +28,54 @@ int main(int argc, char** argv) {
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
 
-    /**********************************/
-    /********* INITIALISATION *********/
-    /**********************************/
+    /*********************************
+     * HERE SHOULD COME THE INITIALIZATION CODE
+     *********************************/
 
-    Sphere MySphere(1, 32, 16);
+     static const GLfloat g_vertex_buffer_data[] = {
+        -1.0f,-1.0f,-1.0f, // triangle 1 : begin
+        -1.0f,-1.0f, 1.0f,
+        -1.0f, 1.0f, 1.0f, // triangle 1 : end
+        1.0f, 1.0f,-1.0f, // triangle 2 : begin
+        -1.0f,-1.0f,-1.0f,
+        -1.0f, 1.0f,-1.0f, // triangle 2 : end
+        1.0f,-1.0f, 1.0f,
+        -1.0f,-1.0f,-1.0f,
+        1.0f,-1.0f,-1.0f,
+        1.0f, 1.0f,-1.0f,
+        1.0f,-1.0f,-1.0f,
+        -1.0f,-1.0f,-1.0f,
+        -1.0f,-1.0f,-1.0f,
+        -1.0f, 1.0f, 1.0f,
+        -1.0f, 1.0f,-1.0f,
+        1.0f,-1.0f, 1.0f,
+        -1.0f,-1.0f, 1.0f,
+        -1.0f,-1.0f,-1.0f,
+        -1.0f, 1.0f, 1.0f,
+        -1.0f,-1.0f, 1.0f,
+        1.0f,-1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f,-1.0f,-1.0f,
+        1.0f, 1.0f,-1.0f,
+        1.0f,-1.0f,-1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f,-1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f,-1.0f,
+        -1.0f, 1.0f,-1.0f,
+        1.0f, 1.0f, 1.0f,
+        -1.0f, 1.0f,-1.0f,
+        -1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        -1.0f, 1.0f, 1.0f,
+        1.0f,-1.0f, 1.0f
+    };
 
     //Chargement des shaders
     FilePath applicationPath(argv[0]);
     Program program = loadProgram(
         applicationPath.dirPath() + "shaders/3D.vs.glsl",
-        applicationPath.dirPath() + "shaders/directionallight.fs.glsl"
+        applicationPath.dirPath() + "shaders/multiTex3D.fs.glsl"
     );
     program.use();
 
@@ -47,15 +83,10 @@ int main(int argc, char** argv) {
     GLint uMVPMatrix = glGetUniformLocation(program.getGLId(), "uMVPMatrix");
     GLint uMVMatrix = glGetUniformLocation(program.getGLId(), "uMVMatrix");
     GLint uNormalMatrix = glGetUniformLocation(program.getGLId(), "uNormalMatrix");
+    GLint uTexture = glGetUniformLocation(program.getGLId(), "uTexture");
+    GLint uTexture2 = glGetUniformLocation(program.getGLId(), "uTexture2");
 
-    //Obtiention des variables uniformes pour la lumière
-    GLint uKd = glGetUniformLocation(program.getGLId(), "uKd");
-    GLint uKs = glGetUniformLocation(program.getGLId(), "uKs");
-    GLint uShininess = glGetUniformLocation(program.getGLId(), "uShininess");
-    GLint uLightDir_vs = glGetUniformLocation(program.getGLId(), "uLightDir_vs");
-    GLint uLightIntensity = glGetUniformLocation(program.getGLId(), "uLightIntensity");
-
-    glEnable(GL_DEPTH_TEST); //permet d'activer le test de profondeur du GPU. Sans cet appel de fonction, certains triangles non visible viendraient recouvrir des triangles situés devant.
+    glEnable(GL_DEPTH_TEST);
 
     glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.0f), 800.0f/600.0f, 0.1f, 100.0f); //param perspective(float fovy, float aspect, float znear, float far)
     glm::mat4 MVMatrix = glm::translate(glm::mat4(1), glm::vec3(0, 0, -5));
@@ -68,8 +99,45 @@ int main(int argc, char** argv) {
     //Bindind du vbo sur la cible
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
+
+    //Création d'une texture
+    std::unique_ptr<Image> EarthMap=loadImage("../GLImac-Template/assets/textures/EarthMap.jpg");
+    std::unique_ptr<Image> MoonMap=loadImage("../GLImac-Template/assets/textures/MoonMap.jpg");
+    std::unique_ptr<Image> CloudMap=loadImage("../GLImac-Template/assets/textures/CloudMap.jpg");
+
+    if(EarthMap == NULL || MoonMap == NULL || CloudMap == NULL){
+        std::cerr << "Une des textures n'a pas pu etre chargée. \n" << std::endl;
+        exit(0);
+    }
+
+    GLuint textureEarth, textureMoon, textureCloud;
+
+    // Binding d'un VBO sur la cible GL_ARRAY_BUFFER:
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+    glGenTextures(1,&textureEarth);
+    glBindTexture(GL_TEXTURE_2D,textureEarth);   //Binding de la texture
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,EarthMap->getWidth(),EarthMap->getHeight(),0,GL_RGBA,GL_FLOAT,EarthMap->getPixels());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D,0);
+
+    glGenTextures(1,&textureMoon);
+    glBindTexture(GL_TEXTURE_2D,textureMoon);   //Binding de la texture
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,MoonMap->getWidth(),MoonMap->getHeight(),0,GL_RGBA,GL_FLOAT,MoonMap->getPixels());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D,0);
+
+    glGenTextures(1,&textureCloud);
+    glBindTexture(GL_TEXTURE_2D,textureCloud);   //Binding de la texture
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,CloudMap->getWidth(),CloudMap->getHeight(),0,GL_RGBA,GL_FLOAT,CloudMap->getPixels());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D,0);
+
     //Puis on envois les données à la CG
-    glBufferData(GL_ARRAY_BUFFER, MySphere.getVertexCount()*sizeof(ShapeVertex), MySphere.getDataPointer(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 12*3*sizeof(float), g_vertex_buffer_data, GL_STATIC_DRAW);
 
     //Débindind du vbo de la cible pour éviter de le remodifier
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -103,31 +171,22 @@ int main(int argc, char** argv) {
     glBindVertexArray(0);
 
 
+
     uint nbLune = 32;
-    TrackballCamera Camera;
 
     std::vector<glm::vec3> AxesRotation;
     std::vector<glm::vec3> AxesTranslation;
 
-
-    for (int i = 0; i < nbLune; ++i)
+    for (int i = 0; i < 32; ++i)
     {
-        AxesRotation.push_back(glm::sphericalRand(1.0f)); //Rempli Axes rotation comme une pile ou comme un tableau, on pourra l'utiliser AxesRotation[i]
+        AxesRotation.push_back(glm::sphericalRand(1.0f));
         AxesTranslation.push_back(glm::sphericalRand(2.0f));
     }
-
-
-    /**********************************/
-    /******* BOUCLE D'AFFICHAGE *******/
-    /**********************************/
 
 
     // Application loop:
     bool done = false;
     while(!done) {
-
-        glm::mat4 ViewMatrix = Camera.getViewMatrix();
-
         // Event loop:
         SDL_Event e;
         while(windowManager.pollEvent(e)) {
@@ -136,38 +195,31 @@ int main(int argc, char** argv) {
             }
         }
 
-        //Ici on récupère les positions de la souris
-        glm::ivec2 mousePos = windowManager.getMousePosition();
-        if(windowManager.isMouseButtonPressed(SDL_BUTTON_RIGHT)) Camera.moveFront(0.01);
-        else if(windowManager.isMouseButtonPressed(SDL_BUTTON_LEFT)) Camera.moveFront(-0.01);
-
-        Camera.rotateLeft( mousePos.y );
-        Camera.rotateUp( mousePos.x );
-
         // Nettoyage de la fenêtre
-        glClearColor(0.0,0.0,0.0,0.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glUniform1i(uTexture, 0);
+        glUniform1i(uTexture2, 1);
         glBindVertexArray(vao);
 
 
-        glm::mat4 Mrotate = glm::rotate(MVMatrix, windowManager.getTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::mat4 Mrotate = glm::rotate(MVMatrix, windowManager.getTime(), glm::vec3(1.0f, 1.0f, 1.0f));
         glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), 800.f/600.f, 0.1f, 100.f);
         glm::mat4 MVMatrix = glm::translate(glm::mat4(1), glm::vec3(0, 0, -5));
         glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
 
-        glUniform3f(uKd, 0.1, 0.2, 0.3); //Couleur des boules
-        glUniform3f(uKs, 0.5, 0.0, 0.0);
-        glUniform1f(uShininess, 32.0);
-        glm::vec4 LightDir = Camera.getViewMatrix() * glm::vec4(1.0, 1.0, 1.0, 0.0);
-        glUniform3f(uLightDir_vs, LightDir.x, LightDir.y, LightDir.z);
-        glUniform3f(uLightIntensity, 2.0, 2.0, 2.0);
-
-        glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * ViewMatrix)); //Model View Projection
-        glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(ViewMatrix));
-        NormalMatrix = glm::transpose(glm::inverse(ViewMatrix));
+        glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * Mrotate));
+        glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
         glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
 
-        glDrawArrays(GL_TRIANGLES, 0, MySphere.getVertexCount());
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureEarth); // la texture earthTexture est bindée sur l'unité GL_TEXTURE0
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, textureCloud); // la texture cloudTexture est bindée sur l'unité GL_TEXTURE1
+        //glDrawArrays(GL_TRIANGLES, 0, MySphere.getVertexCount());
+        glDrawArrays(GL_TRIANGLES, 0, 12*3);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureMoon);
 
         for (int i = 0; i < AxesRotation.size(); ++i)
         {
@@ -178,18 +230,21 @@ int main(int argc, char** argv) {
 
             glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * newMVMatrix));
             glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
-            NormalMatrix = glm::transpose(glm::inverse(newMVMatrix));
             glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
 
-            glDrawArrays(GL_TRIANGLES, 0, MySphere.getVertexCount());
+            //glDrawArrays(GL_TRIANGLES, 0, MySphere.getVertexCount());
         }
 
 
         glBindVertexArray(0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, 0); // la texture cloudTexture est bindée sur l'unité GL_TEXTURE1
 
         // Update the display
         windowManager.swapBuffers();
     }
 
-    return EXIT_SUCCESS;
+return EXIT_SUCCESS;
 }
