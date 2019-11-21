@@ -142,7 +142,7 @@ int main(int argc, char** argv) {
         1.0f,-1.0f, 1.0f
     };
     // One color for each vertex. They were generated randomly.
-    static const GLfloat g_color_buffer_data[] = {
+    /*static const GLfloat g_color_buffer_data[] = {
         0.583f,  0.771f,  0.014f,
         0.609f,  0.115f,  0.436f,
         0.327f,  0.483f,  0.844f,
@@ -179,7 +179,14 @@ int main(int argc, char** argv) {
         0.673f,  0.211f,  0.457f,
         0.820f,  0.883f,  0.371f,
         0.982f,  0.099f,  0.879f
-    };
+    };*/
+    srand (static_cast <unsigned> (time(0)));
+    static GLfloat g_color_buffer_data[12*3*3];
+    for (int v = 0; v < 12*3 ; v++){
+        g_color_buffer_data[3*v+0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        g_color_buffer_data[3*v+1] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        g_color_buffer_data[3*v+2] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    }
     GLuint colorbuffer;
     glGenBuffers(1, &colorbuffer);
     glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
