@@ -47,8 +47,8 @@ int main(int argc, char** argv) {
      //Chargement des shaders
     FilePath applicationPath(argv[0]);
     Program program = loadProgram(
-        applicationPath.dirPath() + "shaders/cubeTest.vs.glsl",
-        applicationPath.dirPath() + "shaders/cubeTest.fs.glsl"
+        applicationPath.dirPath() + "shaders/cubeTexture.vs.glsl",
+        applicationPath.dirPath() + "shaders/cubeTexture.fs.glsl"
     );
     program.use();
 
@@ -56,8 +56,8 @@ int main(int argc, char** argv) {
     GLint uMVPMatrix = glGetUniformLocation(program.getGLId(), "uMVPMatrix");
     GLint uMVMatrix = glGetUniformLocation(program.getGLId(), "uMVMatrix");
     GLint uNormalMatrix = glGetUniformLocation(program.getGLId(), "uNormalMatrix");
-    GLint uTexture = glGetUniformLocation(program.getGLId(), "uTexture");
-    GLint uTexture2 = glGetUniformLocation(program.getGLId(), "uTexture2");
+    /*GLint uTexture = glGetUniformLocation(program.getGLId(), "uTexture");
+    GLint uTexture2 = glGetUniformLocation(program.getGLId(), "uTexture2");*/
 
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
@@ -95,12 +95,13 @@ int main(int argc, char** argv) {
     //Binding du vao (un seul à la fois)
     glBindVertexArray(vao);
 
-    // An array of 3 vectors which represents 3 vertices
-    /*static const GLfloat g_vertex_buffer_data[] = {
-       -1.0f, -1.0f, 0.0f,
-       1.0f, -1.0f, 0.0f,
-       0.0f,  1.0f, 0.0f,
-    };*/
+     // This will identify our vertex buffer
+    GLuint vertexbuffer;
+    // Generate 1 buffer, put the resulting identifier in vertexbuffer
+    glGenBuffers(1, &vertexbuffer);
+    // The following commands will talk about our 'vertexbuffer' buffer
+    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+
     // Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
     // A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
     static const GLfloat g_vertex_buffer_data[] = {
@@ -180,6 +181,14 @@ int main(int argc, char** argv) {
         0.820f,  0.883f,  0.371f,
         0.982f,  0.099f,  0.879f
     };*/
+
+
+    // Give our vertices to OpenGL.
+    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+
+    // The following commands will talk about our 'vertexbuffer' buffer
+    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+
     srand (static_cast <unsigned> (time(0)));
     static GLfloat g_color_buffer_data[12*3*3];
     for (int v = 0; v < 12*3 ; v++){
@@ -193,78 +202,6 @@ int main(int argc, char** argv) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
 
 
-    // This will identify our vertex buffer
-    GLuint vertexbuffer;
-    // Generate 1 buffer, put the resulting identifier in vertexbuffer
-    glGenBuffers(1, &vertexbuffer);
-    // The following commands will talk about our 'vertexbuffer' buffer
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-
-
-    //Création d'une texture
-    std::unique_ptr<Image> EarthMap=loadImage("../GLImac-Template/assets/textures/EarthMap.jpg");
-
-    if(EarthMap == NULL){
-        std::cerr << "Une des textures n'a pas pu etre chargée. \n" << std::endl;
-        exit(0);
-    }
-
-    GLuint textureEarth, textureMoon, textureCloud;
-
-    //Attribute texture
-    glGenTextures(1,&textureEarth);
-    glBindTexture(GL_TEXTURE_2D,textureEarth);   //Binding de la texture
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,EarthMap->getWidth(),EarthMap->getHeight(),0,GL_RGBA,GL_FLOAT,EarthMap->getPixels());
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glBindTexture(GL_TEXTURE_2D,0);
-
-    // Give our vertices to OpenGL.
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
-    // The following commands will talk about our 'vertexbuffer' buffer
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-
-
-
-    // Application loop:
-    bool done = false;
-    while(!done) {
-        // Event loop:
-        SDL_Event e;
-        while(windowManager.pollEvent(e)) {
-            if(e.type == SDL_QUIT) {
-                done = true; // Leave the loop after this iteration
-            }
-        }
-
-        // Nettoyage de la fenêtre
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glUniform1i(uTexture, 0); //sampler, texCoords
-        glBindVertexArray(vao);
-
-        /*glm::mat4 Mrotate = glm::rotate(MVMatrix, windowManager.getTime(), glm::vec3(1.0f, 1.0f, 1.0f));
-        glm::mat4 Projection = glm::perspective(glm::radians(45.f), 800.f/800.f, 0.1f, 100.f);
-        glm::mat4 MVMatrix = glm::translate(glm::mat4(1), glm::vec3(0, 0, -5));
-        glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
-
-        glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(Projection * Mrotate));
-        glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
-        glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));*/
-
-        //Projection Matrix
-        glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 800.0f/800.0f, 0.1f, 100.0f); //param perspective(float fovy, float aspect, float znear, float far)
-        // Camera matrix
-        glm::mat4 View = glm::lookAt(
-            glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
-            glm::vec3(0,0,0), // and looks at the origin
-            glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-            );
-
-        // Model matrix : an identity matrix (model will be at the origin)
-        glm::mat4 Model = glm::mat4(1.0f);
-        // Our ModelViewProjection : multiplication of our 3 matrices
-        glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
 
 
         // 1st attribute buffer : vertices
@@ -289,8 +226,39 @@ int main(int argc, char** argv) {
             0,                                // stride
             (void*)0                          // array buffer offset
         );
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureEarth); // la texture earthTexture est bindée sur l'unité GL_TEXTURE0
+
+
+
+    // Application loop:
+    bool done = false;
+    while(!done) {
+        // Event loop:
+        SDL_Event e;
+        while(windowManager.pollEvent(e)) {
+            if(e.type == SDL_QUIT) {
+                done = true; // Leave the loop after this iteration
+            }
+        }
+
+        // Nettoyage de la fenêtre
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        //glUniform1i(uTexture, 0); //sampler, texCoords
+        glBindVertexArray(vao);
+
+
+        //Projection Matrix
+        glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 800.0f/800.0f, 0.1f, 100.0f); //param perspective(float fovy, float aspect, float znear, float far)
+        // Camera matrix
+        glm::mat4 View = glm::lookAt(
+            glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
+            glm::vec3(0,0,0), // and looks at the origin
+            glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+            );
+
+        // Model matrix : an identity matrix (model will be at the origin)
+        glm::mat4 Model = glm::mat4(1.0f);
+        // Our ModelViewProjection : multiplication of our 3 matrices
+        glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
 
         // Draw the triangle !
         //glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
