@@ -7,6 +7,11 @@ layout(location = 1) in vec2 aVertexUV;
 // Output data ; will be interpolated for each fragment.
 out vec2 vUV;
 
+mat3 translate(float tx, float ty){
+    mat3 M = mat3(vec3(1,0,0), vec3(0,1,0), vec3(tx, ty, 1));
+    return M;
+}
+
 // Values that stay constant for the whole mesh.
 uniform mat4 uMVP;
 

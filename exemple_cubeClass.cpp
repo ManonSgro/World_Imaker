@@ -24,14 +24,10 @@ using namespace glm;
 
 using namespace glimac;
 
-/*struct Vertex3DTexture{
-    glm::vec3 position;
-    glm::vec2 texture;
-
-    Vertex3DTexture(){}
-    Vertex3DTexture(glm::vec3 position, glm::vec2 texture):position(position), texture(texture){}
-};*/
-
+glm::mat3 translate(float tx, float ty){
+    glm::mat3 M = glm::mat3(glm::vec3(1,0,0), glm::vec3(0,1,0), glm::vec3(tx, ty, 1));
+    return M;
+}
 int main(int argc, char** argv) {
     // Initialize SDL and open a window
     float windowWidth = 800.0f;
@@ -51,7 +47,10 @@ int main(int argc, char** argv) {
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
 
     /** Apel de la classe **/
-    Cube MyCube(1);
+    Cube MyCube(0.5);
+    Cube MyCube2(0.5);
+    MyCube.translateVertices(-1.0,0.0,0.0);
+    MyCube2.translateVertices(1.0,0.0,0.0);
 
      /** Loading shaders **/
     FilePath applicationPath(argv[0]);
@@ -62,6 +61,7 @@ int main(int argc, char** argv) {
     program.use();
 
     //Obtention de l'id de la variable uniforme
+    GLint uMVP = glGetUniformLocation(program.getGLId(), "uMVP");
     //GLint uMVPMatrix = glGetUniformLocation(program.getGLId(), "uMVPMatrix");
     //GLint uMVMatrix = glGetUniformLocation(program.getGLId(), "uMVMatrix");
     //GLint uNormalMatrix = glGetUniformLocation(program.getGLId(), "uNormalMatrix");
@@ -100,47 +100,6 @@ int main(int argc, char** argv) {
 
 
 
-    /** A supprimer/passer dans la classe **/
-    /** Vertices **/
-    /*std::vector<Vertex3DTexture> vertices = {
-    //Face sol
-        Vertex3DTexture(glm::vec3(-1, -1, -1), glm::vec2(0,0)), //0
-        Vertex3DTexture(glm::vec3(1, -1, -1), glm::vec2(1,0)), //1
-        Vertex3DTexture(glm::vec3(1, -1, 1), glm::vec2(1,1)), //2
-        Vertex3DTexture(glm::vec3(-1, -1, 1), glm::vec2(0,1)), //3
-
-        //Face devant
-        Vertex3DTexture(glm::vec3(-1, 1, 1), glm::vec2(0,0)), //4
-        Vertex3DTexture(glm::vec3(1, 1, 1), glm::vec2(1,0)), //5
-        Vertex3DTexture(glm::vec3(1, -1, 1), glm::vec2(1,1)), //6
-        Vertex3DTexture(glm::vec3(-1, -1, 1), glm::vec2(0,1)), //7
-
-        //Face gauche
-        Vertex3DTexture(glm::vec3(-1, 1, 1), glm::vec2(0,0)), //8
-        Vertex3DTexture(glm::vec3(-1, 1, -1), glm::vec2(1,0)), //9
-        Vertex3DTexture(glm::vec3(-1, -1, -1), glm::vec2(1,1)), //10
-        Vertex3DTexture(glm::vec3(-1, -1, 1), glm::vec2(0,1)), //11
-
-        //Face derrière
-        Vertex3DTexture(glm::vec3(-1, 1, -1), glm::vec2(0,0)), //12
-        Vertex3DTexture(glm::vec3(1, 1, -1), glm::vec2(1,0)), //13
-        Vertex3DTexture(glm::vec3(1, -1, -1), glm::vec2(1,1)), //14
-        Vertex3DTexture(glm::vec3(-1, -1, -1), glm::vec2(0,1)), //15
-
-        //Face droite
-        Vertex3DTexture(glm::vec3(1, 1, 1), glm::vec2(0,0)), //16
-        Vertex3DTexture(glm::vec3(1, 1, -1), glm::vec2(1,0)), //17
-        Vertex3DTexture(glm::vec3(1, -1, -1), glm::vec2(1,1)), //18
-        Vertex3DTexture(glm::vec3(1, -1, 1), glm::vec2(0,1)), //19
-
-        //Face haut
-        Vertex3DTexture(glm::vec3(-1, 1, -1), glm::vec2(0,0)), //20
-        Vertex3DTexture(glm::vec3(1, 1, -1), glm::vec2(1,0)), //21
-        Vertex3DTexture(glm::vec3(1, 1, 1), glm::vec2(1,1)), //22
-        Vertex3DTexture(glm::vec3(-1, 1, 1), glm::vec2(0,1)) //23
-    };*/
-
-
 
     /** Création VBO **/
     // This will identify our vertex buffer
@@ -154,9 +113,16 @@ int main(int argc, char** argv) {
     // Envoyer les données à la CG
     glBufferData(GL_ARRAY_BUFFER, MyCube.getVertexCount()*sizeof(Vertex3DTexture), MyCube.getDataPointer(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    // Envoyer les données à la CG
-    /*glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(Vertex3DTexture), vertices.data(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);*/
+
+    // This will identify our vertex buffer
+    GLuint vertexbuffer2;
+    // Generate 1 buffer, put the resulting identifier in vertexbuffer
+    glGenBuffers(1, &vertexbuffer2);
+    // The following commands will talk about our 'vertexbuffer' buffer
+    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer2);
+
+    glBufferData(GL_ARRAY_BUFFER, MyCube2.getVertexCount()*sizeof(Vertex3DTexture), MyCube2.getDataPointer(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer2);
 
 
 
@@ -200,32 +166,36 @@ int main(int argc, char** argv) {
     glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
     glVertexAttribPointer(VERTEX_ATTR_TEXTURE,2,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, texture));
 
+    GLuint vao2;
+    glGenVertexArrays(1, &vao2);
+    //Binding du vao (un seul à la fois)
+    glBindVertexArray(vao2);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer2);
 
+    // Où se trouve les sommets
+    // 1st attribute buffer : position
+    glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
+    glVertexAttribPointer(VERTEX_ATTR_POSITION,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, position));
+    // 2nd attribute buffer : texture
+    glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
+    glVertexAttribPointer(VERTEX_ATTR_TEXTURE,2,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, texture));
 
-    /** A modifier/passer dans la classe ? **/
-     /*std::vector<uint32_t> indices = {
-        0,1,3,0,3,2,  4,5,6,4,6,7,  8,9,10,8,10,11,  12,13,14,12,14,15,  16,17,18,16,18,19,  20,21,22,20,22,23
-     };*/
 
      /** Création IBO **/
-    /*GLuint ibo;
-    glGenBuffers(1, &ibo);
-     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size()*sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);*/
-     //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-     //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-     /** Deux points différents sur deux faces consécutives**/
     //std::vector<uint32_t> indices = MyCube.getIndexBufferObject();
-     GLuint ibo;
+    GLuint ibo;
     glGenBuffers(1, &ibo);
-     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, MyCube.getIBOCount()*sizeof(uint32_t), MyCube.getIBOPointer(), GL_STATIC_DRAW);
+
+    GLuint ibo2;
+    glGenBuffers(1, &ibo2);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo2);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, MyCube2.getIBOCount()*sizeof(uint32_t), MyCube2.getIBOPointer(), GL_STATIC_DRAW);
 
 
     glBindVertexArray(0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 
 
@@ -242,25 +212,24 @@ int main(int argc, char** argv) {
                 done = true; // Leave the loop after this iteration
             }
         }
-
         // Nettoyage de la fenêtre
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glUniform1i(uTexture, 0); //sampler, texCoords
 
 
 
-
+        // Draw first cube
         glBindVertexArray(vao);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureEarth); // la texture earthTexture est bindée sur l'unité GL_TEXTURE0
 
-        // Draw the triangle !
-        //glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
-        //glDrawArrays(GL_TRIANGLES, 0, indices.size()); // 12*3 indices starting at 0 -> 12 triangles -> 6 squares
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-        /** A modifier pour objet Cube **/
-        //glDrawArrays(GL_TRIANGLES, 0, MyCube.getVertexCount());
+        glDrawElements(GL_TRIANGLES, MyCube2.getIBOCount(), GL_UNSIGNED_INT, (void *)0);
+
+        // Draw second cube
+        glBindVertexArray(vao2);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo2);
         glDrawElements(GL_TRIANGLES, MyCube.getIBOCount(), GL_UNSIGNED_INT, (void *)0);
 
         glBindTexture(GL_TEXTURE_2D, 0);
