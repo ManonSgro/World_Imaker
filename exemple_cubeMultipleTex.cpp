@@ -67,7 +67,8 @@ int main(int argc, char** argv) {
     //GLint uMVPMatrix = glGetUniformLocation(program.getGLId(), "uMVPMatrix");
     //GLint uMVMatrix = glGetUniformLocation(program.getGLId(), "uMVMatrix");
     //GLint uNormalMatrix = glGetUniformLocation(program.getGLId(), "uNormalMatrix");
-    GLint uTexture = glGetUniformLocation(program.getGLId(), "myTextureSampler");
+    GLint uTexture = glGetUniformLocation(program.getGLId(), "uTextureSampler");
+    GLint uTextureGrass = glGetUniformLocation(program.getGLId(), "uTextureGrass");
 
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
@@ -152,27 +153,22 @@ int main(int argc, char** argv) {
     }
 
     /** Textures **/
-    GLuint textureEarth;
+    GLuint textureEarth, textureGrass;
     //Attribute texture
     glGenTextures(1,&textureEarth);
     glBindTexture(GL_TEXTURE_2D,textureEarth);   //Binding de la texture
     glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,EarthMap->getWidth(),EarthMap->getHeight(),0,GL_RGBA,GL_FLOAT,EarthMap->getPixels());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    //glBindTexture(GL_TEXTURE_2D,0);
+    glBindTexture(GL_TEXTURE_2D,0);
 
-    GLuint textureGrass;
-    //Attribute texture
-    glGenTextures(2,&textureGrass);
+    glGenTextures(1,&textureGrass);
     glBindTexture(GL_TEXTURE_2D,textureGrass);   //Binding de la texture
     glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,GrassMap->getWidth(),GrassMap->getHeight(),0,GL_RGBA,GL_FLOAT,GrassMap->getPixels());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
     glBindTexture(GL_TEXTURE_2D,0);
+
 
     /** Création du VAO **/
     GLuint vao;
@@ -264,7 +260,9 @@ int main(int argc, char** argv) {
         }
         // Nettoyage de la fenêtre
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glUniform1i(uTexture, 0); //sampler, texCoords
+        //glUniform1i(uTexture, 0); //sampler, texCoords
+        //glUniform1i(uTextureGrass, 1);
+        glBindVertexArray(vao);
 
 
 
@@ -272,17 +270,15 @@ int main(int argc, char** argv) {
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureEarth); // la texture earthTexture est bindée sur l'unité GL_TEXTURE0
-
-
+        glUniform1i(uTexture, 0);
         // Draw first cube
-        glBindVertexArray(vao);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
         glDrawElements(GL_TRIANGLES, MyCube.getIBOCount(), GL_UNSIGNED_INT, (void *)0);
 
 
-        glActiveTexture(GL_TEXTURE1);
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureGrass); // la texture grassTexture est bindée sur l'unité GL_TEXTURE1
-
+        glUniform1i(uTextureGrass, 0);
         // Draw second cube
         glBindVertexArray(vao2);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo2);
@@ -293,9 +289,11 @@ int main(int argc, char** argv) {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo3);
         glDrawElements(GL_TRIANGLES, MyCube3.getIBOCount(), GL_UNSIGNED_INT, (void *)0);
 
-        glBindTexture(GL_TEXTURE_2D, 0);
+
 
         glBindVertexArray(0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, 0);
 
         // Update the display
         windowManager.swapBuffers();
