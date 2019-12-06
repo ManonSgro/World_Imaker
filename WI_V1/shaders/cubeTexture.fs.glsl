@@ -19,5 +19,5 @@ void main(){
     //fColor = vec3(1, 0, 0);
     vec4 color2 = texture(uTextureGrass, vUV);
 
-    fFragColor = color1.rgb + color2.rgb;
+    fFragColor = color1.rgb;
 }
