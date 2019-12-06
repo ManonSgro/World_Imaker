@@ -11,6 +11,7 @@ namespace glimac {
 
 class Image {
 private:
+    //std::string m_filePath = "";
     unsigned int m_nWidth = 0u;
     unsigned int m_nHeight = 0u;
     std::unique_ptr<glm::vec4[]> m_Pixels;

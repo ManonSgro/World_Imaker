@@ -44,11 +44,19 @@ public:
 
     void translateVertices(GLfloat tx, GLfloat ty, GLfloat tz);
 
+    // Gestion textures
+    void setTextureIndex(GLuint index);
+    GLuint getTextureIndex(){
+        return m_textureIndex;
+    };
+
 private:
     std::vector<Vertex3DTexture> m_Vertices;
     GLsizei m_nVertexCount; // Nombre de sommets
     std::vector<uint32_t> m_Index; // indices ibo
     GLfloat m_edge; // à voir si on ne peut pas plutôt stocker une matrice sur laquelle appliquer des transformations puis une fonction pour faire le liens entre cette matrice et les vertices...
+
+    GLuint m_textureIndex;
 };
 
 }
