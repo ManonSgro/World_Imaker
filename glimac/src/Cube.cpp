@@ -54,6 +54,8 @@ void Cube::build(GLfloat edge) {
 
      m_edge = edge;
 
+     m_textureIndex = 0; // first texture by default, changer ça pour qu'on puisse avoir des cubes sans texture ? Avec une couleur ? Avec une couleur par defaut ?
+
     // Attention ! dans cette implantation on duplique beaucoup de sommets. Une meilleur stratégie est de passer
     // par un Index Buffer Object, que nous verrons dans les prochains TDs
 }
@@ -99,4 +101,9 @@ void Cube::translateVertices(GLfloat tx, GLfloat ty, GLfloat tz) {
     };
 }
 
+void Cube::setTextureIndex(GLuint index){
+    m_textureIndex = index;
 }
+
+}
+
