@@ -1,19 +1,20 @@
+
 #include <glimac/SDLWindowManager.hpp>
 #include <GL/glew.h>
 #include <iostream>
-#include <string>
 #include <glimac/Program.hpp>
 #include <glimac/FilePath.hpp>
 #include <glimac/glm.hpp>
 #include <glimac/Image.hpp>
-#include <glimac/Cube.hpp>
+#include <glimac/Sphere.hpp>
 #include <glimac/Geometry.hpp>
+#include <glimac/Controls.hpp>
+#include <glimac/Cube.hpp>
 #include <glimac/Texture.hpp>
 #include <cstddef>
 #include <vector>
 
 using namespace glimac;
-
 
 int main(int argc, char** argv) {
     // Initialize SDL and open a window
@@ -33,6 +34,10 @@ int main(int argc, char** argv) {
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
 
+    /**********************************/
+    /********* INITIALISATION *********/
+    /**********************************/
+
     /** Apel de la classe **/
     std::vector<Cube> cubeList;
     cubeList.push_back(Cube(1));
@@ -47,19 +52,26 @@ int main(int argc, char** argv) {
     uint nbOfTextures = 2;
     std::vector<Texture> textures(nbOfTextures);
 
-     /** Loading shaders **/
+    //Chargement des shaders
     FilePath applicationPath(argv[0]);
     Program program = loadProgram(
-        applicationPath.dirPath() + "shaders/cubeTexture.vs.glsl",
-        applicationPath.dirPath() + "shaders/cubeTexture.fs.glsl"
+        applicationPath.dirPath() + "shaders/cubeLight.vs.glsl",
+        applicationPath.dirPath() + "shaders/cubeLightPoint.fs.glsl"
     );
     program.use();
 
     //Obtention de l'id de la variable uniforme
-    GLint uMVP = glGetUniformLocation(program.getGLId(), "uMVP");
-    //GLint uMVPMatrix = glGetUniformLocation(program.getGLId(), "uMVPMatrix");
-    //GLint uMVMatrix = glGetUniformLocation(program.getGLId(), "uMVMatrix");
-    //GLint uNormalMatrix = glGetUniformLocation(program.getGLId(), "uNormalMatrix");
+    GLint uMVPMatrix = glGetUniformLocation(program.getGLId(), "uMVPMatrix");
+    GLint uMVMatrix = glGetUniformLocation(program.getGLId(), "uMVMatrix");
+    GLint uNormalMatrix = glGetUniformLocation(program.getGLId(), "uNormalMatrix");
+
+    //Obtiention des variables uniformes pour la lumière
+    GLint uKd = glGetUniformLocation(program.getGLId(), "uKd");
+    GLint uKs = glGetUniformLocation(program.getGLId(), "uKs");
+    GLint uShininess = glGetUniformLocation(program.getGLId(), "uShininess");
+    GLint uLightDir_vs = glGetUniformLocation(program.getGLId(), "uLightDir_vs");
+    GLint uLightIntensity = glGetUniformLocation(program.getGLId(), "uLightIntensity");
+
     for(int i=0; i<textures.size(); i++){
         char const *pchar = "uTexture" + i;
         textures[i].setUniformLocation(program, (GLchar*)pchar);
@@ -69,35 +81,6 @@ int main(int argc, char** argv) {
     glEnable(GL_DEPTH_TEST);
     // Accept fragment if it closer to the camera than the former one
     glDepthFunc(GL_LESS);
-
-    /** Matrices **/
-    //Projection Matrix
-    glm::mat4 Projection = glm::perspective(glm::radians(45.0f), windowWidth/windowHeight, 0.1f, 100.0f); //param perspective(float fovy, float aspect, float znear, float far)
-
-    // Camera matrix
-    glm::mat4 View = glm::lookAt(
-        glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
-        glm::vec3(0,0,0), // and looks at the origin
-        glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-        );
-
-    // Model matrix : an identity matrix (model will be at the origin)
-    glm::mat4 Model = glm::mat4(1.0f);
-    // Our ModelViewProjection : multiplication of our 3 matrices
-    glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
-
-    //glm::mat4 MVMatrix = glm::translate(glm::mat4(1), glm::vec3(0, 0, -5));
-    //glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
-
-    // Get a handle for our "MVP" uniform
-    // Only during the initialisation
-    GLuint MatrixID = glGetUniformLocation(program.getGLId(), "uMVP");
-
-    // Send our transformation to the currently bound shader, in the "MVP" uniform
-    // This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
-    glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
-
-
 
 
     /** Création VBO **/
@@ -112,9 +95,6 @@ int main(int argc, char** argv) {
         glBufferData(GL_ARRAY_BUFFER, cubeList[i].getVertexCount()*sizeof(Vertex3DTexture), cubeList[i].getDataPointer(), GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, vboList.back());
     }
-
-
-
 
 
     /** Loading textures **/
@@ -144,7 +124,8 @@ int main(int argc, char** argv) {
     /** VAO creation **/
     //VAO attributes index
     const GLuint VERTEX_ATTR_POSITION = 0;
-    const GLuint VERTEX_ATTR_TEXTURE = 1;
+    const GLuint VERTEX_ATTR_NORMAL = 1;
+    const GLuint VERTEX_ATTR_TEXTURE = 2;
 
     std::vector<GLuint> vaoList(cubeList.size());
     for(int i=0; i<cubeList.size(); i++){
@@ -157,14 +138,16 @@ int main(int argc, char** argv) {
         // 1st attribute buffer : position
         glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
         glVertexAttribPointer(VERTEX_ATTR_POSITION,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, position));
-        // 2nd attribute buffer : texture
+        // 2nd attribute buffer : normal
+        glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
+        glVertexAttribPointer(VERTEX_ATTR_NORMAL,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, normal));
+        // 23rd attribute buffer : texture
         glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
         glVertexAttribPointer(VERTEX_ATTR_TEXTURE,2,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, texture));
 
     }
 
-
-     /** IBO creation **/
+    /** IBO creation **/
      std::vector<GLuint> iboList(cubeList.size());
      for(int i=0; i<cubeList.size(); i++){
         glGenBuffers(1, &iboList[i]);
@@ -176,13 +159,15 @@ int main(int argc, char** argv) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 
-
-
+    /**********************************/
+    /******* BOUCLE D'AFFICHAGE *******/
+    /**********************************/
 
 
     // Application loop:
     bool done = false;
     while(!done) {
+
         // Event loop:
         SDL_Event e;
         while(windowManager.pollEvent(e)) {
@@ -191,9 +176,30 @@ int main(int argc, char** argv) {
             }
         }
 
+
+        /*** CAMERA ***/
+        Controls c;
+        c.computeMatricesFromInputs(windowWidth,windowHeight,e);
+        const glm::mat4 ProjectionMatrix = c.getProjectionMatrix();
+        const glm::mat4 ViewMatrix = c.getViewMatrix();
+
         // Clear window
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        glUniform3f(uKd, 0.6, 0.6, 0.6); //Couleur des boules
+        glUniform3f(uKs, 0, 0.0, 0.0);
+        glUniform1f(uShininess, 32.0);
+        glm::vec4 LightDir = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 0); // passé à 0
+        glUniform3f(uLightDir_vs, LightDir.x, LightDir.y, LightDir.z);
+        glUniform3f(uLightIntensity, 2.0, 2.0, 2.0);
+
+
+        glm::mat4 ModelMatrix = glm::mat4();
+        glm::mat4 NormalMatrix = glm::transpose(glm::inverse(ViewMatrix * ModelMatrix));
+
+        glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjectionMatrix * ViewMatrix * ModelMatrix)); //Model View Projection
+        glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(ViewMatrix * ModelMatrix));
+        glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
 
         /** Draw cube list **/
         for(int i=0; i<cubeList.size(); i++){
@@ -217,5 +223,5 @@ int main(int argc, char** argv) {
         windowManager.swapBuffers();
     }
 
-return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
