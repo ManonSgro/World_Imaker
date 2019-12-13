@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #include "glm.hpp"
 
 namespace glimac {
