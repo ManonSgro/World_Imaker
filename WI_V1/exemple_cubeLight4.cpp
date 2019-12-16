@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
     FilePath applicationPath(argv[0]);
     Program program = loadProgram(
         applicationPath.dirPath() + "shaders/cubeLight.vs.glsl",
-        applicationPath.dirPath() + "shaders/cubeLightPoint.fs.glsl"
+        applicationPath.dirPath() + "shaders/cubeGeneralLight.fs.glsl"
     );
     program.use();
 
@@ -70,6 +70,7 @@ int main(int argc, char** argv) {
     GLint uKs = glGetUniformLocation(program.getGLId(), "uKs");
     GLint uShininess = glGetUniformLocation(program.getGLId(), "uShininess");
     GLint uLightPos_vs = glGetUniformLocation(program.getGLId(), "uLightPos_vs");
+    GLint uLightDir_vs = glGetUniformLocation(program.getGLId(), "uLightDir_vs");
     GLint uLightIntensity = glGetUniformLocation(program.getGLId(), "uLightIntensity");
 
     for(int i=0; i<textures.size(); i++){
@@ -191,6 +192,8 @@ int main(int argc, char** argv) {
         glUniform1f(uShininess, 32.0);
         glm::vec4 LightPos = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
         glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
+        glm::vec4 LightDir = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
+        glUniform3f(uLightDir_vs, LightDir.x, LightDir.y, LightDir.z);
         glUniform3f(uLightIntensity, 2.0, 2.0, 2.0);
 
 
