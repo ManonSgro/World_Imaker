@@ -1,8 +1,7 @@
 #pragma once
 
-#pragma once
-
 #include <vector>
+#include <Eigen/Dense>
 
 #include "common.hpp"
 
@@ -52,6 +51,39 @@ public:
         return m_textureIndex;
     };
 
+    // Set index
+    void setCubeIndex(GLuint index);
+    GLuint getCubeIndex(){
+        return m_cubeIndex;
+    };
+
+    // Compare cubes
+    bool operator > (const Cube& cubeToCompare) const
+    {
+        return (m_textureIndex > cubeToCompare.m_textureIndex);
+    }
+
+    // Scale
+    void setScale(GLfloat x, GLfloat y, GLfloat z);
+    glm::vec3 getScale(){
+        return m_scale;
+    };
+
+    // Rotate
+    void setRot(GLfloat degrees, GLfloat x, GLfloat y, GLfloat z);
+    glm::vec3 getRot(){
+        return m_rot;
+    };
+    GLfloat getRotDeg(){
+        return m_rotDeg;
+    };
+
+    // Translate
+    void setTrans(GLfloat x, GLfloat y, GLfloat z);
+    glm::vec3 getTrans(){
+        return m_trans;
+    };
+
 private:
     std::vector<Vertex3DTexture> m_Vertices;
     GLsizei m_nVertexCount; // Nombre de sommets
@@ -59,6 +91,12 @@ private:
     GLfloat m_edge; // à voir si on ne peut pas plutôt stocker une matrice sur laquelle appliquer des transformations puis une fonction pour faire le liens entre cette matrice et les vertices...
 
     GLuint m_textureIndex;
+    GLuint m_cubeIndex; // the same as vbo/ibo/vao
+
+    glm::vec3 m_scale;
+    glm::vec3 m_rot;
+    GLfloat m_rotDeg;
+    glm::vec3 m_trans;
 };
 
 }

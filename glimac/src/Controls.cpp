@@ -47,16 +47,16 @@ void Controls::computeMatricesFromInputs(float wW, float wH, SDL_Event e){
 
     // Move
     if (e.type == SDL_KEYDOWN){
-        if (e.key.keysym.sym == SDLK_KP8){
+        if (e.key.keysym.sym == SDLK_KP_8){
             position += up * speed;
         }
-        if (e.key.keysym.sym == SDLK_KP2){
+        if (e.key.keysym.sym == SDLK_KP_2){
             position -= up * speed;
         }
-        if (e.key.keysym.sym == SDLK_KP6){
+        if (e.key.keysym.sym == SDLK_KP_6){
             position += right * speed;
         }
-        if (e.key.keysym.sym == SDLK_KP4){
+        if (e.key.keysym.sym == SDLK_KP_4){
             position -= right * speed;
         }
         if (e.key.keysym.sym == SDLK_KP_PLUS){
@@ -65,19 +65,19 @@ void Controls::computeMatricesFromInputs(float wW, float wH, SDL_Event e){
         if (e.key.keysym.sym == SDLK_KP_MINUS){
             position -= direction * speed;
         }
-        if (e.key.keysym.sym == SDLK_KP9){
+        if (e.key.keysym.sym == SDLK_KP_9){
             horizontalAngle += speed;
         }
-        if (e.key.keysym.sym == SDLK_KP7){
+        if (e.key.keysym.sym == SDLK_KP_7){
             horizontalAngle -= speed;
         }
-        if (e.key.keysym.sym == SDLK_KP3){
+        if (e.key.keysym.sym == SDLK_KP_3){
             verticalAngle += speed;
         }
-        if (e.key.keysym.sym == SDLK_KP1){
+        if (e.key.keysym.sym == SDLK_KP_1){
             verticalAngle -= speed;
         }
-        if (e.key.keysym.sym == SDLK_KP5){
+        if (e.key.keysym.sym == SDLK_KP_5){
             position = glm::vec3(0,0,5);
             horizontalAngle = 3.14f;
             verticalAngle = 0.0f;

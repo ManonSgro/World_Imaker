@@ -52,10 +52,36 @@ void Cube::build(GLfloat edge) {
         0,1,2,0,2,3,  4,5,6,4,6,7,  8,9,10,8,10,11,  12,13,14,12,14,15,  16,17,18,16,18,19,  20,21,22,20,22,23
      };
 
-     m_edge = edge;
+    m_edge = edge;
 
-     m_textureIndex = 0; // first texture by default, changer ça pour qu'on puisse avoir des cubes sans texture ? Avec une couleur ? Avec une couleur par defaut ?
+    m_textureIndex = 0; // first texture by default, changer ça pour qu'on puisse avoir des cubes sans texture ? Avec une couleur ? Avec une couleur par defaut ?
+    m_cubeIndex = 0;
 
+    // Default 3D transform
+    m_scale = glm::vec3(1.0f);
+    m_rot = glm::vec3(1.0f);
+    m_rotDeg = 0.0f;
+    m_trans = glm::vec3(1.0f);
+    /*m_scale << 1,0,0,0,
+                0,1,0,0,
+                0,0,1,0,
+                0,0,0,1;
+    m_rotationX << 1,0,0,0,
+                0,std::cos(0),std::sin(0),0,
+                0,-std::sin(0),std::cos(0),0,
+                0,0,0,1;
+    m_rotationY << std::cos(0),0,-std::sin(0),0,
+                0,1,0,0
+                std::sin(0),0,std::cos(0),0,
+                0,0,0,1;
+    m_rotationZ << std::cos(0),std::sin(0),0,0,
+                -std::sin(0),std::cos(0),0,0,
+                0,0,1,0,
+                0,0,0,1;
+    m_translation << 1,0,0,0,
+                    0,1,0,0,
+                    0,0,1,0,
+                    0,0,0,1*/
     // Attention ! dans cette implantation on duplique beaucoup de sommets. Une meilleur stratégie est de passer
     // par un Index Buffer Object, que nous verrons dans les prochains TDs
 }
@@ -105,5 +131,24 @@ void Cube::setTextureIndex(GLuint index){
     m_textureIndex = index;
 }
 
+void Cube::setCubeIndex(GLuint index){
+    m_cubeIndex = index;
+}
+
+// Scale
+void Cube::setScale(GLfloat x, GLfloat y, GLfloat z){
+    m_scale = glm::vec3(x, y, z);
+}
+
+// Rotate
+void Cube::setRot(GLfloat degrees, GLfloat x, GLfloat y, GLfloat z){
+    m_rot = glm::vec3(x, y, z);
+    m_rotDeg = degrees;
+}
+
+// Translate
+void Cube::setTrans(GLfloat x, GLfloat y, GLfloat z){
+    m_trans = glm::vec3(x, y, z);
+}
 }
 
