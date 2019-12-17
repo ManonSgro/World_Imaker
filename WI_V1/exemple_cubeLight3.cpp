@@ -169,8 +169,10 @@ int main(int argc, char** argv) {
     while(!done) {
 
         // Event loop:
+        Controls c;
         SDL_Event e;
         while(windowManager.pollEvent(e)) {
+            c.computeMatricesFromInputs(windowWidth,windowHeight,e);
             if(e.type == SDL_QUIT) {
                 done = true; // Leave the loop after this iteration
             }
@@ -178,7 +180,6 @@ int main(int argc, char** argv) {
 
 
         /*** CAMERA ***/
-        Controls c;
         c.computeMatricesFromInputs(windowWidth,windowHeight,e);
         const glm::mat4 ProjectionMatrix = c.getProjectionMatrix();
         const glm::mat4 ViewMatrix = c.getViewMatrix();

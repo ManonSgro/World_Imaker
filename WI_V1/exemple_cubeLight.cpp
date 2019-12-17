@@ -232,8 +232,10 @@ int main(int argc, char** argv) {
     bool done = false;
     while(!done) {
         // Event loop:
+        Controls c;
         SDL_Event e;
         while(windowManager.pollEvent(e)) {
+            c.computeMatricesFromInputs(windowWidth,windowHeight,e);
             if(e.type == SDL_QUIT) {
                 done = true; // Leave the loop after this iteration
             }
@@ -245,7 +247,6 @@ int main(int argc, char** argv) {
         glBindVertexArray(vao);
 
         /*** CAMERA ***/
-        Controls c;
         c.computeMatricesFromInputs(windowWidth,windowHeight,e);
         glm::mat4 ProjectionMatrix = c.getProjectionMatrix();
         glm::mat4 ViewMatrix = c.getViewMatrix();
