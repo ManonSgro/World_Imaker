@@ -9,6 +9,7 @@
 #include <glimac/Cube.hpp>
 #include <glimac/Geometry.hpp>
 #include <glimac/Texture.hpp>
+#include <glimac/CubeList.hpp>
 #include <cstddef>
 #include <vector>
 
@@ -26,10 +27,6 @@ using namespace glm;
 
 using namespace glimac;
 
-glm::mat3 translate(float tx, float ty){
-    glm::mat3 M = glm::mat3(glm::vec3(1,0,0), glm::vec3(0,1,0), glm::vec3(tx, ty, 1));
-    return M;
-}
 int main(int argc, char** argv) {
     // Initialize SDL and open a window
     float windowWidth = 800.0f;
@@ -48,14 +45,21 @@ int main(int argc, char** argv) {
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
 
-    /** Apel de la classe **/
-    std::vector<Cube> cubeList;
+    /** Create cube list **/
+    CubeList myCubeList;
+    myCubeList.addCube(Cube(1));
+    myCubeList.addCube(Cube(0.5));
+    myCubeList.addCube(Cube(0.5));
+    myCubeList.translateCube(1, 0.0,2.0,-2.0);
+    myCubeList.translateCube(0, 0.0,0.0,-2.0);
+    myCubeList.translateCube(2, 0.0,0.0,0.0);
+    /*std::vector<Cube> cubeList;
     cubeList.push_back(Cube(1));
     cubeList.push_back(Cube(0.5));
     cubeList.push_back(Cube(0.5));
     cubeList[1].translateVertices(0.0,2.0,-2.0);
     cubeList[0].translateVertices(0.0,0.0,-2.0);
-    cubeList[2].translateVertices(0.0,0.0,0.0);
+    cubeList[2].translateVertices(0.0,0.0,0.0);*/
 
 
     /** Array of Textures **/
@@ -116,15 +120,15 @@ int main(int argc, char** argv) {
 
 
     /** Création VBO **/
-    std::vector<GLuint> vboList(cubeList.size());
-    for(int i=0; i<cubeList.size(); i++){
+    std::vector<GLuint> vboList(myCubeList.getSize());
+    for(int i=0; i<myCubeList.getSize(); i++){
         // Generate 1 buffer, put the resulting identifier in vertexbuffer
         glGenBuffers(1, &vboList[i]);
         // The following commands will talk about our 'vertexbuffer' buffer
         glBindBuffer(GL_ARRAY_BUFFER, vboList[i]);
 
         // Send data to CG
-        glBufferData(GL_ARRAY_BUFFER, cubeList[i].getVertexCount()*sizeof(Vertex3DTexture), cubeList[i].getDataPointer(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, myCubeList.getVertexCount(i)*sizeof(Vertex3DTexture), myCubeList.getDataPointer(i), GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, vboList.back());
     }
 
@@ -136,9 +140,9 @@ int main(int argc, char** argv) {
     textures[0].setImage("../GLImac-Template/assets/textures/brique.png");
     textures[1].setImage("../GLImac-Template/assets/textures/herbe.png");
     // Link cubes with textures
-    cubeList[0].setTextureIndex(0);
-    cubeList[1].setTextureIndex(1);
-    cubeList[2].setTextureIndex(1);
+    myCubeList.setTextureIndex(0, 0);
+    myCubeList.setTextureIndex(1, 1);
+    myCubeList.setTextureIndex(2, 1);
 
 
     /** Textures **/
@@ -161,8 +165,8 @@ int main(int argc, char** argv) {
     const GLuint VERTEX_ATTR_POSITION = 0;
     const GLuint VERTEX_ATTR_TEXTURE = 1;
 
-    std::vector<GLuint> vaoList(cubeList.size());
-    for(int i=0; i<cubeList.size(); i++){
+    std::vector<GLuint> vaoList(myCubeList.getSize());
+    for(int i=0; i<myCubeList.getSize(); i++){
         glGenVertexArrays(1, &vaoList[i]);
         // VAO Binding
         glBindVertexArray(vaoList[i]);
@@ -180,11 +184,11 @@ int main(int argc, char** argv) {
 
 
      /** IBO creation **/
-     std::vector<GLuint> iboList(cubeList.size());
-     for(int i=0; i<cubeList.size(); i++){
+     std::vector<GLuint> iboList(myCubeList.getSize());
+     for(int i=0; i<myCubeList.getSize(); i++){
         glGenBuffers(1, &iboList[i]);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[i]);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, cubeList[i].getIBOCount()*sizeof(uint32_t), cubeList[i].getIBOPointer(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, myCubeList.getIBOCount(i)*sizeof(uint32_t), myCubeList.getIBOPointer(i), GL_STATIC_DRAW);
      }
 
     glBindVertexArray(0);
@@ -192,7 +196,12 @@ int main(int argc, char** argv) {
 
 
 
-
+    /** Print cube **/
+    myCubeList.printCubes();
+    /** Sort cubes **/
+    myCubeList.sortCubes();
+    /** Print cubes **/
+    myCubeList.printCubes();
 
 
     // Application loop:
@@ -211,16 +220,25 @@ int main(int argc, char** argv) {
 
 
         /** Draw cube list **/
-        for(int i=0; i<cubeList.size(); i++){
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, textures[cubeList[i].getTextureIndex()].getTexture()); // la texture est bindée sur l'unité GL_TEXTURE0
-            glUniform1i(textures[cubeList[i].getTextureIndex()].getUniformLocation(), 0);
+        int currentTexture = myCubeList.getTextureIndex(0);
+        // Active first texture
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textures[myCubeList.getTextureIndex(0)].getTexture()); // la texture est bindée sur l'unité GL_TEXTURE0
+        glUniform1i(textures[myCubeList.getTextureIndex(0)].getUniformLocation(), 0);
 
-            glBindVertexArray(vaoList[i]);
+        for(int i=0; i<myCubeList.getSize(); i++){
+            if(currentTexture != myCubeList.getTextureIndex(i)){
+                currentTexture = myCubeList.getTextureIndex(i);
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, textures[myCubeList.getTextureIndex(i)].getTexture()); // la texture est bindée sur l'unité GL_TEXTURE0
+                glUniform1i(textures[myCubeList.getTextureIndex(i)].getUniformLocation(), 0);
+            }
+
+            glBindVertexArray(vaoList[myCubeList.getCubeIndex(i)]);
 
             // Draw cube
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[i]);
-            glDrawElements(GL_TRIANGLES, cubeList[i].getIBOCount(), GL_UNSIGNED_INT, (void *)0);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[myCubeList.getCubeIndex(i)]);
+            glDrawElements(GL_TRIANGLES, myCubeList.getIBOCount(i), GL_UNSIGNED_INT, (void *)0);
         }
 
 
