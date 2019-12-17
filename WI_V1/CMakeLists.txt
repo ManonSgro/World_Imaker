@@ -2,6 +2,9 @@ file(GLOB HEADER_FILES *.hpp)
 file(GLOB SRC_FILES *.cpp)
 file(GLOB_RECURSE SHADER_FILES *.glsl)
 
+link_libraries(stdc++fs)
+link_libraries(-lstdc++fs)
+
 foreach(SRC_FILE ${SRC_FILES})
     get_filename_component(FILE ${SRC_FILE} NAME_WE)
     get_filename_component(DIR ${CMAKE_CURRENT_SOURCE_DIR} NAME)
