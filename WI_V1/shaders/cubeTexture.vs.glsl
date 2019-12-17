@@ -7,8 +7,8 @@ layout(location = 1) in vec2 aVertexUV;
 // Output data ; will be interpolated for each fragment.
 out vec2 vUV;
 
-mat3 translate(float tx, float ty){
-    mat3 M = mat3(vec3(1,0,0), vec3(0,1,0), vec3(tx, ty, 1));
+mat4 translate(float tx, float ty, float tz){
+    mat4 M = mat4(vec4(1,0,0,0), vec4(0,1,0,0), vec4(0,0,1,0), vec4(tx, ty, tz, 1));
     return M;
 }
 
@@ -17,7 +17,9 @@ uniform mat4 uMVP;
 
 void main(){
     // Output position of the vertex, in clip space : MVP * position
+    //vec2 transformed = (M * vec4(aVertexPosition_modelspace, 1)).xyz;
     gl_Position = uMVP * vec4(aVertexPosition_modelspace, 1);
+    //gl_Position = uMVP * vec4(translate(1.0,1.0,2.0) * aVertexPosition_modelspace, 1);
 
     // UV of the vertex. No special space for this one.
     vUV = aVertexUV;
