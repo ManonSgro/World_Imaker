@@ -16,13 +16,6 @@ uniform vec3 uLightPos_vs;
 uniform vec3 uLightDir_vs;
 uniform vec3 uLightIntensity;
 
-uniform sampler2D myTextureSampler;
-uniform mat4 MV;
-uniform vec3 LightPosition_worldspace;
-in vec3 EyeDirection_cameraspace;
-in vec3 LightDirection_cameraspace;
-
-
 vec3 blinnPhongP(vec3 position_vs, vec3 normal_vs){
     float d = distance(uLightPos_vs, vPosition_vs);
 	vec3 w_zero = normalize(-position_vs);
@@ -54,27 +47,8 @@ void main(){
     vec4 color = texture(uTextureSampler, vUV);
 
 
-    // Light emission properties
-	// You probably want to put them as uniforms
-	vec3 LightColor = vec3(1,1,1);
-	float LightPower = 50.0f;
-
-	// Material properties
-	vec3 MaterialDiffuseColor = texture( myTextureSampler, vUV ).rgb;
-	vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
-	vec3 MaterialSpecularColor = vec3(0.3,0.3,0.3);
-
-	float distance = length( uLightPos_vs - vPosition_vs );
-
-	vec3 n = normalize( vNormal_vs );
-	vec3 l = normalize( uLightDir_vs );
-	float cosTheta = clamp( dot( n,l ), 0,1 );
-	//vec3 E = normalize(vUV);
-	//vec3 R = reflect(-l,n);
-	//float cosAlpha = clamp( dot( E,R ), 0,1 );
-
     fFragColor = color.rgb * blinnPhongD(vPosition_vs, normalize(vNormal_vs));
     fFragColor += color.rgb * blinnPhongP(vPosition_vs, normalize(vNormal_vs));
-    fFragColor += MaterialAmbientColor + MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) + MaterialSpecularColor * LightColor * LightPower * pow(cosTheta,5) / (distance*distance);
+    //fFragColor += MaterialAmbientColor + MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) + MaterialSpecularColor * LightColor * LightPower * pow(cosTheta,5) / (distance*distance);
 }
 

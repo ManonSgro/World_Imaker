@@ -11,6 +11,8 @@
 #include <glimac/Controls.hpp>
 #include <glimac/Cube.hpp>
 #include <glimac/Texture.hpp>
+#include <glimac/objloader.hpp>
+#include <glimac/text.hpp>
 #include <cstddef>
 #include <vector>
 
@@ -72,6 +74,8 @@ int main(int argc, char** argv) {
     GLint uLightPos_vs = glGetUniformLocation(program.getGLId(), "uLightPos_vs");
     GLint uLightDir_vs = glGetUniformLocation(program.getGLId(), "uLightDir_vs");
     GLint uLightIntensity = glGetUniformLocation(program.getGLId(), "uLightIntensity");
+    //GLint TextureID  = glGetUniformLocation(program.getGLId(), "textureSampler");
+   // GLuint LightID = glGetUniformLocation(program.getGLId(), "LightPosition_worldspace");
 
     for(int i=0; i<textures.size(); i++){
         char const *pchar = "uTexture" + i;
@@ -160,6 +164,63 @@ int main(int argc, char** argv) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 
+	// Dark blue background
+	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+
+	// Enable depth test
+	glEnable(GL_DEPTH_TEST);
+	// Accept fragment if it closer to the camera than the former one
+	glDepthFunc(GL_LESS);
+
+	// Cull triangles which normal is not towards the camera
+	glEnable(GL_CULL_FACE);
+
+	GLuint VertexArrayID;
+	glGenVertexArrays(1, &VertexArrayID);
+	glBindVertexArray(VertexArrayID);
+
+	// Create and compile our GLSL program from the shaders
+	//GLuint programID = LoadShaders( "StandardShading.vertexshader", "StandardShading.fragmentshader" );
+
+	// Get a handle for our "MVP" uniform
+	GLuint MatrixID = glGetUniformLocation(program.getGLId(), "MVP");
+	GLuint ViewMatrixID = glGetUniformLocation(program.getGLId(), "V");
+	GLuint ModelMatrixID = glGetUniformLocation(program.getGLId(), "M");
+
+	// Load the texture
+	GLuint Texture = loadDDS("../GLImac-Template/assets/models/uvmap.DDS");
+
+	// Get a handle for our "myTextureSampler" uniform
+	GLuint TextureID  = glGetUniformLocation(program.getGLId(), "myTextureSampler");
+
+	// Read our .obj file
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec2> uvs;
+	std::vector<glm::vec3> normals;
+	bool res = loadOBJ("../GLImac-Template/assets/models/cube2.obj", vertices, uvs, normals);
+
+	// Load it into a VBO
+
+	GLuint vertexbuffer;
+	glGenBuffers(1, &vertexbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+
+	GLuint uvbuffer;
+	glGenBuffers(1, &uvbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+	glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
+
+	GLuint normalbuffer;
+	glGenBuffers(1, &normalbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
+
+	// Get a handle for our "LightPosition" uniform
+	//glUseProgram(programID);
+    GLuint LightID = glGetUniformLocation(program.getGLId(), "LightPosition_worldspace");
+
+
     /**********************************/
     /******* BOUCLE D'AFFICHAGE *******/
     /**********************************/
@@ -168,7 +229,7 @@ int main(int argc, char** argv) {
     // Application loop:
     bool done = false;
     while(!done) {
-        Controls c;
+         Controls c;
         // Event loop:
         SDL_Event e;
         while(windowManager.pollEvent(e)) {
@@ -186,17 +247,16 @@ int main(int argc, char** argv) {
 
         // Clear window
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glUseProgram(program.getGLId());
 
         glUniform3f(uKd, 0.6, 0.6, 0.6); //Couleur des boules
-        glUniform3f(uKs, 0, 0.0, 0.0);
+        glUniform3f(uKs, 0.0, 0.0, 0.0);
         glUniform1f(uShininess, 32.0);
-        glm::vec4 LightPos = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
-        glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
+        //glm::vec4 LightPos = ViewMatrix * glm::vec4(1.0, 1.0, 0.0, 1);
+        //glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
         glm::vec4 LightDir = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
         glUniform3f(uLightDir_vs, LightDir.x, LightDir.y, LightDir.z);
         glUniform3f(uLightIntensity, 2.0, 2.0, 2.0);
-
-
 
         glm::mat4 ModelMatrix = glm::mat4();
         glm::mat4 NormalMatrix = glm::transpose(glm::inverse(ViewMatrix * ModelMatrix));
@@ -205,23 +265,69 @@ int main(int argc, char** argv) {
         glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(ViewMatrix * ModelMatrix));
         glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
 
-        /** Draw cube list **/
-        for(int i=0; i<cubeList.size(); i++){
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, textures[cubeList[i].getTextureIndex()].getTexture()); // la texture est bindée sur l'unité GL_TEXTURE0
-            glUniform1i(textures[cubeList[i].getTextureIndex()].getUniformLocation(), 0);
-
-            glBindVertexArray(vaoList[i]);
-
-            // Draw cube
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[i]);
-            glDrawElements(GL_TRIANGLES, cubeList[i].getIBOCount(), GL_UNSIGNED_INT, (void *)0);
-        }
 
 
-        glBindVertexArray(0);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, 0);
+		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+
+		// Send our transformation to the currently bound shader,
+		// in the "MVP" uniform
+		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+		glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
+
+		glm::vec3 lightPos = glm::vec3(4,4,4);
+		glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
+
+		// Bind our texture in Texture Unit 0
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, Texture);
+		// Set our "myTextureSampler" sampler to use Texture Unit 0
+		glUniform1i(TextureID, 0);
+
+		// 1rst attribute buffer : vertices
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+		glVertexAttribPointer(
+			0,                  // attribute
+			3,                  // size
+			GL_FLOAT,           // type
+			GL_FALSE,           // normalized?
+			0,                  // stride
+			(void*)0            // array buffer offset
+		);
+
+		// 2nd attribute buffer : UVs
+		glEnableVertexAttribArray(2);
+		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+		glVertexAttribPointer(
+			2,                                // attribute
+			2,                                // size
+			GL_FLOAT,                         // type
+			GL_FALSE,                         // normalized?
+			0,                                // stride
+			(void*)0                          // array buffer offset
+		);
+
+		// 3rd attribute buffer : normals
+		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+		glVertexAttribPointer(
+			1,                                // attribute
+			3,                                // size
+			GL_FLOAT,                         // type
+			GL_FALSE,                         // normalized?
+			0,                                // stride
+			(void*)0                          // array buffer offset
+		);
+
+		// Draw the triangles !
+		glDrawArrays(GL_TRIANGLES, 0, vertices.size() );
+
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+glDisableVertexAttribArray(2);
+
+
 
         // Update the display
         windowManager.swapBuffers();

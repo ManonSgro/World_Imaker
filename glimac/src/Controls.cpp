@@ -13,6 +13,9 @@ glm::mat4 Controls::getProjectionMatrix(){
 	return this->ProjectionMatrix;
 }
 
+
+
+
 // Initial position : on +Z
 glm::vec3 position = glm::vec3(0,0,5);
 // Initial horizontal angle : toward -Z
@@ -83,7 +86,6 @@ void Controls::computeMatricesFromInputs(float wW, float wH, SDL_Event e){
             verticalAngle = 0.0f;
         }
     }
-
 
     float FoV = initialFoV;//  * MouseWheel();
 
