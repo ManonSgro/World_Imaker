@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
 
     /** Apel de la classe **/
-    Cube MyCube(1);
+    Cube MyCube;
 
      /** Loading shaders **/
     FilePath applicationPath(argv[0]);

@@ -6,8 +6,8 @@
 
 namespace glimac {
 
-void Cube::build(GLfloat edge) {
-
+void Cube::build() {
+    GLfloat edge = 0.5;
     m_Vertices = {
         //Face sol
         Vertex3DTexture(glm::vec3(-edge, -edge, -edge), glm::vec3(0, -1, 0), glm::vec2(0,0)), //0
@@ -61,29 +61,9 @@ void Cube::build(GLfloat edge) {
     m_scale = glm::vec3(1.0f);
     m_rot = glm::vec3(1.0f);
     m_rotDeg = 0.0f;
-    m_trans = glm::vec3(1.0f);
-    /*m_scale << 1,0,0,0,
-                0,1,0,0,
-                0,0,1,0,
-                0,0,0,1;
-    m_rotationX << 1,0,0,0,
-                0,std::cos(0),std::sin(0),0,
-                0,-std::sin(0),std::cos(0),0,
-                0,0,0,1;
-    m_rotationY << std::cos(0),0,-std::sin(0),0,
-                0,1,0,0
-                std::sin(0),0,std::cos(0),0,
-                0,0,0,1;
-    m_rotationZ << std::cos(0),std::sin(0),0,0,
-                -std::sin(0),std::cos(0),0,0,
-                0,0,1,0,
-                0,0,0,1;
-    m_translation << 1,0,0,0,
-                    0,1,0,0,
-                    0,0,1,0,
-                    0,0,0,1*/
-    // Attention ! dans cette implantation on duplique beaucoup de sommets. Une meilleur stratégie est de passer
-    // par un Index Buffer Object, que nous verrons dans les prochains TDs
+    m_trans = glm::vec3(0.0f);
+
+    std::cout << "[Edit] New cube created at origin with size 1." << std::endl;
 }
 
 void Cube::translateVertices(GLfloat tx, GLfloat ty, GLfloat tz) {
@@ -129,6 +109,8 @@ void Cube::translateVertices(GLfloat tx, GLfloat ty, GLfloat tz) {
 
 void Cube::setTextureIndex(GLuint index){
     m_textureIndex = index;
+    std::cout << "[Edit] Cube " << m_cubeIndex << " have texture :" << m_textureIndex << "." << std::endl;
+
 }
 
 void Cube::setCubeIndex(GLuint index){
@@ -137,7 +119,18 @@ void Cube::setCubeIndex(GLuint index){
 
 // Scale
 void Cube::setScale(GLfloat x, GLfloat y, GLfloat z){
+    if(floor(x)==x && floor(y)==y && floor(z)==z){
+        m_scale = glm::vec3(x, y, z);
+        std::cout << "[Edit] Cube " << m_cubeIndex << " scale to (" << m_scale.x << ", " << m_scale.y << ", "<< m_scale.z << ")."<< std::endl;
+
+    }else{
+        std::cerr << "[ERROR] Enable to scale with float weight ! Cube " << m_cubeIndex << " still scaled to (" << m_scale.x << ", " << m_scale.y << ", "<< m_scale.z << ")."<< std::endl;
+    }
+}
+void Cube::setScaleFloat(GLfloat x, GLfloat y, GLfloat z){
     m_scale = glm::vec3(x, y, z);
+    std::cout << "[Edit] Cube " << m_cubeIndex << " scaled to (" << m_trans.x << ", " << m_trans.y << ", "<< m_trans.z << ")."<< std::endl;
+
 }
 
 // Rotate
@@ -148,7 +141,13 @@ void Cube::setRot(GLfloat degrees, GLfloat x, GLfloat y, GLfloat z){
 
 // Translate
 void Cube::setTrans(GLfloat x, GLfloat y, GLfloat z){
-    m_trans = glm::vec3(x, y, z);
+    if(floor(x)==x && floor(y)==y && floor(z)==z){
+        m_trans = glm::vec3(x, y, z);
+        std::cout << "[Edit] Cube " << m_cubeIndex << " translate to (" << m_trans.x << ", " << m_trans.y << ", "<< m_trans.z << ")."<< std::endl;
+
+    }else{
+        std::cerr << "[ERROR] Enable to translate to float coordinates ! Cube " << m_cubeIndex << " still at (" << m_trans.x << ", " << m_trans.y << ", "<< m_trans.z << ")."<< std::endl;
+    }
 }
 }
 

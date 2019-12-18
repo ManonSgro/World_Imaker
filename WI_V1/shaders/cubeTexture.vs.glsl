@@ -17,9 +17,7 @@ uniform mat4 uMVP;
 
 void main(){
     // Output position of the vertex, in clip space : MVP * position
-    //vec2 transformed = (M * vec4(aVertexPosition_modelspace, 1)).xyz;
     gl_Position = uMVP * vec4(aVertexPosition_modelspace, 1);
-    //gl_Position = uMVP * vec4(translate(1.0,1.0,2.0) * aVertexPosition_modelspace, 1);
 
     // UV of the vertex. No special space for this one.
     vUV = aVertexUV;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <Eigen/Dense>
 
 #include "common.hpp"
 #include "Cube.hpp"
@@ -74,6 +75,7 @@ public:
     };
 
     //Ajouter/supprimer cube
+    void addOrigin();
     void addCube(Cube cube);
     void deleteCube(int index);
 
@@ -84,6 +86,8 @@ public:
     void sortCubes();
 
     void printCubes();
+    Eigen::VectorXd RBF(Eigen::MatrixXd points);
+    double interpolatePoints(double x, double y, Eigen::MatrixXd points);
 
 //private:
     std::vector<Cube> m_cubeList;

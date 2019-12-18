@@ -40,9 +40,9 @@ int main(int argc, char** argv) {
 
     /** Apel de la classe **/
     std::vector<Cube> cubeList;
-    cubeList.push_back(Cube(1));
-    cubeList.push_back(Cube(0.5));
-    cubeList.push_back(Cube(0.5));
+    cubeList.push_back(Cube());
+    cubeList.push_back(Cube());
+    cubeList.push_back(Cube());
     cubeList[1].translateVertices(0.0,2.0,-2.0);
     cubeList[0].translateVertices(0.0,0.0,-2.0);
     cubeList[2].translateVertices(0.0,0.0,0.0);

@@ -12,11 +12,58 @@
 #include <glimac/CubeList.hpp>
 #include <cstddef>
 #include <vector>
+#include <Eigen/Dense>
+
+// Include standard headers
+#include <stdio.h>
+#include <stdlib.h>
+// Include GLEW. Always include it before gl.h and glfw3.h, since it's a bit magic.
+#include <GL/glew.h>
+// Include GLFW
+//#include <GLFW/glfw3.h>
+
+// Include GLM
+#include <glm/glm.hpp>
+
+using namespace glm;
 
 using namespace glimac;
 
-
 int main(int argc, char** argv) {
+    // Initialize terminal
+    std::cout << R"(
+################################################################################################################################
+                                                                                                                                        
+                                                                                                                                
+           .---.                     ,--,                         ,---,          ____                   ,-.                     
+          /. ./|                   ,--.'|         ,---,        ,`--.' |        ,'  , `.             ,--/ /|                     
+      .--'.  ' ;   ,---.    __  ,-.|  | :       ,---.'|        |   :  :     ,-+-,.' _ |           ,--. :/ |             __  ,-. 
+     /__./ \ : |  '   ,'\ ,' ,'/ /|:  : '       |   | :        :   |  '  ,-+-. ;   , ||           :  : ' /            ,' ,'/ /| 
+ .--'.  '   \' . /   /   |'  | |' ||  ' |       |   | |        |   :  | ,--.'|'   |  || ,--.--.   |  '  /      ,---.  '  | |' | 
+/___/ \ |    ' '.   ; ,. :|  |   ,''  | |     ,--.__| |        '   '  ;|   |  ,', |  |,/       \  '  |  :     /     \ |  |   ,' 
+;   \  \;      :'   | |: :'  :  /  |  | :    /   ,'   |        |   |  ||   | /  | |--'.--.  .-. | |  |   \   /    /  |'  :  /   
+ \   ;  `      |'   | .; :|  | '   '  : |__ .   '  /  |        '   :  ;|   : |  | ,    \__\/: . . '  : |. \ .    ' / ||  | '    
+  .   \    .\  ;|   :    |;  : |   |  | '.'|'   ; |:  |        |   |  '|   : |  |/     ," .--.; | |  | ' \ \'   ;   /|;  : |    
+   \   \   ' \ | \   \  / |  , ;   ;  :    ;|   | '/  '        '   :  ||   | |`-'     /  /  ,.  | '  : |--' '   |  / ||  , ;    
+    :   '  |--"   `----'   ---'    |  ,   / |   :    :|        ;   |.' |   ;/        ;  :   .'   \;  |,'    |   :    | ---'     
+     \   \ ;                        ---`-'   \   \  /          '---'   '---'         |  ,     .-./'--'       \   \  /           
+      '---"                                   `----'                                  `--`---'                `----'            
+                                                                                                                                
+                                                                                                                                
+################################################################################################################################
+########################################################  AUTHORS  #############################################################
+                                                                                                                                
+                                                       Amélia Mansion                                                           
+                                                         Manon Sgro'                                                            
+                                                                                                                                
+################################################################################################################################
+                                                                                                                                
+                                                    [HIC SUNT COMMENTES]                                                        
+                                                                                                                                 
+                                                    ||    ||    ||    ||                                                        
+                                                    \/    \/    \/    \/                                                        
+)" << '\n';
+
     // Initialize SDL and open a window
     float windowWidth = 800.0f;
     float windowHeight = 800.0f;
@@ -36,20 +83,40 @@ int main(int argc, char** argv) {
 
     /** Create cube list **/
     CubeList myCubeList;
-    myCubeList.addCube(Cube());
-    myCubeList.addCube(Cube());
-    myCubeList.addCube(Cube());
-    myCubeList.translateCube(1, 0.0,2.0,-2.0);
-    myCubeList.translateCube(0, 0.0,0.0,-2.0);
-    myCubeList.translateCube(2, 0.0,0.0,0.0);
-    /*std::vector<Cube> cubeList;
-    cubeList.push_back(Cube(1));
-    cubeList.push_back(Cube(0.5));
-    cubeList.push_back(Cube(0.5));
-    cubeList[1].translateVertices(0.0,2.0,-2.0);
-    cubeList[0].translateVertices(0.0,0.0,-2.0);
-    cubeList[2].translateVertices(0.0,0.0,0.0);*/
 
+    myCubeList.addOrigin(); //origin
+    myCubeList.setTrans(0, 0, 0, 0);
+    myCubeList.setTextureIndex(0, 0);
+
+    /*myCubeList.addCube(Cube());
+    myCubeList.setScale(2, 0.5,0.5,0.5);
+    myCubeList.setScale(0, 1.0,1.0,1.0);
+    //myCubeList.setScale(1, 0.5,0.5,0.5);
+    /*myCubeList.setRot(2, 45.0f, 1.0,0.0,0.0);*/
+    /*myCubeList.setTrans(3, 0.0, 2.0, 1.0);
+    myCubeList.setTrans(1, 0, 0, 0);
+    myCubeList.setTrans(2, 0.0, 1.0,-1.0);*/
+
+    Eigen::MatrixXd points(6,3);
+    points << 0,0,0,
+              2,0,0,
+              1,0,0,
+              1,1,0,
+              -2,1,2,
+              -3,1,0;
+    for(int i=0; i<points.rows(); i++){
+        myCubeList.addCube(Cube());
+        myCubeList.setTrans(i+1, points(i,0), points(i,2), points(i,1));
+        myCubeList.setTextureIndex(i+1, 0);
+
+    }
+    int x = -2;
+    int y = 0;
+    int newPoint = myCubeList.interpolatePoints(x,y,points);
+    std::cout << newPoint << std::endl;
+    myCubeList.addCube(Cube());
+    myCubeList.setTrans(myCubeList.getSize(), x, newPoint, y);
+    myCubeList.setTextureIndex(7, 1);
 
     /** Array of Textures **/
     uint nbOfTextures = 2;
@@ -128,10 +195,6 @@ int main(int argc, char** argv) {
     /** Loading textures **/
     textures[0].setImage("../GLImac-Template/assets/textures/brique.png");
     textures[1].setImage("../GLImac-Template/assets/textures/herbe.png");
-    // Link cubes with textures
-    myCubeList.setTextureIndex(0, 0);
-    myCubeList.setTextureIndex(1, 1);
-    myCubeList.setTextureIndex(2, 1);
 
 
     /** Textures **/
@@ -186,11 +249,11 @@ int main(int argc, char** argv) {
 
 
     /** Print cube **/
-    myCubeList.printCubes();
+    //myCubeList.printCubes();
     /** Sort cubes **/
-    myCubeList.sortCubes();
+    //myCubeList.sortCubes();
     /** Print cubes **/
-    myCubeList.printCubes();
+    //myCubeList.printCubes();
 
 
     // Application loop:
@@ -208,12 +271,29 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
+        /*glm::mat4 Mrotate = glm::rotate(MVMatrix, windowManager.getTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), 800.f/600.f, 0.1f, 100.f);
+        glm::mat4 MVMatrix = glm::translate(glm::mat4(1), glm::vec3(0, 0, -5));
+        glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
+
+
+        glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * ViewMatrix)); //Model View Projection
+        glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(ViewMatrix * Mrotate));
+        glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));*/
+
+
         /** Draw cube list **/
         int currentTexture = myCubeList.getTextureIndex(0);
         // Active first texture
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textures[myCubeList.getTextureIndex(0)].getTexture()); // la texture est bindée sur l'unité GL_TEXTURE0
         glUniform1i(textures[myCubeList.getTextureIndex(0)].getUniformLocation(), 0);
+        // Active first MVP
+        Model = glm::scale(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f));
+        Model = glm::rotate(glm::mat4(1.0f), glm::radians(0.0f), glm::vec3(0.0f,0.0f,0.0f));
+        Model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f));
+        glm::mat4 mvp = Projection * View * Model;
+        glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
 
         for(int i=0; i<myCubeList.getSize(); i++){
             if(currentTexture != myCubeList.getTextureIndex(i)){
@@ -224,6 +304,18 @@ int main(int argc, char** argv) {
             }
 
             glBindVertexArray(vaoList[myCubeList.getCubeIndex(i)]);
+
+
+            // Transform
+            Model = glm::scale(glm::mat4(1.0f), myCubeList.getScale(myCubeList.getCubeIndex(i)));
+            //Model = glm::translate(Model, myCubeList.getTrans(myCubeList.getCubeIndex(i)));
+            Model = glm::rotate(Model, myCubeList.getRotDeg(myCubeList.getCubeIndex(i)), myCubeList.getRot(myCubeList.getCubeIndex(i)));
+            Model = glm::translate(Model, myCubeList.getTrans(myCubeList.getCubeIndex(i)));
+            // Our ModelViewProjection : multiplication of our 3 matrices
+            glm::mat4 mvp = Projection * View * Model;
+            // Send our transformation to the currently bound shader, in the "MVP" uniform
+            // This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
+            glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
 
             // Draw cube
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[myCubeList.getCubeIndex(i)]);

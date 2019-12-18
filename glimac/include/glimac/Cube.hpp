@@ -14,14 +14,13 @@ class Cube {
 public:
 
     // Constructeur: alloue le tableau de données et construit les attributs des vertex
-    Cube();
-    Cube(GLfloat edge):
+    Cube():
         m_nVertexCount(0) {
-        build(edge); // Construction (voir le .cpp)
+        build(); // Construction (voir le .cpp)
     }
 
     // Alloue et construit les données (implantation dans le .cpp)
-    void build(GLfloat edge);
+    void build();
 
     // Renvoit le pointeur vers les données
     const Vertex3DTexture* getDataPointer() const {
@@ -68,6 +67,7 @@ public:
     glm::vec3 getScale(){
         return m_scale;
     };
+    void setScaleFloat(GLfloat x, GLfloat y, GLfloat z); 
 
     // Rotate
     void setRot(GLfloat degrees, GLfloat x, GLfloat y, GLfloat z);

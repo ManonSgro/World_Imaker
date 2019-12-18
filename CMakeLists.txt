@@ -25,7 +25,8 @@ add_subdirectory(glimac)
 add_subdirectory(third-party/include/imgui)
 #add_subdirectory(third-party/include/eigen)
 
-set(ALL_LIBRARIES glimac imgui ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${EIGEN3_INCLUDE_DIR})
+#set(ALL_LIBRARIES glimac imgui ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${EIGEN3_INCLUDE_DIR})
+set(ALL_LIBRARIES glimac imgui ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARY})
 
 file(GLOB TP_DIRECTORIES "WI*")
 
