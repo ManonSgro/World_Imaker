@@ -13,6 +13,7 @@
 #include <glimac/Controls.hpp>
 #include <cstddef>
 #include <vector>
+#include <stack>
 
 // Include standard headers
 #include <stdio.h>
@@ -34,14 +35,20 @@ using namespace glm;
 
 using namespace glimac;
 
+float returnX(float pixels, float windowWidth){
+    return (pixels*2.0/windowWidth)-1.0;
+}
+float returnY(float pixels, float windowHeight){
+    return (pixels*2.0/windowHeight)-1.0;
+}
+
 int main(int argc, char** argv) {
     // Initialize SDL and open a window
     float windowWidth = 800.0f;
     float windowHeight = 800.0f;
     float menuWidth = 200.0f;
     SDLWindowManager windowManager(windowWidth+menuWidth, windowHeight+menuWidth, "World Imaker");
-    SDLWindowManager windowManager(windowWidth, windowHeight, "World Imaker");
-
+    
     glewExperimental = GL_TRUE;
 
     // Initialize glew for OpenGL3+ support
@@ -56,7 +63,13 @@ int main(int argc, char** argv) {
 
     /** Create cube list **/
     CubeList myCubeList;
-    myCubeList.addCube(Cube(0.5));
+    float size = 0.5;
+    myCubeList.addCube(Cube(size));
+    myCubeList.addCube(Cube(size));
+    myCubeList.addCube(Cube(size));
+    myCubeList.setTrans(0, 1,1,1);
+    myCubeList.setTrans(1, 1,1,2);
+    myCubeList.setTrans(2, 2,2,2);
     /*
     myCubeList.addCube(Cube(0.5));
     myCubeList.addCube(Cube(0.5));
@@ -120,43 +133,10 @@ int main(int argc, char** argv) {
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
 
-/*** RBF ***/
-/*    myCubeList.addOrigin(); //origin
-        std::cout << "Size ! " << myCubeList.getSize() << std::endl;
-    myCubeList.setTrans(0, 0, 0, 0);
-    myCubeList.setTextureIndex(0, 0);
 
-    /*myCubeList.addCube(Cube());
-    myCubeList.setScale(2, 0.5,0.5,0.5);
-    myCubeList.setScale(0, 1.0,1.0,1.0);
-    //myCubeList.setScale(1, 0.5,0.5,0.5);
-    /*myCubeList.setRot(2, 45.0f, 1.0,0.0,0.0);*/
-    /*myCubeList.setTrans(3, 0.0, 2.0, 1.0);
-    myCubeList.setTrans(1, 0, 0, 0);
-    myCubeList.setTrans(2, 0.0, 1.0,-1.0);*/
 
-/*    Eigen::MatrixXd points(3,3);
-    points << 0,-40,5,
-              -10,-40,0,
-              10,-40,0;
-    for(int i=0; i<points.rows(); i++){
-        myCubeList.addCube(Cube());
-        std::cout << "Size ! " << myCubeList.getSize() << std::endl;
-        myCubeList.setTrans(i+1, points(i,0), points(i,2), points(i,1));
-        myCubeList.setTextureIndex(i+1, 0);
 
-    }
-    for(int i=0; i<19; i++){
-        int x = -9+i;
-        int y = -40;
-        std::cout << "X et Y : " << x << "-" << y << std::endl;
-        int newPoint = myCubeList.interpolatePoints(x,y,points);
-        std::cout << "Z : " << newPoint << std::endl;
-        myCubeList.addCube(Cube());
-        myCubeList.setTrans(myCubeList.getSize()-1, x, newPoint, y);
-        myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
-    }
-    */
+
 
 
 
@@ -220,14 +200,9 @@ int main(int argc, char** argv) {
     textures[0].setImage("../GLImac-Template/assets/textures/brique.png");
     textures[1].setImage("../GLImac-Template/assets/textures/herbe.png");
     // Link cubes with textures
-
     myCubeList.setTextureIndex(0, 0);
     myCubeList.setTextureIndex(1, 1);
     myCubeList.setTextureIndex(2, 1);
-
-    //myCubeList.setTextureIndex(0, 0);
-    //myCubeList.setTextureIndex(1, 1);
-    //myCubeList.setTextureIndex(2, 1);
 
 
     /** Textures **/
@@ -285,16 +260,18 @@ int main(int argc, char** argv) {
 
 
 
+
     /** Print cube **/
-    //myCubeList.printCubes();
+    myCubeList.printCubes();
     /** Sort cubes **/
-    //myCubeList.sortCubes();
+    myCubeList.sortCubes();
     /** Print cubes **/
-    //myCubeList.printCubes();
+    myCubeList.printCubes();
 
 
     // Application loop:
     bool done = false;
+    int elemeSelect = 0;
     while(!done) {
         Controls c;
         // Event loop:
@@ -316,8 +293,52 @@ int main(int argc, char** argv) {
         const glm::mat4 ProjectionMatrix = c.getProjectionMatrix();
         const glm::mat4 ViewMatrix = c.getViewMatrix();
 
+        //std::cout << returnX(e.button.x,windowWidth+menuWidth) << std::endl;
+        // Mouse cursor 
+        if(e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_MOUSEBUTTONUP) {
+            std::stack<int> pile;
+            float posX = returnX(e.button.x,windowWidth+menuWidth);
+            float posY =  -returnY(e.button.y,windowWidth+menuWidth);
+
+            
+            for(int i(0); i<myCubeList.getSize(); ++i) {
+                glm::vec4 clipSpacePos = ProjectionMatrix * (ViewMatrix * vec4(myCubeList.getTrans(i), 1.0));
+                std::cout << "clipSpacePos " << clipSpacePos << std::endl;
+                glm::vec3 ndcSpacePos(clipSpacePos);
+                ndcSpacePos[0] = clipSpacePos[0]/clipSpacePos[3];
+                ndcSpacePos[1] = clipSpacePos[1]/clipSpacePos[3];
+                ndcSpacePos[2] = clipSpacePos[2]/clipSpacePos[3];
+
+                
+                if ((posX < (ndcSpacePos[0]+(size/2)) && posX > (ndcSpacePos[0]-(size/2))) && (posY < (ndcSpacePos[1]+(size/2)) && posY > (ndcSpacePos[1]-(size/2)))) {
+                    //std::cout << "oui pour les X et Y pour element " << myCubeList.getCubeIndex(i) << std::endl;
+                    elemeSelect = myCubeList.getCubeIndex(i);
+                    pile.push(myCubeList.getCubeIndex(i));
+                    //std::cout << "elements : " << pile.size() << std::endl;
+                }
+                else {
+                    //std::cout << "null obj cursor" << std::endl;
+                }
+                /*
+                while (pile.empty() == false){
+                    int current = pile.top();
+                    std::cout << current << std::endl;
+                }
+                */
+
+            }
+
+
+        }
+
+        std::cout << "elemeSelect " << elemeSelect << std::endl;
+
+
+
+
         // Clear window
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
         // Render the GUI
         ImGui::Begin("Cube settings", NULL, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove);
@@ -332,8 +353,8 @@ int main(int argc, char** argv) {
         glUniform3f(uKd, 0.6, 0.6, 0.6); //Couleur des boules
         glUniform3f(uKs, 0, 0.0, 0.0);
         glUniform1f(uShininess, 32.0);
-        glm::vec4 LightPos = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
-        glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
+        //glm::vec4 LightPos = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
+        //glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
         glm::vec4 LightDir = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
         glUniform3f(uLightDir_vs, LightDir.x, LightDir.y, LightDir.z);
         glUniform3f(uLightIntensity, 2.0, 2.0, 2.0);
