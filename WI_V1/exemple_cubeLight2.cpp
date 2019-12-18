@@ -43,9 +43,9 @@ int main(int argc, char** argv) {
     cubeList.push_back(Cube());
     cubeList.push_back(Cube());
     cubeList.push_back(Cube());
-    cubeList[1].translateVertices(0.0,2.0,-2.0);
-    cubeList[0].translateVertices(0.0,0.0,-2.0);
-    cubeList[2].translateVertices(0.0,0.0,0.0);
+    cubeList[1].translateVertices(0.0,2.0,-20.0);
+    cubeList[0].translateVertices(0.0,0.0,-20.0);
+    cubeList[2].translateVertices(0.0,0.0,-40.0);
 
 
     /** Array of Textures **/

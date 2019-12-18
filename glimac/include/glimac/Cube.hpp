@@ -14,8 +14,6 @@ class Cube {
 public:
 
     // Constructeur: alloue le tableau de données et construit les attributs des vertex
-
-    Cube();
     ~Cube(){};
     Cube():
         m_nVertexCount(0) {

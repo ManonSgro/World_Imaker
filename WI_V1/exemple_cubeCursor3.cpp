@@ -76,12 +76,12 @@ int main(int argc, char** argv) {
 
     CubeList myCubeList;
     float size = 0.5;
-    Cube cube(0.5);
+    Cube cube;
     cube.setScale(2,2,2);
     cube.setTrans(1,-1,1);
-    myCubeList.addCube(Cube(size));
-    myCubeList.addCube(Cube(size));
-    myCubeList.addCube(Cube(size));
+    myCubeList.addCube(Cube());
+    myCubeList.addCube(Cube());
+    myCubeList.addCube(Cube());
     myCubeList.setTrans(0, 0.5,0.5,0.5);
     //myCubeList.setScale(0, 2,2,2);
     myCubeList.setTrans(1, 1,1,1);

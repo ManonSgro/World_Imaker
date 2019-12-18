@@ -64,9 +64,9 @@ int main(int argc, char** argv) {
     /** Create cube list **/
     CubeList myCubeList;
     float size = 0.5;
-    myCubeList.addCube(Cube(size));
-    myCubeList.addCube(Cube(size));
-    myCubeList.addCube(Cube(size));
+    myCubeList.addCube(Cube());
+    myCubeList.addCube(Cube());
+    myCubeList.addCube(Cube());
     myCubeList.setTrans(0, 1,1,1);
     myCubeList.setTrans(1, 1,1,2);
     myCubeList.setTrans(2, 2,2,2);

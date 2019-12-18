@@ -65,10 +65,10 @@ int main(int argc, char** argv) {
 
     CubeList myCubeList;
     float size = 0.5;
-    Cube cube(0.5);
+    Cube cube;
     //cube.setScale(2,2,2);
-    myCubeList.addCube(Cube(size));
-    myCubeList.addCube(Cube(size));
+    myCubeList.addCube(Cube());
+    myCubeList.addCube(Cube());
     //myCubeList.addCube(Cube(size));
     myCubeList.setTrans(0, 1,1,1);
     //myCubeList.setScale(0, 2,2,2);
@@ -297,7 +297,7 @@ int main(int argc, char** argv) {
     while(!done) {
         Controls c;
         Cursor cursor;
-        Cube currentActive(size);
+        int currentActive;
         // Event loop:
         SDL_Event e;
         while(windowManager.pollEvent(e)) {

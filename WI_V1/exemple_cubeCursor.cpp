@@ -11,6 +11,7 @@
 #include <glimac/Texture.hpp>
 #include <glimac/CubeList.hpp>
 #include <glimac/Controls.hpp>
+#include <glimac/Cursor.hpp>
 #include <cstddef>
 #include <vector>
 
@@ -40,7 +41,7 @@ int main(int argc, char** argv) {
     float windowHeight = 800.0f;
     float menuWidth = 200.0f;
     SDLWindowManager windowManager(windowWidth+menuWidth, windowHeight+menuWidth, "World Imaker");
-    SDLWindowManager windowManager(windowWidth, windowHeight, "World Imaker");
+    //SDLWindowManager windowManager(windowWidth, windowHeight, "World Imaker");
 
     glewExperimental = GL_TRUE;
 
@@ -53,22 +54,6 @@ int main(int argc, char** argv) {
 
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
-
-    /** Create cube list **/
-    CubeList myCubeList;
-    myCubeList.addCube(Cube(0.5));
-    /*
-    myCubeList.addCube(Cube(0.5));
-    myCubeList.addCube(Cube(0.5));
-    myCubeList.setScale(1, 0.5,0.5,0.5);
-    myCubeList.setScale(0, 1.0,1.0,1.0);
-    myCubeList.setScale(1, 0.5,0.5,0.5);
-    myCubeList.setRot(2, 45.0f, 1.0,0.0,0.0);
-    myCubeList.setTrans(2, 0.0, 2.0, 1.0);
-    myCubeList.setTrans(0, 0.0, 0.0, 0.0);
-    myCubeList.setTrans(1, 0.0, 1.0,-1.0);
-    */
-
 
 
         /** ImGUI */
@@ -121,10 +106,15 @@ int main(int argc, char** argv) {
     ImGui::StyleColorsDark();
 
 /*** RBF ***/
-/*    myCubeList.addOrigin(); //origin
+    Cube cube;
+    CubeList myCubeList;
+    myCubeList.addOrigin(); //origin
         std::cout << "Size ! " << myCubeList.getSize() << std::endl;
     myCubeList.setTrans(0, 0, 0, 0);
     myCubeList.setTextureIndex(0, 0);
+
+    cube.setTrans(myCubeList.getTrans(0).x,myCubeList.getTrans(0).y,-40);
+
 
     /*myCubeList.addCube(Cube());
     myCubeList.setScale(2, 0.5,0.5,0.5);
@@ -135,7 +125,7 @@ int main(int argc, char** argv) {
     myCubeList.setTrans(1, 0, 0, 0);
     myCubeList.setTrans(2, 0.0, 1.0,-1.0);*/
 
-/*    Eigen::MatrixXd points(3,3);
+    Eigen::MatrixXd points(3,3);
     points << 0,-40,5,
               -10,-40,0,
               10,-40,0;
@@ -143,7 +133,7 @@ int main(int argc, char** argv) {
         myCubeList.addCube(Cube());
         std::cout << "Size ! " << myCubeList.getSize() << std::endl;
         myCubeList.setTrans(i+1, points(i,0), points(i,2), points(i,1));
-        myCubeList.setTextureIndex(i+1, 0);
+        myCubeList.setTextureIndex(i+1, 2);
 
     }
     for(int i=0; i<19; i++){
@@ -156,12 +146,12 @@ int main(int argc, char** argv) {
         myCubeList.setTrans(myCubeList.getSize()-1, x, newPoint, y);
         myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
     }
-    */
+    
 
 
 
     /** Array of Textures **/
-    uint nbOfTextures = 2;
+    uint nbOfTextures = 3;
     std::vector<Texture> textures(nbOfTextures);
 
      /** Loading shaders **/
@@ -192,11 +182,6 @@ int main(int argc, char** argv) {
         textures[i].setUniformLocation(program, (GLchar*)pchar);
     }
 
-    // Enable depth test
-    glEnable(GL_DEPTH_TEST);
-    // Accept fragment if it closer to the camera than the former one
-    glDepthFunc(GL_LESS);
-
   
 
     /** Création VBO **/
@@ -211,19 +196,26 @@ int main(int argc, char** argv) {
         glBufferData(GL_ARRAY_BUFFER, myCubeList.getVertexCount(i)*sizeof(Vertex3DTexture), myCubeList.getDataPointer(i), GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, vboList.back());
     }
+    // Generate 1 buffer, put the resulting identifier in vertexbuffer
+    glGenBuffers(1, &vboList[vboList.size()]);
+    // The following commands will talk about our 'vertexbuffer' buffer
+    glBindBuffer(GL_ARRAY_BUFFER, vboList[vboList.size()]);
+    // Send data to CG
+    glBufferData(GL_ARRAY_BUFFER, cube.getVertexCount()*sizeof(Vertex3DTexture), cube.getDataPointer(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, vboList.back());
+
 
 
 
 
 
     /** Loading textures **/
-    textures[0].setImage("../GLImac-Template/assets/textures/brique.png");
+    textures[0].setImage("../GLImac-Template/assets/textures/rouge.png");
     textures[1].setImage("../GLImac-Template/assets/textures/herbe.png");
-    // Link cubes with textures
+    textures[2].setImage("../GLImac-Template/assets/textures/brique.png");
 
-    myCubeList.setTextureIndex(0, 0);
-    myCubeList.setTextureIndex(1, 1);
-    myCubeList.setTextureIndex(2, 1);
+    // Link cubes with textures
+    cube.setTextureIndex(0);
 
     //myCubeList.setTextureIndex(0, 0);
     //myCubeList.setTextureIndex(1, 1);
@@ -270,6 +262,20 @@ int main(int argc, char** argv) {
         glVertexAttribPointer(VERTEX_ATTR_TEXTURE,2,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, texture));
 
     }
+    glGenVertexArrays(1, &vaoList[vaoList.size()]);
+    // VAO Binding
+    glBindVertexArray(vaoList[vaoList.size()]);
+    glBindBuffer(GL_ARRAY_BUFFER, vboList[vaoList.size()]);
+    // 1st attribute buffer : position
+    glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
+    glVertexAttribPointer(VERTEX_ATTR_POSITION,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, position));
+    // 2nd attribute buffer : normal
+    glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
+    glVertexAttribPointer(VERTEX_ATTR_NORMAL,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, normal));
+    // 23rd attribute buffer : texture
+    glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
+    glVertexAttribPointer(VERTEX_ATTR_TEXTURE,2,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, texture));
+
 
 
      /** IBO creation **/
@@ -279,6 +285,10 @@ int main(int argc, char** argv) {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[i]);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, myCubeList.getIBOCount(i)*sizeof(uint32_t), myCubeList.getIBOPointer(i), GL_STATIC_DRAW);
      }
+     glGenBuffers(1, &iboList[iboList.size()]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[iboList.size()]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, cube.getIBOCountBorder()*sizeof(uint32_t), cube.getIBOPointerBorder(), GL_STATIC_DRAW);
+
 
     glBindVertexArray(0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -297,6 +307,7 @@ int main(int argc, char** argv) {
     bool done = false;
     while(!done) {
         Controls c;
+        Cursor cursor;
         // Event loop:
         SDL_Event e;
         while(windowManager.pollEvent(e)) {
@@ -304,7 +315,7 @@ int main(int argc, char** argv) {
             if(e.type == SDL_QUIT) {
                 done = true; // Leave the loop after this iteration
             }
-        }
+        
 
         // feed inputs to dear imgui, start new frame
         ImGui_ImplOpenGL3_NewFrame();
@@ -312,7 +323,7 @@ int main(int argc, char** argv) {
         ImGui::NewFrame();
 
          /*** CAMERA ***/
-        c.computeMatricesFromInputs(windowWidth,windowHeight,e);
+        //c.computeMatricesFromInputs(windowWidth,windowHeight,e);
         const glm::mat4 ProjectionMatrix = c.getProjectionMatrix();
         const glm::mat4 ViewMatrix = c.getViewMatrix();
 
@@ -340,6 +351,10 @@ int main(int argc, char** argv) {
 
 
 
+        /// Cursor move
+        
+        cube = cursor.translateCursor(e, cube);
+
         glm::mat4 ModelMatrix = glm::mat4();
         glm::mat4 NormalMatrix = glm::transpose(glm::inverse(ViewMatrix * ModelMatrix));
 
@@ -349,6 +364,11 @@ int main(int argc, char** argv) {
 
 
 
+
+        // Enable depth test
+        glEnable(GL_DEPTH_TEST);
+        // Accept fragment if it closer to the camera than the former one
+        glDepthFunc(GL_LESS);
 
         /** Draw cube list **/
         int currentTexture = myCubeList.getTextureIndex(0);
@@ -386,6 +406,25 @@ int main(int argc, char** argv) {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[myCubeList.getCubeIndex(i)]);
             glDrawElements(GL_TRIANGLES, myCubeList.getIBOCount(i), GL_UNSIGNED_INT, (void *)0);
         }
+            
+        glDisable(GL_DEPTH_TEST);
+
+        glBindVertexArray(vaoList[vaoList.size()]);
+
+        glBindTexture(GL_TEXTURE_2D, textures[cube.getTextureIndex()].getTexture()); // la texture est bindée sur l'unité GL_TEXTURE0
+        glUniform1i(textures[cube.getTextureIndex()].getUniformLocation(), 0);
+        // Transform
+        ModelMatrix = glm::scale(glm::mat4(1.0f), cube.getScale());
+        //Model = glm::translate(Model, myCubeList.getTrans(myCubeList.getCubeIndex(i)));
+        ModelMatrix = glm::rotate(ModelMatrix, cube.getRotDeg(), cube.getRot());
+        ModelMatrix = glm::translate(ModelMatrix, cube.getTrans());
+        // Our ModelViewProjection : multiplication of our 3 matrices
+        glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjectionMatrix * ViewMatrix * ModelMatrix)); //Model View Projection
+
+        // Draw cube
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[iboList.size()]);
+        glLineWidth(5.0);
+        glDrawElements(GL_LINES, cube.getIBOCountBorder(), GL_UNSIGNED_INT, (void *)0);
 
 
         glBindVertexArray(0);
@@ -398,6 +437,7 @@ int main(int argc, char** argv) {
 
         // Update the display
         windowManager.swapBuffers();
+        }
     }
 
     ImGui_ImplOpenGL3_Shutdown();
