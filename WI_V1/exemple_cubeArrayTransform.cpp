@@ -47,9 +47,9 @@ int main(int argc, char** argv) {
 
     /** Create cube list **/
     CubeList myCubeList;
-    myCubeList.addCube(Cube(1));
-    myCubeList.addCube(Cube(0.5));
-    myCubeList.addCube(Cube(0.5));
+    myCubeList.addCube(Cube());
+    myCubeList.addCube(Cube());
+    myCubeList.addCube(Cube());
     myCubeList.setScale(2, 0.5,0.5,0.5);
     myCubeList.setScale(0, 1.0,1.0,1.0);
     myCubeList.setScale(1, 0.5,0.5,0.5);

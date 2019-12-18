@@ -48,9 +48,9 @@ int main(int argc, char** argv) {
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
 
     /** Apel de la classe **/
-    Cube MyCube(1);
-    Cube MyCube2(0.5);
-    Cube MyCube3(0.5);
+    Cube MyCube;
+    Cube MyCube2;
+    Cube MyCube3;
     MyCube3.translateVertices(0.0,2.0,-2.0);
     MyCube.translateVertices(0.0,0.0,-2.0);
     MyCube2.translateVertices(0.0,0.0,0.0);
