@@ -15,6 +15,7 @@ public:
 
     // Constructeur: alloue le tableau de données et construit les attributs des vertex
     Cube();
+    ~Cube(){};
     Cube(GLfloat edge):
         m_nVertexCount(0) {
         build(edge); // Construction (voir le .cpp)
@@ -41,6 +42,17 @@ public:
     // Renvoit le pointeur vers les données
     const uint32_t* getIBOPointer() const {
         return &m_Index[0];
+    }
+
+
+    // Renvoit le nombre de vertex
+    GLsizei getIBOCountBorder() const {
+        return m_IndexBorder.size();
+    }
+
+    // Renvoit le pointeur vers les données
+    const uint32_t* getIBOPointerBorder() const {
+        return &m_IndexBorder[0];
     }
 
     void translateVertices(GLfloat tx, GLfloat ty, GLfloat tz);
@@ -80,6 +92,7 @@ public:
 
     // Translate
     void setTrans(GLfloat x, GLfloat y, GLfloat z);
+    
     glm::vec3 getTrans(){
         return m_trans;
     };
@@ -88,6 +101,7 @@ private:
     std::vector<Vertex3DTexture> m_Vertices;
     GLsizei m_nVertexCount; // Nombre de sommets
     std::vector<uint32_t> m_Index; // indices ibo
+    std::vector<uint32_t> m_IndexBorder; // indices ibo
     GLfloat m_edge; // à voir si on ne peut pas plutôt stocker une matrice sur laquelle appliquer des transformations puis une fonction pour faire le liens entre cette matrice et les vertices...
 
     GLuint m_textureIndex;
