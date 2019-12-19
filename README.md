@@ -64,7 +64,7 @@ Explain how to run the automated tests for this system
 ## Acknowledgments
 
 * An IMAC Project
-Special thanks to Pierre Thiel for his help on this project
+* Special thanks to Pierre Thiel for his help on this project
 ```
 while(project!=done){
     //live(); --> don't
