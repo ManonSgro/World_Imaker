@@ -51,8 +51,13 @@ namespace glimac {
     // Erase a cube at index "index" if exists
     void CubeList::deleteCube(int index){
         if(index<=m_cubeList.size()){
-            m_cubeList.erase(m_cubeList.begin()+index-1);
+            m_cubeList.erase(m_cubeList.begin()+index);
+            std::cout<< "Erase cube " << index <<std::endl;
         }
+        for(int i=0;i<m_cubeList.size();i++){
+            m_cubeList[i].setCubeIndex(i);
+        }
+
         
     }
 
