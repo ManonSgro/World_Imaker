@@ -64,3 +64,19 @@ Explain how to run the automated tests for this system
 ## Acknowledgments
 
 * An IMAC Project
+Special thanks to Pierre Thiel for his help on this project
+```
+while(project!=done){
+    //live(); --> don't
+    for(int time = 0; time < infinity; time++){
+        code();
+    }
+    if(bug){
+        pierreThiel(); // important call
+        sayThanks(pierre);
+        sayThanks(pierre); // again
+        project = done;
+    }
+}
+sleep();
+```
