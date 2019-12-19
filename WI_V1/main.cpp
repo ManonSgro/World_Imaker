@@ -151,7 +151,8 @@ int main(int argc, char** argv) {
     GLint uShininess = glGetUniformLocation(program.getGLId(), "uShininess");
     GLint uLightPos_vs = glGetUniformLocation(program.getGLId(), "uLightPos_vs");
     GLint uLightDir_vs = glGetUniformLocation(program.getGLId(), "uLightDir_vs");
-    GLint uLightIntensity = glGetUniformLocation(program.getGLId(), "uLightIntensity");
+    GLint uLightIntensityP = glGetUniformLocation(program.getGLId(), "uLightIntensityP");
+    GLint uLightIntensityD = glGetUniformLocation(program.getGLId(), "uLightIntensityD");
     
 
     for(int i=0; i<textures.size(); i++){
@@ -289,11 +290,13 @@ int main(int argc, char** argv) {
     // Application loop:
     bool done = false;
     int currentActive = -1;
+    int item_LightP = 0;
+    int item_LightD = 0;
     while(!done) {
         Controls c;
-        Cursor cursor2;
         bool addCube = false;
         bool deleteCube = false;
+
         // Event loop:
         SDL_Event e;
         while(windowManager.pollEvent(e)) {
@@ -342,23 +345,31 @@ int main(int argc, char** argv) {
             ImGui::SetWindowSize(ImVec2(menuWidth,windowHeight+menuWidth));
             ImGui::Text("X :");
             int xCursor = cursor.getTrans().x;
-            ImGui::InputInt("", &xCursor);
+            ImGui::InputInt("x", &xCursor);
             ImGui::Text("Y :");
             int yCursor = cursor.getTrans().y;
-            ImGui::InputInt("", &yCursor);
+            ImGui::InputInt("y", &yCursor);
             ImGui::Text("Z :");
             int zCursor = cursor.getTrans().z;
-            ImGui::InputInt("", &zCursor);
+            ImGui::InputInt("z", &zCursor);
+
+
+
+            const char* itemsLight[] = { "On", "Off"};
+            ImGui::Text("Lumiere directionnelle :");
+            ImGui::Combo("D", &item_LightD, itemsLight, IM_ARRAYSIZE(itemsLight));
+
+            ImGui::Text("Lumiere ponctuelle :");
+            ImGui::Combo("P", &item_LightP, itemsLight, IM_ARRAYSIZE(itemsLight));
+
+
             ImGui::End();
 
 
             ImGui::Begin("CUBE settings", NULL);
             int selectedCube = currentActive;
             ImGui::Text("Selected cube :");
-            ImGui::InputInt("", &selectedCube);
-            xCursor = myCubeList.getTrans(selectedCube).x;
-            yCursor = myCubeList.getTrans(selectedCube).y;
-            zCursor = myCubeList.getTrans(selectedCube).z;
+            ImGui::InputInt("text", &selectedCube);
             const char* itemsTextures[] = { "Herbe", "Brique"};
             int item_currentTexture = myCubeList.getTextureIndex(selectedCube)-1;
             ImGui::Text("Texture:");
@@ -421,22 +432,32 @@ int main(int argc, char** argv) {
             glUniform3f(uKd, 0.6, 0.6, 0.6); //Couleur des boules
             glUniform3f(uKs, 0, 0.0, 0.0);
             glUniform1f(uShininess, 32.0);
-            //glm::vec4 LightPos = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
-            //glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
+            glm::vec4 LightPos = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
+            glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
             glm::vec4 LightDir = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
             glUniform3f(uLightDir_vs, LightDir.x, LightDir.y, LightDir.z);
-            glUniform3f(uLightIntensity, 2.0, 2.0, 2.0);
+            if (item_LightD == 0){
+                glUniform3f(uLightIntensityD, 2.0, 2.0, 2.0);   
+            }
+            else {
+                glUniform3f(uLightIntensityD, 0.0, 0.0, 0.0);
+            }
+            if (item_LightP == 0){
+                glUniform3f(uLightIntensityP, 2.0, 2.0, 2.0);   
+            }
+            else {
+                glUniform3f(uLightIntensityP, 0.0, 0.0, 0.0);
+            }
 
 
             /// Cursor move
-            
             cursor.setTrans(xCursor, yCursor, zCursor);
             xCursor = cursor.getTrans().x;
             yCursor = cursor.getTrans().y;
             zCursor = cursor.getTrans().z;
 
 
-            glm::mat4 ModelMatrix = glm::mat4();
+            glm::mat4 ModelMatrix = glm::mat4(1.0f);
             glm::mat4 NormalMatrix = glm::transpose(glm::inverse(ViewMatrix * ModelMatrix));
 
             glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjectionMatrix * ViewMatrix * ModelMatrix)); //Model View Projection
@@ -457,10 +478,10 @@ int main(int argc, char** argv) {
             glBindTexture(GL_TEXTURE_2D, textures[myCubeList.getTextureIndex(0)].getTexture()); // la texture est bindée sur l'unité GL_TEXTURE0
             glUniform1i(textures[myCubeList.getTextureIndex(0)].getUniformLocation(), 0);
             // Active first MVP
-            ModelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f));
-            ModelMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(0.0f), glm::vec3(0.0f,0.0f,0.0f));
-            ModelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f));
-            glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjectionMatrix * ViewMatrix * ModelMatrix)); //Model View Projection
+            // ModelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f));
+            // ModelMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(0.0f), glm::vec3(0.0f,0.0f,0.0f));
+            // ModelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f));
+            // glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjectionMatrix * ViewMatrix * ModelMatrix)); //Model View Projection
             
             currentActive = -1;
             for(int i=0; i<myCubeList.getSize(); i++){
@@ -483,6 +504,8 @@ int main(int argc, char** argv) {
                 ModelMatrix = glm::translate(ModelMatrix, myCubeList.getTrans(myCubeList.getCubeIndex(i)));
                 // Our ModelViewProjection : multiplication of our 3 matrices
                 glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjectionMatrix * ViewMatrix * ModelMatrix)); //Model View Projection
+                glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr( ViewMatrix * ModelMatrix)); //Model View Projection
+                glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(ViewMatrix * ModelMatrix)))); //Model View Projection
 
                 // Draw cube
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[myCubeList.getCubeIndex(i)+1]);
@@ -514,10 +537,6 @@ int main(int argc, char** argv) {
             glBindVertexArray(0);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, 0);
-            
-
-
-            // Render dear imgui into screen
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
