@@ -6,6 +6,58 @@
 
 namespace glimac {
 
+Controls::Controls(){
+    // Initial position : on +Z
+    position = glm::vec3(0,0,5);
+    // Initial horizontal angle : toward -Z
+    horizontalAngle = 3.14f;
+    // Initial vertical angle : none
+    verticalAngle = 0.0f;
+    // Initial Field of View
+    initialFoV = 45.0f;
+
+    speed = 0.05f; // 3 units / second
+
+    // Direction : Spherical coordinates to Cartesian coordinates conversion
+	direction = glm::vec3 (
+		cos(verticalAngle) * sin(horizontalAngle),
+		sin(verticalAngle),
+		cos(verticalAngle) * cos(horizontalAngle)
+	);
+
+	// Right vector
+	right = glm::vec3(
+		sin(horizontalAngle - 3.14f/2.0f),
+		0,
+		cos(horizontalAngle - 3.14f/2.0f)
+	);
+
+	// Up vector
+    up = glm::cross( right, direction );
+}
+
+Controls::~Controls(){}
+
+void Controls::calculateVectors(){
+    
+    // Direction : Spherical coordinates to Cartesian coordinates conversion
+	direction = glm::vec3 (
+		cos(verticalAngle) * sin(horizontalAngle),
+		sin(verticalAngle),
+		cos(verticalAngle) * cos(horizontalAngle)
+	);
+
+	// Right vector
+	right = glm::vec3(
+		sin(horizontalAngle - 3.14f/2.0f),
+		0,
+		cos(horizontalAngle - 3.14f/2.0f)
+	);
+
+	// Up vector
+    up = glm::cross( right, direction );
+}
+
 glm::mat4 Controls::getViewMatrix(){
 	return this->ViewMatrix;
 }
@@ -13,80 +65,52 @@ glm::mat4 Controls::getProjectionMatrix(){
 	return this->ProjectionMatrix;
 }
 
+glm::vec3 Controls::getPosition(){
+    return position;
+}
+void Controls::setPosition(glm::vec3 newPos){
+    position = newPos;
+}
+float Controls::getHorizontalAngle(){
+    return horizontalAngle;
+}
+void Controls::setHorizontalAngle(float newAngle){
+    horizontalAngle = newAngle;
+}
+float Controls::getVerticalAngle(){
+    return verticalAngle;
+}
+void Controls::setVerticalAngle(float newAngle){
+    verticalAngle = newAngle;
+}
+glm::vec3 Controls::getUp(){
+    return up;
+}
+void Controls::setUp(glm::vec3 newVec){
+    up = newVec;
+}
+float Controls::getSpeed(){
+    return speed;
+}
+void Controls::setSpeed(float newSpeed){
+    speed = newSpeed;
+}
+glm::vec3 Controls::getRight(){
+    return right;
+}
+void Controls::setRight(glm::vec3 newRight){
+    right = newRight;
+}
+glm::vec3 Controls::getDirection(){
+    return direction;
+}
+void Controls::setDirection(glm::vec3 newDirection){
+    direction = newDirection;
+}
 
+void Controls::computeMatricesFromInputs(float wW, float wH){
 
-
-// Initial position : on +Z
-glm::vec3 position = glm::vec3(0,0,5);
-// Initial horizontal angle : toward -Z
-float horizontalAngle = 3.14f;
-// Initial vertical angle : none
-float verticalAngle = 0.0f;
-// Initial Field of View
-float initialFoV = 45.0f;
-
-float speed = 0.05f; // 3 units / second
-
-void Controls::computeMatricesFromInputs(float wW, float wH, SDL_Event e){
-    int posX = e.button.x;
-    int posY = e.button.y;
-
-	// Direction : Spherical coordinates to Cartesian coordinates conversion
-	glm::vec3 direction(
-		cos(verticalAngle) * sin(horizontalAngle),
-		sin(verticalAngle),
-		cos(verticalAngle) * cos(horizontalAngle)
-	);
-
-	// Right vector
-	glm::vec3 right = glm::vec3(
-		sin(horizontalAngle - 3.14f/2.0f),
-		0,
-		cos(horizontalAngle - 3.14f/2.0f)
-	);
-
-	// Up vector
-    glm::vec3 up = glm::cross( right, direction );
-
-    // Move
-    if (e.type == SDL_KEYDOWN){
-        if (e.key.keysym.sym == SDLK_KP_8){
-            position += up * speed;
-        }
-        if (e.key.keysym.sym == SDLK_KP_2){
-            position -= up * speed;
-        }
-        if (e.key.keysym.sym == SDLK_KP_6){
-            position += right * speed;
-        }
-        if (e.key.keysym.sym == SDLK_KP_4){
-            position -= right * speed;
-        }
-        if (e.key.keysym.sym == SDLK_KP_PLUS){
-            position += direction * speed;
-        }
-        if (e.key.keysym.sym == SDLK_KP_MINUS){
-            position -= direction * speed;
-        }
-        if (e.key.keysym.sym == SDLK_KP_9){
-            horizontalAngle += speed;
-        }
-        if (e.key.keysym.sym == SDLK_KP_7){
-            horizontalAngle -= speed;
-        }
-        if (e.key.keysym.sym == SDLK_KP_3){
-            verticalAngle += speed;
-        }
-        if (e.key.keysym.sym == SDLK_KP_1){
-            verticalAngle -= speed;
-        }
-        if (e.key.keysym.sym == SDLK_KP_5){
-            position = glm::vec3(0,0,5);
-            horizontalAngle = 3.14f;
-            verticalAngle = 0.0f;
-        }
-    }
-
+	
     float FoV = initialFoV;//  * MouseWheel();
 
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units

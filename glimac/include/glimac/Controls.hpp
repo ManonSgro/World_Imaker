@@ -15,16 +15,48 @@ namespace glimac {
 class Controls {
 
 public:
-    Controls(){};
-    ~Controls(){};
-    void computeMatricesFromInputs(float wW, float wH, SDL_Event e);
+    Controls();
+    ~Controls();
+    void calculateVectors();
+    void computeMatricesFromInputs(float wW, float wH);
     glm::mat4 getViewMatrix();
     glm::mat4 getProjectionMatrix();
+
+    glm::vec3 getPosition();
+    void setPosition(glm::vec3 newPos);
+    float getHorizontalAngle();
+    void setHorizontalAngle(float newAngle);
+    float getVerticalAngle();
+    void setVerticalAngle(float newAngle);
+    glm::vec3 getUp();
+    void setUp(glm::vec3 newVec);
+    float getSpeed();
+    void setSpeed(float newSpeed);
+    glm::vec3 getRight();
+    void setRight(glm::vec3 newRight);
+    glm::vec3 getDirection();
+    void setDirection(glm::vec3 newDirection);
 
 
 private :
     glm::mat4 ViewMatrix;
     glm::mat4 ProjectionMatrix;
+
+    glm::vec3 position;
+    float horizontalAngle;
+    float verticalAngle;
+    float initialFoV;
+
+    float speed;
+
+    // Direction : Spherical coordinates to Cartesian coordinates conversion
+	glm::vec3 direction;
+
+	// Right vector
+	glm::vec3 right;
+
+	// Up vector
+    glm::vec3 up;
 };
 
 

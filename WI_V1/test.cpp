@@ -139,7 +139,7 @@ int main(int argc, char** argv) {
         Controls c;
         float windowWidth = 800.0f;
         float windowHeight = 800.0f;
-        c.computeMatricesFromInputs(windowWidth,windowHeight,e);
+        c.computeMatricesFromInputs(windowWidth,windowHeight);
         glm::mat4 ProjectionMatrix = c.getProjectionMatrix();
         ViewMatrix = c.getViewMatrix();
         glm::mat4 ModelMatrix = glm::mat4(1.0);
