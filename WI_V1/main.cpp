@@ -1,6 +1,7 @@
 #include <glimac/SDLWindowManager.hpp>
 #include <GL/glew.h>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <glimac/Program.hpp>
 #include <glimac/FilePath.hpp>
@@ -62,18 +63,47 @@ int main(int argc, char** argv) {
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
 
+    /** READ FILE **/
+    //int sum = 0;
+    std::vector<int> file;
+    int x;
+    std::ifstream inFile;
+    
+    inFile.open("../sauv/sauv1.txt");
+    if (!inFile) {
+        std::cout << "Unable to open file";
+        exit(1); // terminate with error
+    }
+    
+    while (inFile >> x) {
+        file.push_back(x);
+    }
+    
+    inFile.close();
+    std::cout << "Loading... " << file.size()/5 << "...cubes" << std::endl; 
 
     CubeList myCubeList;
-    myCubeList.addCube(Cube());
+    for(int i=0; i<file.size(); i+=5){
+        myCubeList.addCube(Cube());
+        myCubeList.setTrans(file[i], file[i+1],file[i+2],file[i+3]);
+        myCubeList.setTextureIndex(file[i], file[i+4]);
+    }
+    /*myCubeList.addCube(Cube());
     myCubeList.addCube(Cube());
     myCubeList.addCube(Cube());
     myCubeList.setTrans(0, 0,0,0);
     myCubeList.setTrans(1, 1,0,0);
     myCubeList.setTrans(2, -1,0,0);
 
+    // Link cubes with textures
+    myCubeList.setTextureIndex(0, 1);
+    myCubeList.setTextureIndex(1, 1);
+    myCubeList.setTextureIndex(2, 1);
+
     /** Initialize cursor **/
     Cube cursor;
     cursor.setTrans(myCubeList.getTrans(0).x,myCubeList.getTrans(0).y,myCubeList.getTrans(0).z);
+    cursor.setTextureIndex(0);
 
 
 
@@ -192,11 +222,6 @@ int main(int argc, char** argv) {
     textures[0].setImage("../GLImac-Template/assets/textures/rouge.png");
     textures[1].setImage("../GLImac-Template/assets/textures/herbe.png");
     textures[2].setImage("../GLImac-Template/assets/textures/brique.png");
-    // Link cubes with textures
-    cursor.setTextureIndex(0);
-    myCubeList.setTextureIndex(0, 1);
-    myCubeList.setTextureIndex(1, 1);
-    myCubeList.setTextureIndex(2, 1);
     
     
 
@@ -290,11 +315,17 @@ int main(int argc, char** argv) {
     // Application loop:
     bool done = false;
     int currentActive = -1;
+
     int item_LightP = 0;
     int item_LightD = 0;
     std::vector<glm::vec4> ponctualLightList;
     ponctualLightList.push_back(glm::vec4(1.0, 1.0, 1.0, 1));
     ponctualLightList.push_back(glm::vec4(-1.0, 1.0, 1.0, 1));
+
+    bool thereIsACubeAbove = false;
+    bool thereIsACubeUnder = false;
+    static char filePath[128] = "../sauv/autoSave.txt";
+
     while(!done) {
         Controls c;
         bool addCube = false;
@@ -346,9 +377,10 @@ int main(int argc, char** argv) {
             ImGui::Begin("CURSOR settings", NULL, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove);
             ImGui::SetWindowPos(ImVec2(windowWidth,0), true);
             ImGui::SetWindowSize(ImVec2(menuWidth,windowHeight+menuWidth));
-            ImGui::Text("X :");
+            ImGui::Text("Coordinates :");
             int xCursor = cursor.getTrans().x;
             ImGui::InputInt("x", &xCursor);
+
             ImGui::Text("Y :");
             int yCursor = cursor.getTrans().y;
             ImGui::InputInt("y", &yCursor);
@@ -369,19 +401,96 @@ int main(int argc, char** argv) {
             ImGui::End();
 
 
+            ImGui::Begin("FILE settings", NULL, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove);
+            ImGui::SetWindowPos(ImVec2(windowWidth,0), true);
+            ImGui::SetWindowSize(ImVec2(menuWidth,windowHeight+menuWidth));
+            ImGui::Text("File path :");
+            ImGui::InputText("Path", filePath, IM_ARRAYSIZE(filePath));
+            if(ImGui::Button("Save")){
+                std::ofstream autoSauv;
+                autoSauv.open (filePath);
+                for(int i=0; i<myCubeList.getSize(); i++){
+                    autoSauv << std::to_string(myCubeList.getCubeIndex(i))+" "
+                    +std::to_string((int)myCubeList.getTrans(i).x)+" "
+                    +std::to_string((int)myCubeList.getTrans(i).y)+" "
+                    +std::to_string((int)myCubeList.getTrans(i).z)+" "
+                    +std::to_string(myCubeList.getTextureIndex(i))+" "+"\n";
+                }
+                autoSauv.close();
+            }
+            ImGui::End();
+
+
             ImGui::Begin("CUBE settings", NULL);
             int selectedCube = currentActive;
             ImGui::Text("Selected cube :");
+
             ImGui::InputInt("text", &selectedCube);
             const char* itemsTextures[] = { "Herbe", "Brique"};
+
             int item_currentTexture = myCubeList.getTextureIndex(selectedCube)-1;
             ImGui::Text("Texture:");
-            ImGui::Combo("", &item_currentTexture, itemsTextures, IM_ARRAYSIZE(itemsTextures));
+            ImGui::Combo("Texture", &item_currentTexture, itemsTextures, IM_ARRAYSIZE(itemsTextures));
             if(selectedCube == -1){
                 addCube = ImGui::Button("Add cube");
             }else{
                 deleteCube = ImGui::Button("Delete cube");
             }
+            ImGui::Text("Modify cube :");
+            if(ImGui::Button("Extrude")){
+                if(selectedCube!=-1 && !thereIsACubeAbove){
+                    yCursor++;
+                    myCubeList.addCube(Cube());
+                    myCubeList.setTrans(myCubeList.getSize()-1, xCursor, yCursor, zCursor);
+                    myCubeList.setTextureIndex(myCubeList.getSize()-1, item_currentTexture+1);
+                    currentActive = myCubeList.getSize()-1;
+
+                    // VBO
+                    vboList.resize(vboList.size()+1);
+                    glGenBuffers(1, &vboList[vboList.size()-1]);
+                    glBindBuffer(GL_ARRAY_BUFFER, vboList[vboList.size()-1]);
+                    glBufferData(GL_ARRAY_BUFFER, myCubeList.getVertexCount(myCubeList.getSize()-1)*sizeof(Vertex3DTexture), myCubeList.getDataPointer(myCubeList.getSize()-1), GL_STATIC_DRAW);
+                    glBindBuffer(GL_ARRAY_BUFFER, vboList.back());
+
+                    //VAO
+                    vaoList.resize(vaoList.size()+1);
+                    glGenVertexArrays(1, &vaoList[vaoList.size()-1]);
+                    glBindVertexArray(vaoList[vaoList.size()-1]);
+                    glBindBuffer(GL_ARRAY_BUFFER, vboList[vaoList.size()-1]);
+                    glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
+                    glVertexAttribPointer(VERTEX_ATTR_POSITION,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, position));
+                    glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
+                    glVertexAttribPointer(VERTEX_ATTR_NORMAL,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, normal));
+                    glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
+                    glVertexAttribPointer(VERTEX_ATTR_TEXTURE,2,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, texture));
+
+                    //IBO
+                    iboList.resize(iboList.size()+1);
+                    glGenBuffers(1, &iboList[iboList.size()-1]);
+                    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[iboList.size()-1]);
+                    glBufferData(GL_ELEMENT_ARRAY_BUFFER, myCubeList.getIBOCount(myCubeList.getSize()-1)*sizeof(uint32_t), myCubeList.getIBOPointer(myCubeList.getSize()-1), GL_STATIC_DRAW);
+
+                }else{
+                    std::cout << "[ERROR] Cannot extrude a non-cube or cube with no space above!" << std::endl;
+                }
+            };
+            if(ImGui::Button("Dig")){
+                if(selectedCube!=-1 && thereIsACubeUnder && !thereIsACubeAbove){
+                    myCubeList.deleteCube(selectedCube);
+                    // VBO
+                    if(selectedCube<=vboList.size()+1){
+                        glDeleteBuffers(1, &iboList[selectedCube+1]);
+                        iboList.erase(iboList.begin()+selectedCube+1);
+                        glDeleteVertexArrays(1, &vaoList[selectedCube+1]);
+                        vaoList.erase(vaoList.begin()+selectedCube+1);
+                        glDeleteBuffers(1, &vboList[selectedCube+1]);
+                        vboList.erase(vboList.begin()+selectedCube+1);
+                    }
+                    yCursor--;
+                }else{
+                    std::cout << "[ERROR] Cannot dig a non-cube or cube that is not above a column!" << std::endl;
+                }
+            };
             ImGui::End();
             myCubeList.setTextureIndex(selectedCube, item_currentTexture+1);
 
@@ -463,9 +572,9 @@ int main(int argc, char** argv) {
 
             /// Cursor move
             cursor.setTrans(xCursor, yCursor, zCursor);
-            xCursor = cursor.getTrans().x;
+            /*xCursor = cursor.getTrans().x;
             yCursor = cursor.getTrans().y;
-            zCursor = cursor.getTrans().z;
+            zCursor = cursor.getTrans().z;*/
 
 
             glm::mat4 ModelMatrix = glm::mat4(1.0f);
@@ -495,9 +604,17 @@ int main(int argc, char** argv) {
             // glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjectionMatrix * ViewMatrix * ModelMatrix)); //Model View Projection
             
             currentActive = -1;
+            thereIsACubeAbove = false;
+            thereIsACubeUnder = false;
             for(int i=0; i<myCubeList.getSize(); i++){
                 if ((myCubeList.getTrans(i).x == cursor.getTrans().x) && (myCubeList.getTrans(i).y == cursor.getTrans().y) && (myCubeList.getTrans(i).z == cursor.getTrans().z)){
                     currentActive = myCubeList.getCubeIndex(i);
+                }
+                if ((myCubeList.getTrans(i).x == cursor.getTrans().x) && (myCubeList.getTrans(i).y == cursor.getTrans().y+1) && (myCubeList.getTrans(i).z == cursor.getTrans().z)){
+                    thereIsACubeAbove = true;
+                }
+                if ((myCubeList.getTrans(i).x == cursor.getTrans().x) && (myCubeList.getTrans(i).y == cursor.getTrans().y-1) && (myCubeList.getTrans(i).z == cursor.getTrans().z)){
+                    thereIsACubeUnder = true;
                 }
                 if(currentTexture != myCubeList.getTextureIndex(i)){
                     currentTexture = myCubeList.getTextureIndex(i);
