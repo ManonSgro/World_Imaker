@@ -43,9 +43,13 @@ int main(int argc, char** argv) {
     cubeList.push_back(Cube());
     cubeList.push_back(Cube());
     cubeList.push_back(Cube());
-    cubeList[1].translateVertices(0.0,2.0,-2.0);
-    cubeList[0].translateVertices(0.0,0.0,-2.0);
-    cubeList[2].translateVertices(0.0,0.0,0.0);
+    // cubeList[1].translateVertices(0.0,2.0,-2.0);
+    // cubeList[0].translateVertices(0.0,0.0,-2.0);
+    // cubeList[2].translateVertices(0.0,0.0,0.0);
+    cubeList[1].setTrans(0,2,-2);
+    cubeList[0].setTrans(0,0,-2);
+    cubeList[2].setTrans(0,0,0);
+    
 
 
     /** Array of Textures **/
@@ -56,7 +60,7 @@ int main(int argc, char** argv) {
     FilePath applicationPath(argv[0]);
     Program program = loadProgram(
         applicationPath.dirPath() + "shaders/cubeLight.vs.glsl",
-        applicationPath.dirPath() + "shaders/cubeGeneralLight.fs.glsl"
+        applicationPath.dirPath() + "shaders/cubeLightPoint.fs.glsl"
     );
     program.use();
 
@@ -70,7 +74,6 @@ int main(int argc, char** argv) {
     GLint uKs = glGetUniformLocation(program.getGLId(), "uKs");
     GLint uShininess = glGetUniformLocation(program.getGLId(), "uShininess");
     GLint uLightPos_vs = glGetUniformLocation(program.getGLId(), "uLightPos_vs");
-    GLint uLightDir_vs = glGetUniformLocation(program.getGLId(), "uLightDir_vs");
     GLint uLightIntensity = glGetUniformLocation(program.getGLId(), "uLightIntensity");
 
     for(int i=0; i<textures.size(); i++){
@@ -168,11 +171,12 @@ int main(int argc, char** argv) {
     // Application loop:
     bool done = false;
     while(!done) {
-        Controls c;
+
         // Event loop:
+        Controls c;
         SDL_Event e;
         while(windowManager.pollEvent(e)) {
-            c.computeMatricesFromInputs(windowWidth,windowHeight);
+            c.computeMatricesFromInputs(windowWidth,windowHeight,e);
             if(e.type == SDL_QUIT) {
                 done = true; // Leave the loop after this iteration
             }
@@ -180,7 +184,7 @@ int main(int argc, char** argv) {
 
 
         /*** CAMERA ***/
-        c.computeMatricesFromInputs(windowWidth,windowHeight);
+        c.computeMatricesFromInputs(windowWidth,windowHeight,e);
         const glm::mat4 ProjectionMatrix = c.getProjectionMatrix();
         const glm::mat4 ViewMatrix = c.getViewMatrix();
 
@@ -192,8 +196,6 @@ int main(int argc, char** argv) {
         glUniform1f(uShininess, 32.0);
         glm::vec4 LightPos = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
         glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
-        //glm::vec4 LightDir = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
-        //glUniform3f(uLightDir_vs, LightDir.x, LightDir.y, LightDir.z);
         glUniform3f(uLightIntensity, 2.0, 2.0, 2.0);
 
 
@@ -212,6 +214,7 @@ int main(int argc, char** argv) {
             glUniform1i(textures[cubeList[i].getTextureIndex()].getUniformLocation(), 0);
 
             glBindVertexArray(vaoList[i]);
+            
 
             // Draw cube
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[i]);
