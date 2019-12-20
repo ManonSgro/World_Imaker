@@ -10,8 +10,6 @@
 #include <glimac/FilePath.hpp>
 #include <glimac/glm.hpp>
 #include <glimac/Image.hpp>
-#include <glimac/Sphere.hpp>
-#include <glimac/Geometry.hpp>
 #include <glimac/Controls.hpp>
 #include <glimac/Cube.hpp>
 #include <glimac/Texture.hpp>
