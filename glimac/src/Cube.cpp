@@ -114,9 +114,9 @@ void Cube::translateVertices(GLfloat tx, GLfloat ty, GLfloat tz) {
 void Cube::setTextureIndex(GLuint index){
     m_textureIndex = index;
 
-        if(m_cubeIndex != 0){
-    std::cout << "[Edit] Cube " << m_cubeIndex << " have texture :" << m_textureIndex << "." << std::endl;
-        }
+        //if(m_cubeIndex != 0){
+    //std::cout << "[Edit] Cube " << m_cubeIndex << " have texture :" << m_textureIndex << "." << std::endl;
+        //}
 
 }
 

@@ -533,6 +533,7 @@ int main(int argc, char** argv) {
                 }
                 while (loadFile >> x) {
                     file.push_back(x);
+                    std::cout << " Loading file : " << x << std::endl;
                 }
                 loadFile.close();
                 
@@ -549,7 +550,9 @@ int main(int argc, char** argv) {
                 autoSauv.close();
 
                 // Reset cube list
-                for(int i=0;i<myCubeList.getSize();i++){
+                std::cout << "Deleting ..." << myCubeList.getSize() << "...cubes" << std::endl;
+                while(myCubeList.getSize()){
+                    int i = 0;
                     myCubeList.deleteCube(i);
                     currentActive = -1;
 
@@ -571,7 +574,9 @@ int main(int argc, char** argv) {
                     myCubeList.addCube(Cube());
                     myCubeList.setTrans(file[i], file[i+1],file[i+2],file[i+3]);
                     myCubeList.setTextureIndex(file[i], file[i+4]);
-                    currentActive = myCubeList.getSize()-1;
+                    if(myCubeList.getTrans(i).x==xCursor && myCubeList.getTrans(i).y==yCursor && myCubeList.getTrans(i).z==zCursor){
+                        currentActive = myCubeList.getSize()-1;
+                    }
 
                     // VBO
                     vboList.resize(vboList.size()+1);
@@ -728,7 +733,7 @@ int main(int argc, char** argv) {
             glUniform1f(uShininess, 32.0);
             glm::vec4 LightPos;
             for (int j(0); j < ponctualLightList.size(); ++j){
-                std::cout << ponctualLightList[j] << std::endl;
+                //std::cout << ponctualLightList[j] << std::endl;
                 LightPos = ViewMatrix * ponctualLightList[j];
                 glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
 
