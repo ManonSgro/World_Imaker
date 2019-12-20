@@ -21,6 +21,15 @@ public:
         return m_cubeList.size();
     };
 
+    // Generate VBO
+    void generateVBO(std::vector<GLuint> &vboList);
+
+    // Generate VAO
+    void generateVAO(std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE);
+
+    // Generate IBO
+    void generateIBO(std::vector<GLuint> &iboList);
+
     // Get vertex count
     GLsizei getVertexCount(int index){
         return m_cubeList[index].getVertexCount();
@@ -76,8 +85,8 @@ public:
 
     //Ajouter/supprimer cube
     void addOrigin();
-    void addCube(Cube cube);
-    void deleteCube(int index);
+    void addCube(Cube cube, std::vector<GLuint> &iboList, std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE);
+    void deleteCube(int index, std::vector<GLuint> &iboList, std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList);
 
     // Translate
     void translateCube(int index, GLfloat tx, GLfloat ty, GLfloat tz);

@@ -18,7 +18,7 @@ public:
     Controls();
     ~Controls();
     void calculateVectors();
-    void computeMatricesFromInputs(float wW, float wH);
+    void computeMatricesFromInputs();
     glm::mat4 getViewMatrix();
     glm::mat4 getProjectionMatrix();
 

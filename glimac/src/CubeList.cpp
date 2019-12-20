@@ -11,6 +11,41 @@ namespace glimac {
     // Créer liste (vecteur), ajouter/supprimer cube, trier cubes selon texture ?
     CubeList::CubeList(){};
     CubeList::~CubeList(){};
+    
+    // Generate VBO
+    void CubeList::generateVBO(std::vector<GLuint> &vboList){
+        for(int i=0; i<m_cubeList.size(); i++){
+            glGenBuffers(1, &vboList[i+1]);
+            glBindBuffer(GL_ARRAY_BUFFER, vboList[i+1]);
+            glBufferData(GL_ARRAY_BUFFER, this->getVertexCount(i)*sizeof(Vertex3DTexture), this->getDataPointer(i), GL_STATIC_DRAW);
+            glBindBuffer(GL_ARRAY_BUFFER, vboList.back());
+        }
+    };
+
+    // Generate VAO
+    void CubeList::generateVAO(std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE){
+        for(int i=0; i<m_cubeList.size(); i++){
+            glGenVertexArrays(1, &vaoList[i+1]);
+            glBindVertexArray(vaoList[i+1]);
+            glBindBuffer(GL_ARRAY_BUFFER, vboList[i+1]);
+            glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
+            glVertexAttribPointer(VERTEX_ATTR_POSITION,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, position));
+            glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
+            glVertexAttribPointer(VERTEX_ATTR_NORMAL,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, normal));
+            glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
+            glVertexAttribPointer(VERTEX_ATTR_TEXTURE,2,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, texture));
+
+        }
+    };
+    
+    // Generate IBO
+    void CubeList::generateIBO(std::vector<GLuint> &iboList){
+        for(int i=0; i<m_cubeList.size(); i++){
+            glGenBuffers(1, &iboList[i+1]);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[i+1]);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->getIBOCount(i)*sizeof(uint32_t), this->getIBOPointer(i), GL_STATIC_DRAW);
+        }
+    };
 
     // Set texture
     void CubeList::setTextureIndex(int index, GLuint textureIndex){
@@ -43,19 +78,54 @@ namespace glimac {
     }
 
     // Push back a new cube at the end of the list
-    void CubeList::addCube(Cube cube){
+    void CubeList::addCube(Cube cube, std::vector<GLuint> &iboList, std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE){
         m_cubeList.push_back(cube);
         m_cubeList[m_cubeList.size()-1].setCubeIndex(m_cubeList.size()-1);
+
+        // VBO
+        vboList.resize(vboList.size()+1);
+        glGenBuffers(1, &vboList[vboList.size()-1]);
+        glBindBuffer(GL_ARRAY_BUFFER, vboList[vboList.size()-1]);
+        glBufferData(GL_ARRAY_BUFFER, this->getVertexCount(this->getSize()-1)*sizeof(Vertex3DTexture), this->getDataPointer(this->getSize()-1), GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, vboList.back());
+
+        //VAO
+        vaoList.resize(vaoList.size()+1);
+        glGenVertexArrays(1, &vaoList[vaoList.size()-1]);
+        glBindVertexArray(vaoList[vaoList.size()-1]);
+        glBindBuffer(GL_ARRAY_BUFFER, vboList[vaoList.size()-1]);
+        glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
+        glVertexAttribPointer(VERTEX_ATTR_POSITION,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, position));
+        glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
+        glVertexAttribPointer(VERTEX_ATTR_NORMAL,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, normal));
+        glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
+        glVertexAttribPointer(VERTEX_ATTR_TEXTURE,2,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, texture));
+
+        //IBO
+        iboList.resize(iboList.size()+1);
+        glGenBuffers(1, &iboList[iboList.size()-1]);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[iboList.size()-1]);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->getIBOCount(this->getSize()-1)*sizeof(uint32_t), this->getIBOPointer(this->getSize()-1), GL_STATIC_DRAW);
     }
 
     // Erase a cube at index "index" if exists
-    void CubeList::deleteCube(int index){
+    void CubeList::deleteCube(int index, std::vector<GLuint> &iboList, std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList){
         if(index<=m_cubeList.size()){
             m_cubeList.erase(m_cubeList.begin()+index);
             std::cout<< "Erase cube " << index <<std::endl;
         }
         for(int i=0;i<m_cubeList.size();i++){
             m_cubeList[i].setCubeIndex(i);
+        }
+
+        // Reset VBO/VAO/IBO
+        if(index<=vboList.size()+1){
+            glDeleteBuffers(1, &iboList[index+1]);
+            iboList.erase(iboList.begin()+index+1);
+            glDeleteVertexArrays(1, &vaoList[index+1]);
+            vaoList.erase(vaoList.begin()+index+1);
+            glDeleteBuffers(1, &vboList[index+1]);
+            vboList.erase(vboList.begin()+index+1);
         }
 
         

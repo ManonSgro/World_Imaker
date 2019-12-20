@@ -108,7 +108,7 @@ void Controls::setDirection(glm::vec3 newDirection){
     direction = newDirection;
 }
 
-void Controls::computeMatricesFromInputs(float wW, float wH){
+void Controls::computeMatricesFromInputs(){
 
 	
     float FoV = initialFoV;//  * MouseWheel();
