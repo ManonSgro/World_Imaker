@@ -292,6 +292,9 @@ int main(int argc, char** argv) {
     int currentActive = -1;
     int item_LightP = 0;
     int item_LightD = 0;
+    std::vector<glm::vec4> ponctualLightList;
+    ponctualLightList.push_back(glm::vec4(1.0, 1.0, 1.0, 1));
+    ponctualLightList.push_back(glm::vec4(-1.0, 1.0, 1.0, 1));
     while(!done) {
         Controls c;
         bool addCube = false;
@@ -432,8 +435,16 @@ int main(int argc, char** argv) {
             glUniform3f(uKd, 0.6, 0.6, 0.6); //Couleur des boules
             glUniform3f(uKs, 0, 0.0, 0.0);
             glUniform1f(uShininess, 32.0);
-            glm::vec4 LightPos = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
-            glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
+            glm::vec4 LightPos;
+            for (int j(0); j < ponctualLightList.size(); ++j){
+                std::cout << ponctualLightList[j] << std::endl;
+                LightPos = ViewMatrix * ponctualLightList[j];
+                glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
+
+
+            }
+
+            //glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
             glm::vec4 LightDir = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
             glUniform3f(uLightDir_vs, LightDir.x, LightDir.y, LightDir.z);
             if (item_LightD == 0){
