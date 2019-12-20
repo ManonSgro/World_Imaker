@@ -8,11 +8,9 @@
 #include <glimac/glm.hpp>
 #include <glimac/Image.hpp>
 #include <glimac/Cube.hpp>
-#include <glimac/Geometry.hpp>
 #include <glimac/Texture.hpp>
 #include <glimac/CubeList.hpp>
 #include <glimac/Controls.hpp>
-#include <glimac/Cursor.hpp>
 #include <glimac/objloader.hpp>
 #include <glimac/text.hpp>
 #include <cstddef>
@@ -164,8 +162,8 @@ int main(int argc, char** argv) {
      /** Loading shaders **/
     FilePath applicationPath(argv[0]);
     Program program = loadProgram(
-        applicationPath.dirPath() + "shaders/cubeLight.vs.glsl",
-        applicationPath.dirPath() + "shaders/cubeGeneralLight.fs.glsl"
+        applicationPath.dirPath() + "shaders/vertex.vs.glsl",
+        applicationPath.dirPath() + "shaders/fragment.fs.glsl"
     );
     program.use();
 
