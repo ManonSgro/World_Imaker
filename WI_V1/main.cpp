@@ -32,6 +32,7 @@
 #include <include/imgui.h>
 #include <examples/imgui_impl_sdl.h>
 #include <examples/imgui_impl_opengl3.h>
+#include <misc/cpp/imgui_stdlib.h>
 
 using namespace glm;
 
@@ -316,7 +317,7 @@ int main(int argc, char** argv) {
     int currentActive = -1;
     bool thereIsACubeAbove = false;
     bool thereIsACubeUnder = false;
-    static char filePath[128] = "../sauv/autoSave.txt";
+    std::string filePath;
     Controls c;
     c.calculateVectors();
     c.computeMatricesFromInputs(windowWidth,windowHeight);
@@ -326,8 +327,9 @@ int main(int argc, char** argv) {
         // Event loop:
         SDL_Event e;
         while(windowManager.pollEvent(e)) {
-            // Move camera
-            
+            // Send to ImGui
+            ImGui_ImplSDL2_ProcessEvent(&e);
+
             if(e.type == SDL_QUIT) {
                 done = true; // Leave the loop after this iteration
             }
@@ -431,11 +433,11 @@ int main(int argc, char** argv) {
             ImGui::End();
 
 
-            ImGui::Begin("FILE settings", NULL, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove);
-            ImGui::SetWindowPos(ImVec2(windowWidth,0), true);
-            ImGui::SetWindowSize(ImVec2(menuWidth,windowHeight+menuWidth));
+            ImGui::Begin("FILE settings", NULL);
+            
             ImGui::Text("File path :");
-            ImGui::InputText("Path", filePath, IM_ARRAYSIZE(filePath));
+            ImGui::InputText("Path", &filePath);
+
             if(ImGui::Button("Save")){
                 std::ofstream autoSauv;
                 autoSauv.open (filePath);
@@ -449,6 +451,8 @@ int main(int argc, char** argv) {
                 autoSauv.close();
             }
             ImGui::End();
+
+            ImGui::ShowDemoWindow();
 
 
             ImGui::Begin("CUBE settings", NULL);
