@@ -113,7 +113,10 @@ void Cube::translateVertices(GLfloat tx, GLfloat ty, GLfloat tz) {
 
 void Cube::setTextureIndex(GLuint index){
     m_textureIndex = index;
+
+        if(m_cubeIndex != 0){
     std::cout << "[Edit] Cube " << m_cubeIndex << " have texture :" << m_textureIndex << "." << std::endl;
+        }
 
 }
 
@@ -147,7 +150,9 @@ void Cube::setRot(GLfloat degrees, GLfloat x, GLfloat y, GLfloat z){
 void Cube::setTrans(GLfloat x, GLfloat y, GLfloat z){
     if(floor(x)==x && floor(y)==y && floor(z)==z){
         m_trans = glm::vec3(x, y, z);
+        if(m_cubeIndex != 0){
         std::cout << "[Edit] Cube " << m_cubeIndex << " translate to (" << m_trans.x << ", " << m_trans.y << ", "<< m_trans.z << ")."<< std::endl;
+        }
 
     }else{
         std::cerr << "[ERROR] Enable to translate to float coordinates ! Cube " << m_cubeIndex << " still at (" << m_trans.x << ", " << m_trans.y << ", "<< m_trans.z << ")."<< std::endl;

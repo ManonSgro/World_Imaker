@@ -233,7 +233,7 @@ int main(int argc, char** argv) {
         // Event loop:
         SDL_Event e;
         while(windowManager.pollEvent(e)) {
-            c.computeMatricesFromInputs(windowWidth,windowHeight,e);
+            c.computeMatricesFromInputs(windowWidth,windowHeight);
             if(e.type == SDL_QUIT) {
                 done = true; // Leave the loop after this iteration
             }
@@ -241,7 +241,7 @@ int main(int argc, char** argv) {
 
 
         /*** CAMERA ***/
-        c.computeMatricesFromInputs(windowWidth,windowHeight,e);
+        c.computeMatricesFromInputs(windowWidth,windowHeight);
         const glm::mat4 ProjectionMatrix = c.getProjectionMatrix();
         const glm::mat4 ViewMatrix = c.getViewMatrix();
 

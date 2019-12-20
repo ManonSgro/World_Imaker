@@ -32,6 +32,7 @@
 #include <include/imgui.h>
 #include <examples/imgui_impl_sdl.h>
 #include <examples/imgui_impl_opengl3.h>
+#include <misc/cpp/imgui_stdlib.h>
 
 using namespace glm;
 
@@ -69,7 +70,7 @@ int main(int argc, char** argv) {
     int x;
     std::ifstream inFile;
     
-    inFile.open("../sauv/sauv1.txt");
+    inFile.open("../sauv/autoSave.txt");
     if (!inFile) {
         std::cout << "Unable to open file";
         exit(1); // terminate with error
@@ -324,20 +325,25 @@ int main(int argc, char** argv) {
 
     bool thereIsACubeAbove = false;
     bool thereIsACubeUnder = false;
-    static char filePath[128] = "../sauv/autoSave.txt";
-
+    std::string filePath;
+    Controls c;
+    c.calculateVectors();
+    c.computeMatricesFromInputs(windowWidth,windowHeight);
     while(!done) {
-        Controls c;
         bool addCube = false;
         bool deleteCube = false;
 
         // Event loop:
         SDL_Event e;
         while(windowManager.pollEvent(e)) {
-            c.computeMatricesFromInputs(windowWidth,windowHeight,e);
+            // Send to ImGui
+            ImGui_ImplSDL2_ProcessEvent(&e);
+
             if(e.type == SDL_QUIT) {
                 done = true; // Leave the loop after this iteration
             }
+
+            c.calculateVectors();
             if(e.type == SDL_KEYDOWN) {
                 if (e.key.keysym.sym == SDLK_a){
                     cursor.setTrans(cursor.getTrans().x - 1, cursor.getTrans().y, cursor.getTrans().z);
@@ -357,15 +363,64 @@ int main(int argc, char** argv) {
                 if (e.key.keysym.sym == SDLK_d){
                     cursor.setTrans(cursor.getTrans().x, cursor.getTrans().y, cursor.getTrans().z + 1);
                 }
-            }
 
+
+                if (e.key.keysym.sym == SDLK_KP_8){
+                    glm::vec3 newPos = c.getPosition() + (c.getUp() * c.getSpeed());
+                    c.setPosition(newPos);
+                }
+                if (e.key.keysym.sym == SDLK_KP_2){
+                    glm::vec3 newPos = c.getPosition() - (c.getUp() * c.getSpeed());
+                    c.setPosition(newPos);
+                }
+                if (e.key.keysym.sym == SDLK_KP_6){
+                    glm::vec3 newPos = c.getPosition() + (c.getRight() * c.getSpeed());
+                    c.setPosition(newPos);
+                }
+                if (e.key.keysym.sym == SDLK_KP_4){
+                    glm::vec3 newPos = c.getPosition() - (c.getRight() * c.getSpeed());
+                    c.setPosition(newPos);
+                }
+                if (e.key.keysym.sym == SDLK_KP_PLUS){
+                    glm::vec3 newPos = c.getPosition() + (c.getDirection() * c.getSpeed());
+                    c.setPosition(newPos);
+                }
+                if (e.key.keysym.sym == SDLK_KP_MINUS){
+                    glm::vec3 newPos = c.getPosition() - (c.getDirection() * c.getSpeed());
+                    c.setPosition(newPos);
+                }
+                if (e.key.keysym.sym == SDLK_KP_9){
+                    c.calculateVectors();
+                    c.setHorizontalAngle(c.getHorizontalAngle() + c.getSpeed());
+                    c.computeMatricesFromInputs(windowWidth,windowHeight);
+                }
+                if (e.key.keysym.sym == SDLK_KP_7){
+                    c.setHorizontalAngle(c.getHorizontalAngle() - c.getSpeed());
+                }
+                if (e.key.keysym.sym == SDLK_KP_3){
+                    c.setVerticalAngle(c.getVerticalAngle() + c.getSpeed());
+                }
+                if (e.key.keysym.sym == SDLK_KP_1){
+                    c.setVerticalAngle(c.getVerticalAngle() - c.getSpeed());
+                }
+                if (e.key.keysym.sym == SDLK_KP_5){
+                    c.setPosition(glm::vec3(0,0,5));
+                    c.setHorizontalAngle(3.14f);
+                    c.setVerticalAngle(0.0f);
+                }
+            }
+            c.computeMatricesFromInputs(windowWidth,windowHeight);
+
+        }
+                    
             // feed inputs to dear imgui, start new frame
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplSDL2_NewFrame(windowManager.window);
             ImGui::NewFrame();
 
             /*** CAMERA ***/
-            //c.computeMatricesFromInputs(windowWidth,windowHeight,e);
+            //c.calculateVectors();
+            //c.computeMatricesFromInputs(windowWidth,windowHeight);
             const glm::mat4 ProjectionMatrix = c.getProjectionMatrix();
             const glm::mat4 ViewMatrix = c.getViewMatrix();
 
@@ -401,11 +456,11 @@ int main(int argc, char** argv) {
             ImGui::End();
 
 
-            ImGui::Begin("FILE settings", NULL, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove);
-            ImGui::SetWindowPos(ImVec2(windowWidth,0), true);
-            ImGui::SetWindowSize(ImVec2(menuWidth,windowHeight+menuWidth));
+            ImGui::Begin("FILE settings", NULL);
+            
             ImGui::Text("File path :");
-            ImGui::InputText("Path", filePath, IM_ARRAYSIZE(filePath));
+            ImGui::InputText("Path", &filePath);
+
             if(ImGui::Button("Save")){
                 std::ofstream autoSauv;
                 autoSauv.open (filePath);
@@ -419,6 +474,8 @@ int main(int argc, char** argv) {
                 autoSauv.close();
             }
             ImGui::End();
+
+            ImGui::ShowDemoWindow();
 
 
             ImGui::Begin("CUBE settings", NULL);
@@ -572,9 +629,6 @@ int main(int argc, char** argv) {
 
             /// Cursor move
             cursor.setTrans(xCursor, yCursor, zCursor);
-            /*xCursor = cursor.getTrans().x;
-            yCursor = cursor.getTrans().y;
-            zCursor = cursor.getTrans().z;*/
 
 
             glm::mat4 ModelMatrix = glm::mat4(1.0f);
@@ -598,10 +652,13 @@ int main(int argc, char** argv) {
             glBindTexture(GL_TEXTURE_2D, textures[myCubeList.getTextureIndex(0)].getTexture()); // la texture est bindée sur l'unité GL_TEXTURE0
             glUniform1i(textures[myCubeList.getTextureIndex(0)].getUniformLocation(), 0);
             // Active first MVP
-            // ModelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f));
-            // ModelMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(0.0f), glm::vec3(0.0f,0.0f,0.0f));
-            // ModelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f));
-            // glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjectionMatrix * ViewMatrix * ModelMatrix)); //Model View Projection
+            ModelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f));
+            ModelMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(0.0f), glm::vec3(0.0f,0.0f,0.0f));
+            ModelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f));
+            glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjectionMatrix * ViewMatrix * ModelMatrix)); //Model View Projection
+            glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(ViewMatrix * ModelMatrix)); //Model View Projection
+            glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix)); //Model View Projection
+
             
             currentActive = -1;
             thereIsACubeAbove = false;
@@ -671,7 +728,7 @@ int main(int argc, char** argv) {
             // Update the display
             windowManager.swapBuffers();
         }
-    }
+
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
