@@ -3,7 +3,20 @@
 #include <GL/glew.h>
 #include "glm.hpp"
 
+#include <iostream>
+#include <cstddef>
+#include <vector>
+#include <cmath>
+
+#include <Eigen/Dense>
+
 namespace glimac {
+
+/*! \namespace glimac
+ * 
+ * espace de nommage regroupant les outils de gestion 
+ * d'une scène 3D en OpenGL
+ */
 
 struct ShapeVertex {
     glm::vec3 position;
