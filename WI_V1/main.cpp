@@ -38,12 +38,6 @@ using namespace glm;
 
 using namespace glimac;
 
-float returnX(float pixels, float windowWidth){
-    return (pixels*2.0/windowWidth)-1.0;
-}
-float returnY(float pixels, float windowHeight){
-    return (pixels*2.0/windowHeight)-1.0;
-}
 
 int main(int argc, char** argv) {
     // Initialize SDL and open a window
@@ -66,6 +60,7 @@ int main(int argc, char** argv) {
 
     /** READ FILE **/
     //int sum = 0;
+    /*
     std::vector<int> file;
     int x;
     std::ifstream inFile;
@@ -89,7 +84,9 @@ int main(int argc, char** argv) {
         myCubeList.setTrans(file[i], file[i+1],file[i+2],file[i+3]);
         myCubeList.setTextureIndex(file[i], file[i+4]);
     }
-    /*myCubeList.addCube(Cube());
+    */
+    CubeList myCubeList;
+    myCubeList.addCube(Cube());
     myCubeList.addCube(Cube());
     myCubeList.addCube(Cube());
     myCubeList.setTrans(0, 0,0,0);
@@ -159,7 +156,7 @@ int main(int argc, char** argv) {
 
 
     /** Array of Textures **/
-    uint nbOfTextures = 3;
+    uint nbOfTextures = 10;
     std::vector<Texture> textures(nbOfTextures);
 
      /** Loading shaders **/
@@ -221,8 +218,15 @@ int main(int argc, char** argv) {
 
     /** Loading textures **/
     textures[0].setImage("../GLImac-Template/assets/textures/rouge.png");
-    textures[1].setImage("../GLImac-Template/assets/textures/herbe.png");
+    textures[1].setImage("../GLImac-Template/assets/textures/bois.png");
     textures[2].setImage("../GLImac-Template/assets/textures/brique.png");
+    textures[3].setImage("../GLImac-Template/assets/textures/cailloux.png");
+    textures[4].setImage("../GLImac-Template/assets/textures/eau.png");
+    textures[5].setImage("../GLImac-Template/assets/textures/goudron.png");
+    textures[6].setImage("../GLImac-Template/assets/textures/herbe.png");
+    textures[7].setImage("../GLImac-Template/assets/textures/marbre.png");
+    textures[8].setImage("../GLImac-Template/assets/textures/mosaique.png");
+    textures[9].setImage("../GLImac-Template/assets/textures/sol_metalique.png");
     
     
 
@@ -319,9 +323,14 @@ int main(int argc, char** argv) {
 
     int item_LightP = 0;
     int item_LightD = 0;
-    std::vector<glm::vec4> ponctualLightList;
-    ponctualLightList.push_back(glm::vec4(1.0, 1.0, 1.0, 1));
-    ponctualLightList.push_back(glm::vec4(-1.0, 1.0, 1.0, 1));
+
+    int xLightD = 1;
+    int yLightD = 1;
+    int zLightD = 1;
+
+    int xLightP = 1;
+    int yLightP = 1;
+    int zLightP = 1;
 
     bool thereIsACubeAbove = false;
     bool thereIsACubeUnder = false;
@@ -432,10 +441,10 @@ int main(int argc, char** argv) {
             ImGui::Begin("CURSOR settings", NULL, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove);
             ImGui::SetWindowPos(ImVec2(windowWidth,0), true);
             ImGui::SetWindowSize(ImVec2(menuWidth,windowHeight+menuWidth));
-            ImGui::Text("Coordinates :");
+            ImGui::Text("Coordinates");
+            ImGui::Text("X :");
             int xCursor = cursor.getTrans().x;
             ImGui::InputInt("x", &xCursor);
-
             ImGui::Text("Y :");
             int yCursor = cursor.getTrans().y;
             ImGui::InputInt("y", &yCursor);
@@ -449,8 +458,23 @@ int main(int argc, char** argv) {
             ImGui::Text("Lumiere directionnelle :");
             ImGui::Combo("D", &item_LightD, itemsLight, IM_ARRAYSIZE(itemsLight));
 
+            ImGui::Text("Coordinates D");
+            ImGui::InputInt("xD", &xLightD);
+            ImGui::Text("Y :");
+            ImGui::InputInt("yD", &yLightD);
+            ImGui::Text("Z :");
+            ImGui::InputInt("zD", &zLightD);
+
+
             ImGui::Text("Lumiere ponctuelle :");
             ImGui::Combo("P", &item_LightP, itemsLight, IM_ARRAYSIZE(itemsLight));
+
+            ImGui::Text("Coordinates P");
+            ImGui::InputInt("xP", &xLightP);
+            ImGui::Text("Y :");
+            ImGui::InputInt("yP", &yLightP);
+            ImGui::Text("Z :");
+            ImGui::InputInt("zP", &zLightP);
 
 
             ImGui::End();
@@ -475,7 +499,7 @@ int main(int argc, char** argv) {
             }
             ImGui::End();
 
-            ImGui::ShowDemoWindow();
+            //ImGui::ShowDemoWindow();
 
 
             ImGui::Begin("CUBE settings", NULL);
@@ -483,7 +507,7 @@ int main(int argc, char** argv) {
             ImGui::Text("Selected cube :");
 
             ImGui::InputInt("text", &selectedCube);
-            const char* itemsTextures[] = { "Herbe", "Brique"};
+            const char* itemsTextures[] = { "Bois", "Brique", "Cailloux", "Eau", "Goudron", "Herbe", "Marbre", "Mosaique", "Sol metalique"};
 
             int item_currentTexture = myCubeList.getTextureIndex(selectedCube)-1;
             ImGui::Text("Texture:");
@@ -601,17 +625,9 @@ int main(int argc, char** argv) {
             glUniform3f(uKd, 0.6, 0.6, 0.6); //Couleur des boules
             glUniform3f(uKs, 0, 0.0, 0.0);
             glUniform1f(uShininess, 32.0);
-            glm::vec4 LightPos;
-            for (int j(0); j < ponctualLightList.size(); ++j){
-                std::cout << ponctualLightList[j] << std::endl;
-                LightPos = ViewMatrix * ponctualLightList[j];
-                glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
-
-
-            }
-
-            //glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
-            glm::vec4 LightDir = ViewMatrix * glm::vec4(1.0, 1.0, 1.0, 1);
+            glm::vec4 LightPos = ViewMatrix * glm::vec4((float) xLightP, (float) yLightP, (float) zLightP, 1);
+            glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
+            glm::vec4 LightDir = ViewMatrix * glm::vec4((float) xLightD, (float) yLightD, (float) zLightD, 1);
             glUniform3f(uLightDir_vs, LightDir.x, LightDir.y, LightDir.z);
             if (item_LightD == 0){
                 glUniform3f(uLightIntensityD, 2.0, 2.0, 2.0);   
