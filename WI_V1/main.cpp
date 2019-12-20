@@ -335,6 +335,7 @@ int main(int argc, char** argv) {
     bool thereIsACubeAbove = false;
     bool thereIsACubeUnder = false;
     std::string filePath;
+    std::string loadFilePath;
     Controls c;
     c.calculateVectors();
     c.computeMatricesFromInputs(windowWidth,windowHeight);
@@ -347,6 +348,50 @@ int main(int argc, char** argv) {
         while(windowManager.pollEvent(e)) {
             // Send to ImGui
             ImGui_ImplSDL2_ProcessEvent(&e);
+
+            // Avoid ImGui confilcts
+            /*
+            if (!ImGui::GetIO().WantCaptureKeyboard) {
+
+				if (Input::KeyIsDown(CTRL)) {
+					if (e.key.keysym.sym == 'z') {
+						m_histories.getActiveHistory().moveBackward();
+					}
+					else if (e.key.keysym.sym == 'y') {
+						m_histories.getActiveHistory().moveForward();
+					}
+					else if (e.key.keysym.sym == 's') {
+						m_saveViewWindow.Open();
+					}
+				}
+				else {
+					if (e.key.keysym.scancode == SDL_SCANCODE_F5) {
+						Locate::materialsManager().Shaders()[Locate::materialsManager().SelectedMaterial().shaderID].reloadShader();
+						Locate::materialsManager().updateMatrixUniform("u_projMat", m_camera.getProjMatrix());
+						Locate::materialsManager().updateMatrixUniform("u_viewMat", m_camera.getViewMatrix());
+					}
+					if (e.key.keysym.sym == 'z') {
+						m_cursor.setPosition(glm::ivec3(0, 1, 0) + m_cursor.getPosition());
+					}
+					else if (e.key.keysym.sym == 's') {
+						m_cursor.setPosition(glm::ivec3(0, -1, 0) + m_cursor.getPosition());
+					}
+					else if (e.key.keysym.sym == 'q') {
+						m_cursor.setPosition(glm::ivec3(1, 0, 0) + m_cursor.getPosition());
+					}
+					else if (e.key.keysym.sym == 'd') {
+						m_cursor.setPosition(glm::ivec3(-1, 0, 0) + m_cursor.getPosition());
+					}
+					else if (e.key.keysym.sym == 'w') {
+						m_cursor.setPosition(glm::ivec3(0, 0, 1) + m_cursor.getPosition());
+					}
+					else if (e.key.keysym.sym == 'x') {
+						m_cursor.setPosition(glm::ivec3(0, 0, -1) + m_cursor.getPosition());
+					}
+				}
+			}
+			break;
+            */
 
             if(e.type == SDL_QUIT) {
                 done = true; // Leave the loop after this iteration
@@ -482,8 +527,8 @@ int main(int argc, char** argv) {
 
             ImGui::Begin("FILE settings", NULL);
             
-            ImGui::Text("File path :");
-            ImGui::InputText("Path", &filePath);
+            ImGui::Text("Save file :");
+            ImGui::InputText("Save Path", &filePath);
 
             if(ImGui::Button("Save")){
                 std::ofstream autoSauv;
@@ -497,9 +542,94 @@ int main(int argc, char** argv) {
                 }
                 autoSauv.close();
             }
-            ImGui::End();
 
-            //ImGui::ShowDemoWindow();
+
+            ImGui::Text("Load file :");
+            ImGui::InputText("Load Path", &loadFilePath);
+            if(ImGui::Button("Load")){
+                std::vector<int> file;
+                int x;
+                std::ifstream loadFile;
+                loadFile.open(loadFilePath);
+                if (!loadFile) {
+                    std::cout << "Unable to open file";
+                    exit(1); // terminate with error
+                }
+                while (loadFile >> x) {
+                    file.push_back(x);
+                    std::cout << " Loading file : " << x << std::endl;
+                }
+                loadFile.close();
+                
+                // Save current file
+                std::ofstream autoSauv;
+                autoSauv.open ("../sauv/autoSauv.txt");
+                for(int i=0; i<myCubeList.getSize(); i++){
+                    autoSauv << std::to_string(myCubeList.getCubeIndex(i))+" "
+                    +std::to_string((int)myCubeList.getTrans(i).x)+" "
+                    +std::to_string((int)myCubeList.getTrans(i).y)+" "
+                    +std::to_string((int)myCubeList.getTrans(i).z)+" "
+                    +std::to_string(myCubeList.getTextureIndex(i))+" "+"\n";
+                }
+                autoSauv.close();
+
+                // Reset cube list
+                std::cout << "Deleting ..." << myCubeList.getSize() << "...cubes" << std::endl;
+                while(myCubeList.getSize()){
+                    int i = 0;
+                    myCubeList.deleteCube(i);
+                    currentActive = -1;
+
+                    // VBO
+                    if(i<=vboList.size()+1){
+                        glDeleteBuffers(1, &iboList[i+1]);
+                        iboList.erase(iboList.begin()+i+1);
+                        glDeleteVertexArrays(1, &vaoList[i+1]);
+                        vaoList.erase(vaoList.begin()+i+1);
+                        glDeleteBuffers(1, &vboList[i+1]);
+                        vboList.erase(vboList.begin()+i+1);
+                    }
+                }
+                
+
+                // Load file
+                std::cout << "Loading... " << file.size()/5 << "...cubes" << std::endl; 
+                for(int i=0; i<file.size(); i+=5){
+                    myCubeList.addCube(Cube());
+                    myCubeList.setTrans(file[i], file[i+1],file[i+2],file[i+3]);
+                    myCubeList.setTextureIndex(file[i], file[i+4]);
+                    if(myCubeList.getTrans(i).x==xCursor && myCubeList.getTrans(i).y==yCursor && myCubeList.getTrans(i).z==zCursor){
+                        currentActive = myCubeList.getSize()-1;
+                    }
+
+                    // VBO
+                    vboList.resize(vboList.size()+1);
+                    glGenBuffers(1, &vboList[vboList.size()-1]);
+                    glBindBuffer(GL_ARRAY_BUFFER, vboList[vboList.size()-1]);
+                    glBufferData(GL_ARRAY_BUFFER, myCubeList.getVertexCount(myCubeList.getSize()-1)*sizeof(Vertex3DTexture), myCubeList.getDataPointer(myCubeList.getSize()-1), GL_STATIC_DRAW);
+                    glBindBuffer(GL_ARRAY_BUFFER, vboList.back());
+
+                    //VAO
+                    vaoList.resize(vaoList.size()+1);
+                    glGenVertexArrays(1, &vaoList[vaoList.size()-1]);
+                    glBindVertexArray(vaoList[vaoList.size()-1]);
+                    glBindBuffer(GL_ARRAY_BUFFER, vboList[vaoList.size()-1]);
+                    glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
+                    glVertexAttribPointer(VERTEX_ATTR_POSITION,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, position));
+                    glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
+                    glVertexAttribPointer(VERTEX_ATTR_NORMAL,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, normal));
+                    glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
+                    glVertexAttribPointer(VERTEX_ATTR_TEXTURE,2,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, texture));
+
+                    //IBO
+                    iboList.resize(iboList.size()+1);
+                    glGenBuffers(1, &iboList[iboList.size()-1]);
+                    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[iboList.size()-1]);
+                    glBufferData(GL_ELEMENT_ARRAY_BUFFER, myCubeList.getIBOCount(myCubeList.getSize()-1)*sizeof(uint32_t), myCubeList.getIBOPointer(myCubeList.getSize()-1), GL_STATIC_DRAW);
+                }
+                
+            }
+            ImGui::End();
 
 
             ImGui::Begin("CUBE settings", NULL);
@@ -628,6 +758,7 @@ int main(int argc, char** argv) {
             glm::vec4 LightPos = ViewMatrix * glm::vec4((float) xLightP, (float) yLightP, (float) zLightP, 1);
             glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
             glm::vec4 LightDir = ViewMatrix * glm::vec4((float) xLightD, (float) yLightD, (float) zLightD, 1);
+
             glUniform3f(uLightDir_vs, LightDir.x, LightDir.y, LightDir.z);
             if (item_LightD == 0){
                 glUniform3f(uLightIntensityD, 2.0, 2.0, 2.0);   
