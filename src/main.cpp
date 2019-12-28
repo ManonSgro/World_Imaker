@@ -42,15 +42,16 @@ using namespace glm;
 
 using namespace glimac;
 
-
 int main(int argc, char** argv) {
-
     // Initialize SDL and open a window
     float windowWidth = 800.0f;
     float windowHeight = 800.0f;
     float menuWidth = 200.0f;
     SDLWindowManager windowManager(windowWidth+menuWidth, windowHeight+menuWidth, "World Imaker");
     //glewExperimental = GL_TRUE;
+
+    // Print logo
+    windowManager.printSignature();
 
     // Initialize GLEW for OpenGL3+ support
     GLenum glewInitError = glewInit();
@@ -292,6 +293,16 @@ int main(int argc, char** argv) {
             ImGui_ImplSDL2_ProcessEvent(&e);           
 
             if(e.type == SDL_QUIT){
+                std::ofstream autoSauv;
+                autoSauv.open ("../backup/backup.txt");
+                for(int i=0; i<myCubeList.getSize(); i++){
+                    autoSauv << std::to_string(myCubeList.getCubeIndex(i))+" "
+                    +std::to_string((int)myCubeList.getTrans(i).x)+" "
+                    +std::to_string((int)myCubeList.getTrans(i).y)+" "
+                    +std::to_string((int)myCubeList.getTrans(i).z)+" "
+                    +std::to_string(myCubeList.getTextureIndex(i))+" "+"\n";
+                }
+                autoSauv.close();
                 done = true;
             }
 

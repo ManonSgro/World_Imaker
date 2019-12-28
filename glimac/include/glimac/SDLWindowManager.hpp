@@ -27,6 +27,9 @@ public:
 
     // Return the time in seconds
     float getTime() const;
+
+    // Print logo & title
+    void printSignature();
 };
 
 }

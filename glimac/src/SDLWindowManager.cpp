@@ -57,5 +57,24 @@ float SDLWindowManager::getTime() const {
     return 0.001f * SDL_GetTicks();
 }
 
+void SDLWindowManager::printSignature(){
+    std::cout << " " << std::endl;
+    std::cout << " " << std::endl;
+    std::cout << "        \033[1;31m     ___        \033[0m" << std::endl;
+    std::cout << "        \033[1;31m   '\033[0m      \033[1;32m \\ \033[0m  " << std::endl;
+    std::cout << "        \033[1;31m  '\033[0m        \033[1;32m \\ \033[0m  " << std::endl;
+    std::cout << "                    \033[1;32m \\ \033[0m" << std::endl;
+    std::cout << "       \033[1;32m \\ \033[0m   \033[1;34m  \\ \033[0m   \033[1;32m / \033[0m" << std::endl;
+    std::cout << "        \033[1;32m \\ \033[0m   \033[1;34m  \\ \033[0m    " << std::endl;
+    std::cout << "        \033[1;32m  \\_\033[0m \033[1;34m  __\\/ \033[0m   "<<std::endl;
+    std::cout << " " << std::endl;
+    std::cout << "          \033[1;34mWORLD IMAKER\033[0m\n";
+    std::cout << " " << std::endl;
+    std::cout << " " << std::endl;
+    std::cout << "    || Hic sunt commentes ||       " << std::endl;
+    std::cout << "    \\/                    \\/       " << std::endl;
+    std::cout << " " << std::endl;
+};
+
 }
 
