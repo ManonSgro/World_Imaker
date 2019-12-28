@@ -119,7 +119,7 @@ The *file menu* allows you to save and load scenes. Your current scene will auto
 
 You can use the *procedural generation* option to create a new scene based on the chosen control points.
 
-![World Imaker Screenshot](/img/screenshot1.png?raw=true "World Imaker - Procedural generation")
+![World Imaker Screenshot](/img/screenshot1.png?raw=true width=100 "World Imaker - Procedural generation")
 
 
 _For more information on the functionalities, please refer to the [Documentation](https://rawcdn.githack.com/ManonSgro/World_Imaker/Manon/build/doc/html/index.html)_
