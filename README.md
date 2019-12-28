@@ -38,7 +38,7 @@
 ## About The Project
 
 ![World Imaker Home Screen Shot](/img/screenshot1.png?raw=true "World Imaker")
-<img src="/img/screenshot1.png" alt="World Imaker Home Screenshot" title="World Imaker" width="auto" height="50%" />
+<img src="/img/screenshot1.png" alt="World Imaker Home Screenshot" title="World Imaker" width="auto" height="600" />
 
 The purpose of this project was to create a 3D scene editor-visualizer made of cubes with OpenGL/C++ technologies, and a bit of maths.
 
