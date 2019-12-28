@@ -174,16 +174,16 @@ int main(int argc, char** argv) {
     }
 
     // Loading textures
-    textures[0].setImage("../GLImac-Template/assets/textures/rouge.png");
-    textures[1].setImage("../GLImac-Template/assets/textures/bois.png");
-    textures[2].setImage("../GLImac-Template/assets/textures/brique.png");
-    textures[3].setImage("../GLImac-Template/assets/textures/cailloux.png");
-    textures[4].setImage("../GLImac-Template/assets/textures/eau.png");
-    textures[5].setImage("../GLImac-Template/assets/textures/goudron.png");
-    textures[6].setImage("../GLImac-Template/assets/textures/herbe.png");
-    textures[7].setImage("../GLImac-Template/assets/textures/marbre.png");
-    textures[8].setImage("../GLImac-Template/assets/textures/mosaique.png");
-    textures[9].setImage("../GLImac-Template/assets/textures/sol_metalique.png");
+    textures[0].setImage("../../World_Imaker/assets/textures/rouge.png");
+    textures[1].setImage("../../World_Imaker/assets/textures/bois.png");
+    textures[2].setImage("../../World_Imaker/assets/textures/brique.png");
+    textures[3].setImage("../../World_Imaker/assets/textures/cailloux.png");
+    textures[4].setImage("../../World_Imaker/assets/textures/eau.png");
+    textures[5].setImage("../../World_Imaker/assets/textures/goudron.png");
+    textures[6].setImage("../../World_Imaker/assets/textures/herbe.png");
+    textures[7].setImage("../../World_Imaker/assets/textures/marbre.png");
+    textures[8].setImage("../../World_Imaker/assets/textures/mosaique.png");
+    textures[9].setImage("../../World_Imaker/assets/textures/sol_metalique.png");
 
     // Textures
     for(uint i = 0; i<textures.size(); i++){
