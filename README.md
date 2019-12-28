@@ -107,19 +107,20 @@ This program include basic functionalities to create and edit a 3D scene. Once t
 
 You can move the cursor in the scene, add/delete cubes and modify their texture. You can also extrude/dig into the scene from the *cube menu*.
 
-<img src="/img/screenshot1.png" alt="World Imaker - Cube Editing" title="World Imaker - Cube Editing" width="auto" height="600" margin="auto" />
+<img src="/img/screenshot1.png" alt="World Imaker - Cube Editing" title="World Imaker - Cube Editing" width="auto" height="600" />
+
 
 You can control a directional light and a poncutal light. Turn them on/off and move their position from the *light menu*.
 
-<img src="/img/screenshot1.png" alt="World Imaker - Light Editing" title="World Imaker - Light Editing" width="auto" height="600" margin="auto" />
+<img src="/img/screenshot1.png" alt="World Imaker - Light Editing" title="World Imaker - Light Editing" width="auto" height="600" />
 
 The *file menu* allows you to save and load scenes. Your current scene will automatically be saved if you quit the program in `../backup/backup.txt`.
 
-<img src="/img/screenshot1.png" alt="World Imaker - File Settings" title="World Imaker - File Settings" width="auto" height="600" margin="auto" />
+<img src="/img/screenshot1.png" alt="World Imaker - File Settings" title="World Imaker - File Settings" width="auto" height="600" />
 
 You can use the *procedural generation* option to create a new scene based on the chosen control points.
 
-<img src="/img/screenshot1.png" alt="World Imaker - Procedural generation" title="World Imaker - Procedural generation" width="auto" height="600" margin="auto" />
+<img src="/img/screenshot1.png" alt="World Imaker - Procedural generation" title="World Imaker - Procedural generation" width="auto" height="600" />
 
 
 _For more information on the functionalities, please refer to the [Documentation](https://rawcdn.githack.com/ManonSgro/World_Imaker/Manon/build/doc/html/index.html)_
