@@ -143,7 +143,7 @@ You can use the *procedural generation* option to create a new scene based on th
 ![World Imaker Screenshot](/img/screenshot1.png?raw=true "World Imaker - Procedural generation")
 
 
-_For more examples, please refer to the [Documentation](https://raw.githubusercontent.com/ManonSgro/World_Imaker/Manon/build/doc/html/index.html)_
+_For more examples, please refer to the [Documentation](https://rawcdn.githack.com/ManonSgro/World_Imaker/Manon/build/doc/html/index.html)_
 
 <!-- AUTHORS -->
 ## Authors
