@@ -59,7 +59,7 @@ To get a local copy up and running, follow these simple steps.
 
 ### Prerequisites
 
-**This project has been tested on Linux Ubuntu 18.04 and Windows 10.**
+**This project has been tested on Linux Ubuntu 18.04.**
 
 - OpenGL
 
