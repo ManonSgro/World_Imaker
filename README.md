@@ -59,14 +59,18 @@ To get a local copy up and running, follow these simple steps.
 
 ### Prerequisites
 
-**This project has been tested on Linux Ubuntu 18.04.**
+**This project has been tested on Linux Ubuntu 18.04 and Windows 10.**
 
-Make sure your environnement supports OpenGL 3 or later.
+- OpenGL
+
+Make sure your environnement supports OpenGL 3.0 or later.
 ```sh
 glxinfo | grep "OpenGL version"
 OUTPUT: OpenGL version string: 4.6.0 NVIBIA 430.26
 ```
-Make sure SDL2 is intalled.
+- SDL
+
+Make sure SDL 2.0 is intalled.
 ```sh
 dpkg -l | grep libsdl2
 OUTPUT: libsdl2-dev
@@ -75,19 +79,30 @@ If not, install it.
 ```sh
 apt-get install libsdl2-dev
 ```
+- CMake
+
+On Linux, make sure CMake is installed for building the project. If not, install it :
+```
+apt-get install cmake
+```
+On Windows, CMake can be installed downloading the <a href="https://cmake.org/download/">binary file</a> and running it.
+
+More information about CMake installing and running for different platforms on <a href="https://cmake.org">CMake official website</a>.
 
 ### Installation
  
-1. Clone the repo
+- On Linux (command lines):
+1. Clone the repository
 ```sh
 git clone https://github.com/ManonSgro/World_Imaker.git
+cd World_Imaker
 ```
 2. Create the build directory and move into it
 ```sh
 mkdir build
 cd build
 ```
-3. Run cmake and build the project
+3. Run CMake and build the project
 ```sh
 cmake ..
 make
@@ -97,6 +112,17 @@ make
 ./bin/World_Imaker
 ```
 5. A window should appear. Have fun!
+
+- On Windows:
+1. Download the repository from Github or clone it with the command line :
+```sh
+git clone https://github.com/ManonSgro/World_Imaker.git
+```
+2. Once CMake is installed, run the `cmake-gui.exe` program. A window should appear.
+3. Fill the `source code` input with `your/path/to/World_Imaker` and the `binary` input with the folder of your choice.
+4. Click on `Configure`, choose an installed generator, then click on `Finish`.
+5. Click on `Generate` to build the project.
+6. Run the project by 
 
 
 
