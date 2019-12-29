@@ -96,6 +96,8 @@ public:
     void sortCubes();
 
     void save(std::string filepath, int item_LightD, std::vector<int> positionLightD, int item_LightP, std::vector<int> positionLightP);
+    void read(std::string filePath, std::vector<int> &destination);
+    void load(std::vector<int> file, std::vector<GLuint> &iboList, std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE, std::vector<int> &cursorPosition, int &currentActive, int &item_LightD, std::vector<int> &positionLightD, int &item_LightP, std::vector<int> &positionLightP);
 
     void printCubes();
     Eigen::VectorXd RBF(Eigen::MatrixXd points);

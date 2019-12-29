@@ -347,5 +347,35 @@ namespace glimac {
         file.close();
     };
 
+    void CubeList::read(std::string filePath, std::vector<int> &destination){
+        int x;
+        std::ifstream loadFile;
+        loadFile.open(filePath);
+        if (!loadFile) {
+            std::cout << "Unable to open file";
+            exit(1); // terminate with error
+        }
+        while (loadFile >> x) {
+            destination.push_back(x);
+        }
+        loadFile.close();
+    }
+
+    void CubeList::load(std::vector<int> file, std::vector<GLuint> &iboList, std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE, std::vector<int> &cursorPosition, int &currentActive, int &item_LightD, std::vector<int> &positionLightD, int &item_LightP, std::vector<int> &positionLightP){
+        std::cout << "Loading... " << (file.size()-2)/5 << "...cubes" << std::endl; 
+        for(int i=0; i<file.size()-8; i+=5){
+            this->addCube(Cube(), iboList, vaoList, vboList, VERTEX_ATTR_POSITION, VERTEX_ATTR_NORMAL, VERTEX_ATTR_TEXTURE);
+            this->setTrans(file[i], file[i+1],file[i+2],file[i+3]);
+            this->setTextureIndex(file[i], file[i+4]);
+            if(this->getTrans(i).x==cursorPosition[0] && this->getTrans(i).y==cursorPosition[1] && this->getTrans(i).z==cursorPosition[2]){
+                currentActive = this->getSize()-1;
+            }
+        }
+        item_LightD = file[file.size()-8];
+        positionLightD = {file[file.size()-7], file[file.size()-6],file[file.size()-5]};
+        item_LightP = file[file.size()-4];
+        positionLightP = {file[file.size()-3], file[file.size()-2],file[file.size()-1]};
+    }
+
 }
 

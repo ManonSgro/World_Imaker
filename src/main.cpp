@@ -258,6 +258,9 @@ int main(int argc, char** argv) {
     int item_LightP = 0; // Spotlight on/off
     int item_LightD = 0; // Directive light on/off
 
+    // Cursor position
+    std::vector<int> cursorPosition{1,1,1};
+
     // Directive light position
     std::vector<int> positionLightD{1,1,1};
 
@@ -384,14 +387,14 @@ int main(int argc, char** argv) {
 
         ImGui::Text("Coordinates");
         ImGui::Text("X :");
-        int xCursor = cursor.getTrans().x;
-        ImGui::InputInt("x", &xCursor);
+        cursorPosition[0] = cursor.getTrans().x;
+        ImGui::InputInt("x", &cursorPosition[0]);
         ImGui::Text("Y :");
-        int yCursor = cursor.getTrans().y;
-        ImGui::InputInt("y", &yCursor);
+        cursorPosition[1] = cursor.getTrans().y;
+        ImGui::InputInt("y", &cursorPosition[1]);
         ImGui::Text("Z :");
-        int zCursor = cursor.getTrans().z;
-        ImGui::InputInt("z", &zCursor);
+        cursorPosition[2] = cursor.getTrans().z;
+        ImGui::InputInt("z", &cursorPosition[2]);
         
         // Directive light
         const char* itemsLight[] = { "On", "Off"};
@@ -423,16 +426,7 @@ int main(int argc, char** argv) {
         ImGui::Text("Save file :");
         ImGui::InputText("Save Path", &filePath);
         if(ImGui::Button("Save")){
-            std::ofstream autoSauv;
-            autoSauv.open (filePath);
-            for(int i=0; i<myCubeList.getSize(); i++){
-                autoSauv << std::to_string(myCubeList.getCubeIndex(i))+" "
-                +std::to_string((int)myCubeList.getTrans(i).x)+" "
-                +std::to_string((int)myCubeList.getTrans(i).y)+" "
-                +std::to_string((int)myCubeList.getTrans(i).z)+" "
-                +std::to_string(myCubeList.getTextureIndex(i))+" "+"\n";
-            }
-            autoSauv.close();
+            myCubeList.save(filePath, item_LightD, positionLightD, item_LightP, positionLightP);
         }
 
         // Load
@@ -442,29 +436,10 @@ int main(int argc, char** argv) {
 
             // Read file to load
             std::vector<int> file;
-            int x;
-            std::ifstream loadFile;
-            loadFile.open(loadFilePath);
-            if (!loadFile) {
-                std::cout << "Unable to open file";
-                exit(1); // terminate with error
-            }
-            while (loadFile >> x) {
-                file.push_back(x);
-            }
-            loadFile.close();
+            myCubeList.read(loadFilePath, file);
             
             // Save current file
-            std::ofstream autoSauv;
-            autoSauv.open ("../sauv/autoSave.txt");
-            for(int i=0; i<myCubeList.getSize(); i++){
-                autoSauv << std::to_string(myCubeList.getCubeIndex(i))+" "
-                +std::to_string((int)myCubeList.getTrans(i).x)+" "
-                +std::to_string((int)myCubeList.getTrans(i).y)+" "
-                +std::to_string((int)myCubeList.getTrans(i).z)+" "
-                +std::to_string(myCubeList.getTextureIndex(i))+" "+"\n";
-            }
-            autoSauv.close();
+            myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP);
 
             // Reset cube list
             std::cout << "Deleting ..." << myCubeList.getSize() << "...cubes" << std::endl;
@@ -475,19 +450,7 @@ int main(int argc, char** argv) {
             }
             
             // Load file
-            std::cout << "Loading... " << (file.size()-2)/5 << "...cubes" << std::endl; 
-            for(int i=0; i<file.size()-8; i+=5){
-                myCubeList.addCube(Cube(), iboList, vaoList, vboList, VERTEX_ATTR_POSITION, VERTEX_ATTR_NORMAL, VERTEX_ATTR_TEXTURE);
-                myCubeList.setTrans(file[i], file[i+1],file[i+2],file[i+3]);
-                myCubeList.setTextureIndex(file[i], file[i+4]);
-                if(myCubeList.getTrans(i).x==xCursor && myCubeList.getTrans(i).y==yCursor && myCubeList.getTrans(i).z==zCursor){
-                    currentActive = myCubeList.getSize()-1;
-                }
-            }
-            item_LightD = file[file.size()-8];
-            positionLightD = {file[file.size()-7], file[file.size()-6],file[file.size()-5]};
-            item_LightP = file[file.size()-4];
-            positionLightP = {file[file.size()-3], file[file.size()-2],file[file.size()-1]};
+            myCubeList.load(file, iboList, vaoList, vboList, VERTEX_ATTR_POSITION, VERTEX_ATTR_NORMAL, VERTEX_ATTR_TEXTURE, cursorPosition, currentActive, item_LightD, positionLightD, item_LightP, positionLightP);
         }
 
         ImGui::End();
@@ -517,9 +480,9 @@ int main(int argc, char** argv) {
         ImGui::Text("Modify cube :");
         if(ImGui::Button("Extrude")){
             if(selectedCube!=-1 && !thereIsACubeAbove){
-                yCursor++;
+                cursorPosition[1]++;
                 myCubeList.addCube(Cube(), iboList, vaoList, vboList, VERTEX_ATTR_POSITION, VERTEX_ATTR_NORMAL, VERTEX_ATTR_TEXTURE);
-                myCubeList.setTrans(myCubeList.getSize()-1, xCursor, yCursor, zCursor);
+                myCubeList.setTrans(myCubeList.getSize()-1, cursorPosition[0], cursorPosition[1], cursorPosition[2]);
                 myCubeList.setTextureIndex(myCubeList.getSize()-1, item_currentTexture+1);
                 currentActive = myCubeList.getSize()-1;
             }else{
@@ -529,7 +492,7 @@ int main(int argc, char** argv) {
         if(ImGui::Button("Dig")){
             if(selectedCube!=-1 && thereIsACubeUnder && !thereIsACubeAbove){
                 myCubeList.deleteCube(selectedCube, iboList, vaoList, vboList);
-                yCursor--;
+                cursorPosition[1]--;
             }else{
                 std::cout << "[ERROR] Cannot dig a non-cube or cube that is not above a column!" << std::endl;
             }
@@ -543,7 +506,7 @@ int main(int argc, char** argv) {
         // Add/Delete cube (from ImGui)
         if(addCube == true){
             myCubeList.addCube(Cube(), iboList, vaoList, vboList, VERTEX_ATTR_POSITION, VERTEX_ATTR_NORMAL, VERTEX_ATTR_TEXTURE);
-            myCubeList.setTrans(myCubeList.getSize()-1, xCursor, yCursor, zCursor);
+            myCubeList.setTrans(myCubeList.getSize()-1, cursorPosition[0], cursorPosition[1], cursorPosition[2]);
             myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
             currentActive = myCubeList.getSize()-1;
         }else if(deleteCube == true){
@@ -575,7 +538,7 @@ int main(int argc, char** argv) {
         }
 
         // Cursor move
-        cursor.setTrans(xCursor, yCursor, zCursor);
+        cursor.setTrans(cursorPosition[0], cursorPosition[1], cursorPosition[2]);
 
         // Reset MVP
         glm::mat4 ModelMatrix = glm::mat4(1.0f);
