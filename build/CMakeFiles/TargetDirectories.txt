@@ -1,0 +1,13 @@
+/media/msgro/Maxtor/World_Imaker/World_Imaker/build/CMakeFiles/rebuild_cache.dir
+/media/msgro/Maxtor/World_Imaker/World_Imaker/build/CMakeFiles/doc.dir
+/media/msgro/Maxtor/World_Imaker/World_Imaker/build/CMakeFiles/edit_cache.dir
+/media/msgro/Maxtor/World_Imaker/World_Imaker/build/glimac/CMakeFiles/rebuild_cache.dir
+/media/msgro/Maxtor/World_Imaker/World_Imaker/build/glimac/CMakeFiles/glimac.dir
+/media/msgro/Maxtor/World_Imaker/World_Imaker/build/glimac/CMakeFiles/edit_cache.dir
+/media/msgro/Maxtor/World_Imaker/World_Imaker/build/third-party/include/imgui/CMakeFiles/rebuild_cache.dir
+/media/msgro/Maxtor/World_Imaker/World_Imaker/build/third-party/include/imgui/CMakeFiles/imgui.dir
+/media/msgro/Maxtor/World_Imaker/World_Imaker/build/third-party/include/imgui/CMakeFiles/edit_cache.dir
+/media/msgro/Maxtor/World_Imaker/World_Imaker/build/bin/CMakeFiles/rebuild_cache.dir
+/media/msgro/Maxtor/World_Imaker/World_Imaker/build/bin/CMakeFiles/edit_cache.dir
+/media/msgro/Maxtor/World_Imaker/World_Imaker/build/bin/CMakeFiles/World_Imaker.dir
+/media/msgro/Maxtor/World_Imaker/World_Imaker/build/bin/CMakeFiles/World_Imaker_2.dir

@@ -61,7 +61,7 @@ To get a local copy up and running, follow these simple steps.
 
 **This project has been tested on Linux Ubuntu 18.04.**
 
-Make sure your environnement supports OpenGL 3 or higher.
+Make sure your environnement supports OpenGL 3 or later.
 ```sh
 glxinfo | grep "OpenGL version"
 OUTPUT: OpenGL version string: 4.6.0 NVIBIA 430.26

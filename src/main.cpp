@@ -9,6 +9,35 @@
  *
  */
 
+/*! \mainpage World_Imaker Documentation
+ * \version 0.1
+ * \image html logo_text.png
+ * \tableofcontents
+ * \section intro_sec About
+ *
+ * World Imaker is a 3D scene editor-visualizer made with OpenGL/C++.
+ *
+ * \section install_sec Installation
+ *
+ * \subsection tools_subsec Tools required
+ * - OpenGL 3.0.0 or later: <small><a href="https://www.opengl.org/">OpenGL Website</a></small>
+ * - SDL 2.0: <small><a href="https://www.libsdl.org/">SDL Website</a></small>
+ *
+ * \subsection running Running the program
+ * - Step 1: Clone the repo from <a href="https://github.com/ManonSgro/World_Imaker.git">Github</a>.
+ * - Step 2: Create the build directory if doesn't exist. Then move into it.
+ * - Step 3: Run CMake and build the project.
+ * - Step 4: Execute the program in the <code style="font-family:monospace; font-size:0.8rem;padding:2px;background-color:#eee">bin</code> folder.
+ *
+ * \section authors Authors
+ * - Amélia Mansion
+ * - Manon Sgro'
+ *
+ * \section footer More infos
+ * The documentation is located in <code style="font-family:monospace; font-size:0.8rem;padding:2px;background-color:#eee">[path to build]/doc/html/index.html</code>
+ *
+ */
+
 // Includes
 #include <GL/glew.h>
 #include <iostream>
