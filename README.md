@@ -144,7 +144,6 @@ while(project!=done){
         code();
     }
     if(bug){
-        cry();
         callForHelp();
         sayThanks();
         sayThanks(); // again
