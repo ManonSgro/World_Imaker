@@ -22,14 +22,54 @@ public:
         return m_cubeList.size();
     };
 
+    // Get VBO attributes
+    const GLuint getVBOPositionAttribute(){
+        return VERTEX_ATTR_POSITION;
+    }
+    const GLuint getVBONormalAttribute(){
+        return VERTEX_ATTR_NORMAL;
+    }
+    const GLuint getVBOTextureAttribute(){
+        return VERTEX_ATTR_TEXTURE;
+    }
+
+
+    // Get VAO list
+    GLuint* getVAOListItem(int index){
+        return &vaoList[index];
+    }
+    std::vector<GLuint>* getVAOList(){
+        return &vaoList;
+    }
+
+    // Get IBO list
+    GLuint* getIBOListItem(int index){
+        return &iboList[index];
+    }
+    std::vector<GLuint>* getIBOList(){
+        return &iboList;
+    }
+
+    // Get VBO list
+    GLuint* getVBOListItem(int index){
+        return &vboList[index];
+    }
+    std::vector<GLuint>* getVBOList(){
+        return &vboList;
+    }
+
+    // Set VAO list
+
+    // Set IBO list
+
     // Generate VBO
-    void generateVBO(std::vector<GLuint> &vboList);
+    void generateVBO();
 
     // Generate VAO
-    void generateVAO(std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE);
+    void generateVAO();
 
     // Generate IBO
-    void generateIBO(std::vector<GLuint> &iboList);
+    void generateIBO();
 
     // Get vertex count
     GLsizei getVertexCount(int index){
@@ -86,8 +126,9 @@ public:
 
     //Ajouter/supprimer cube
     void addOrigin();
-    void addCube(Cube cube, std::vector<GLuint> &iboList, std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE);
-    void deleteCube(int index, std::vector<GLuint> &iboList, std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList);
+    //void addCube(Cube cube, std::vector<GLuint> &iboList, std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE);
+    void addCube(Cube cube);
+    void deleteCube(int index);
 
     // Translate
     void translateCube(int index, GLfloat tx, GLfloat ty, GLfloat tz);
@@ -97,7 +138,7 @@ public:
 
     void save(std::string filepath, int item_LightD, std::vector<int> positionLightD, int item_LightP, std::vector<int> positionLightP);
     void read(std::string filePath, std::vector<int> &destination);
-    void load(std::vector<int> file, std::vector<GLuint> &iboList, std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE, std::vector<int> &cursorPosition, int &currentActive, int &item_LightD, std::vector<int> &positionLightD, int &item_LightP, std::vector<int> &positionLightP);
+    void load(std::vector<int> file, std::vector<int> &cursorPosition, int &currentActive, int &item_LightD, std::vector<int> &positionLightD, int &item_LightP, std::vector<int> &positionLightP);
 
     void printCubes();
     Eigen::VectorXd RBF(Eigen::MatrixXd points);
@@ -105,6 +146,13 @@ public:
 
 //private:
     std::vector<Cube> m_cubeList;
+
+    std::vector<GLuint> vboList;
+    std::vector<GLuint> vaoList;
+    std::vector<GLuint> iboList;
+    const GLuint VERTEX_ATTR_POSITION = 0;
+    const GLuint VERTEX_ATTR_NORMAL = 1;
+    const GLuint VERTEX_ATTR_TEXTURE = 2;
 };
 
 }

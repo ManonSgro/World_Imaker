@@ -65,19 +65,19 @@ int main(int argc, char** argv) {
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
 
     /** INITIALIZE SCENE **/
-    std::vector<GLuint> vboList(1);
-    std::vector<GLuint> vaoList(1);
-    std::vector<GLuint> iboList(1);
-    // VAO attributes index
-    const GLuint VERTEX_ATTR_POSITION = 0;
-    const GLuint VERTEX_ATTR_NORMAL = 1;
-    const GLuint VERTEX_ATTR_TEXTURE = 2;
+    // std::vector<GLuint> vboList(1);
+    // std::vector<GLuint> vaoList(1);
+    // std::vector<GLuint> iboList(1);
+    // // VAO attributes index
+    // const GLuint VERTEX_ATTR_POSITION = 0;
+    // const GLuint VERTEX_ATTR_NORMAL = 1;
+    // const GLuint VERTEX_ATTR_TEXTURE = 2;
     
     // Add 3 cubes
     CubeList myCubeList;
-    myCubeList.addCube(Cube(), iboList, vaoList, vboList, VERTEX_ATTR_POSITION, VERTEX_ATTR_NORMAL, VERTEX_ATTR_TEXTURE);
-    myCubeList.addCube(Cube(), iboList, vaoList, vboList, VERTEX_ATTR_POSITION, VERTEX_ATTR_NORMAL, VERTEX_ATTR_TEXTURE);
-    myCubeList.addCube(Cube(), iboList, vaoList, vboList, VERTEX_ATTR_POSITION, VERTEX_ATTR_NORMAL, VERTEX_ATTR_TEXTURE);
+    myCubeList.addCube(Cube());
+    myCubeList.addCube(Cube());
+    myCubeList.addCube(Cube());
 
     // Translate cubes
     myCubeList.setTrans(0, 0,0,0);
@@ -200,46 +200,46 @@ int main(int argc, char** argv) {
     /** INITIALIZE VBOs **/
     // For the cursor
     // Generate one buffer, put the resulting identifier in vertexbuffer
-    glGenBuffers(1, &vboList[0]);
+    glGenBuffers(1, myCubeList.getVBOListItem(0));
     // Bind buffer
-    glBindBuffer(GL_ARRAY_BUFFER, vboList[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, *myCubeList.getVBOListItem(0));
     // Send data to CG
     glBufferData(GL_ARRAY_BUFFER, cursor.getVertexCount()*sizeof(Vertex3DTexture), cursor.getDataPointer(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, vboList.front());
+    glBindBuffer(GL_ARRAY_BUFFER, *myCubeList.getVBOListItem(0));
 
     // Repeat for all cubes of the scene (i+1 because the cursor is 0)
-    myCubeList.generateVBO(vboList);
+    myCubeList.generateVBO();
 
     /** INITIALIZE VAOs **/
 
     // Generate a VAO
-    glGenVertexArrays(1, &vaoList[0]);
+    glGenVertexArrays(1, myCubeList.getVAOListItem(0));
     // VAO Binding
-    glBindVertexArray(vaoList[0]);
-    glBindBuffer(GL_ARRAY_BUFFER, vboList[0]);
+    glBindVertexArray(*myCubeList.getVAOListItem(0));
+    glBindBuffer(GL_ARRAY_BUFFER, *myCubeList.getVAOListItem(0));
     // 1st attribute buffer : position
-    glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
-    glVertexAttribPointer(VERTEX_ATTR_POSITION,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, position));
+    glEnableVertexAttribArray(myCubeList.getVBOPositionAttribute());
+    glVertexAttribPointer(myCubeList.getVBOPositionAttribute(),3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, position));
     // 2nd attribute buffer : normal
-    glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
-    glVertexAttribPointer(VERTEX_ATTR_NORMAL,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, normal));
+    glEnableVertexAttribArray(myCubeList.getVBONormalAttribute());
+    glVertexAttribPointer(myCubeList.getVBONormalAttribute(),3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, normal));
     // 3rd attribute buffer : texture
-    glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
-    glVertexAttribPointer(VERTEX_ATTR_TEXTURE,2,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, texture));
+    glEnableVertexAttribArray(myCubeList.getVBOTextureAttribute());
+    glVertexAttribPointer(myCubeList.getVBOTextureAttribute(),2,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, texture));
 
     //Repeat for all cubes of the scene (i+1 because the cursor is 0)
-    myCubeList.generateVAO(vaoList, vboList, VERTEX_ATTR_POSITION, VERTEX_ATTR_NORMAL, VERTEX_ATTR_TEXTURE);
+    myCubeList.generateVAO();
 
     /** INITIALIZE IBOs **/
     // Generate buffer
-    glGenBuffers(1, &iboList[0]);
+    glGenBuffers(1, myCubeList.getIBOListItem(0));
     // Bind IBO
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[0]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *myCubeList.getIBOListItem(0));
     // Send data
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, cursor.getIBOCountBorder()*sizeof(uint32_t), cursor.getIBOPointerBorder(), GL_STATIC_DRAW);
 
     //Repeat for all cubes of the scene (i+1 because the cursor is 0)
-    myCubeList.generateIBO(iboList);
+    myCubeList.generateIBO();
 
     // Stop binding
     glBindVertexArray(0);
@@ -445,12 +445,12 @@ int main(int argc, char** argv) {
             std::cout << "Deleting ..." << myCubeList.getSize() << "...cubes" << std::endl;
             while(myCubeList.getSize()){
                 int i = 0;
-                myCubeList.deleteCube(i, iboList, vaoList, vboList);
+                myCubeList.deleteCube(i);
                 currentActive = -1;
             }
             
             // Load file
-            myCubeList.load(file, iboList, vaoList, vboList, VERTEX_ATTR_POSITION, VERTEX_ATTR_NORMAL, VERTEX_ATTR_TEXTURE, cursorPosition, currentActive, item_LightD, positionLightD, item_LightP, positionLightP);
+            myCubeList.load(file, cursorPosition, currentActive, item_LightD, positionLightD, item_LightP, positionLightP);
         }
 
         ImGui::End();
@@ -481,7 +481,7 @@ int main(int argc, char** argv) {
         if(ImGui::Button("Extrude")){
             if(selectedCube!=-1 && !thereIsACubeAbove){
                 cursorPosition[1]++;
-                myCubeList.addCube(Cube(), iboList, vaoList, vboList, VERTEX_ATTR_POSITION, VERTEX_ATTR_NORMAL, VERTEX_ATTR_TEXTURE);
+                myCubeList.addCube(Cube());
                 myCubeList.setTrans(myCubeList.getSize()-1, cursorPosition[0], cursorPosition[1], cursorPosition[2]);
                 myCubeList.setTextureIndex(myCubeList.getSize()-1, item_currentTexture+1);
                 currentActive = myCubeList.getSize()-1;
@@ -491,7 +491,7 @@ int main(int argc, char** argv) {
         };
         if(ImGui::Button("Dig")){
             if(selectedCube!=-1 && thereIsACubeUnder && !thereIsACubeAbove){
-                myCubeList.deleteCube(selectedCube, iboList, vaoList, vboList);
+                myCubeList.deleteCube(selectedCube);
                 cursorPosition[1]--;
             }else{
                 std::cout << "[ERROR] Cannot dig a non-cube or cube that is not above a column!" << std::endl;
@@ -505,12 +505,12 @@ int main(int argc, char** argv) {
 
         // Add/Delete cube (from ImGui)
         if(addCube == true){
-            myCubeList.addCube(Cube(), iboList, vaoList, vboList, VERTEX_ATTR_POSITION, VERTEX_ATTR_NORMAL, VERTEX_ATTR_TEXTURE);
+            myCubeList.addCube(Cube());
             myCubeList.setTrans(myCubeList.getSize()-1, cursorPosition[0], cursorPosition[1], cursorPosition[2]);
             myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
             currentActive = myCubeList.getSize()-1;
         }else if(deleteCube == true){
-            myCubeList.deleteCube(selectedCube, iboList, vaoList, vboList);
+            myCubeList.deleteCube(selectedCube);
             currentActive = -1;
         }
 
@@ -598,7 +598,7 @@ int main(int argc, char** argv) {
             }
 
             // Bind VAO
-            glBindVertexArray(vaoList[myCubeList.getCubeIndex(i)+1]);
+            glBindVertexArray(*myCubeList.getVAOListItem(myCubeList.getCubeIndex(i)+1));
 
             // Transform
             ModelMatrix = glm::scale(glm::mat4(1.0f), myCubeList.getScale(myCubeList.getCubeIndex(i)));
@@ -610,7 +610,7 @@ int main(int argc, char** argv) {
             glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(ViewMatrix * ModelMatrix)))); //Model View Projection
 
             // Draw cube
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[myCubeList.getCubeIndex(i)+1]);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *myCubeList.getIBOListItem(myCubeList.getCubeIndex(i)+1));
             glDrawElements(GL_TRIANGLES, myCubeList.getIBOCount(i), GL_UNSIGNED_INT, (void *)0);
         }
         
@@ -618,7 +618,7 @@ int main(int argc, char** argv) {
         glDisable(GL_DEPTH_TEST);
 
         // Repeat for drawing the cursor alone
-        glBindVertexArray(vaoList[0]);
+        glBindVertexArray(*myCubeList.getVAOListItem(0));
 
         glBindTexture(GL_TEXTURE_2D, textures[cursor.getTextureIndex()].getTexture()); // la texture est bindée sur l'unité GL_TEXTURE0
         glUniform1i(textures[cursor.getTextureIndex()].getUniformLocation(), 0);
@@ -630,7 +630,7 @@ int main(int argc, char** argv) {
         glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjectionMatrix * ViewMatrix * ModelMatrix)); //Model View Projection
 
         // Draw cursor
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[0]);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *myCubeList.getIBOListItem(0));
         glLineWidth(5.0);
         glDrawElements(GL_LINES, cursor.getIBOCountBorder(), GL_UNSIGNED_INT, (void *)0);
 

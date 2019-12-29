@@ -76,15 +76,42 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a22bdb56a8ad725631572e517234ac775"><td class="memItemLeft" align="right" valign="top"><a id="a22bdb56a8ad725631572e517234ac775"></a>
 uint&#160;</td><td class="memItemRight" valign="bottom"><b>getSize</b> ()</td></tr>
 <tr class="separator:a22bdb56a8ad725631572e517234ac775"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f1f9610374316111c544fb9a669e98d"><td class="memItemLeft" align="right" valign="top"><a id="a9f1f9610374316111c544fb9a669e98d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>generateVBO</b> (std::vector&lt; GLuint &gt; &amp;vboList)</td></tr>
-<tr class="separator:a9f1f9610374316111c544fb9a669e98d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84ac9d8e1419a24c072768e63d6f5269"><td class="memItemLeft" align="right" valign="top"><a id="a84ac9d8e1419a24c072768e63d6f5269"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>generateVAO</b> (std::vector&lt; GLuint &gt; &amp;vaoList, std::vector&lt; GLuint &gt; &amp;vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE)</td></tr>
-<tr class="separator:a84ac9d8e1419a24c072768e63d6f5269"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4c7e839ca242cf6a793faa0a0ef113a"><td class="memItemLeft" align="right" valign="top"><a id="ac4c7e839ca242cf6a793faa0a0ef113a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>generateIBO</b> (std::vector&lt; GLuint &gt; &amp;iboList)</td></tr>
-<tr class="separator:ac4c7e839ca242cf6a793faa0a0ef113a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a849ccb890002bf4c1f0692741219e076"><td class="memItemLeft" align="right" valign="top"><a id="a849ccb890002bf4c1f0692741219e076"></a>
+const GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>getVBOPositionAttribute</b> ()</td></tr>
+<tr class="separator:a849ccb890002bf4c1f0692741219e076"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a540ce314986990e41f51dfeafdb5fede"><td class="memItemLeft" align="right" valign="top"><a id="a540ce314986990e41f51dfeafdb5fede"></a>
+const GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>getVBONormalAttribute</b> ()</td></tr>
+<tr class="separator:a540ce314986990e41f51dfeafdb5fede"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1d8214db32aa1e60d77b18559f0a2eb"><td class="memItemLeft" align="right" valign="top"><a id="aa1d8214db32aa1e60d77b18559f0a2eb"></a>
+const GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>getVBOTextureAttribute</b> ()</td></tr>
+<tr class="separator:aa1d8214db32aa1e60d77b18559f0a2eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46cfba24380b3421086a0ac97ae4e789"><td class="memItemLeft" align="right" valign="top"><a id="a46cfba24380b3421086a0ac97ae4e789"></a>
+GLuint *&#160;</td><td class="memItemRight" valign="bottom"><b>getVAOListItem</b> (int index)</td></tr>
+<tr class="separator:a46cfba24380b3421086a0ac97ae4e789"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb6239962da1abae9cfc0e773b71c485"><td class="memItemLeft" align="right" valign="top"><a id="aeb6239962da1abae9cfc0e773b71c485"></a>
+std::vector&lt; GLuint &gt; *&#160;</td><td class="memItemRight" valign="bottom"><b>getVAOList</b> ()</td></tr>
+<tr class="separator:aeb6239962da1abae9cfc0e773b71c485"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b1b153b8b2171e65e9c040cfa424892"><td class="memItemLeft" align="right" valign="top"><a id="a1b1b153b8b2171e65e9c040cfa424892"></a>
+GLuint *&#160;</td><td class="memItemRight" valign="bottom"><b>getIBOListItem</b> (int index)</td></tr>
+<tr class="separator:a1b1b153b8b2171e65e9c040cfa424892"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd588ce7b0feb5f2fc72d6579887e47e"><td class="memItemLeft" align="right" valign="top"><a id="acd588ce7b0feb5f2fc72d6579887e47e"></a>
+std::vector&lt; GLuint &gt; *&#160;</td><td class="memItemRight" valign="bottom"><b>getIBOList</b> ()</td></tr>
+<tr class="separator:acd588ce7b0feb5f2fc72d6579887e47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33f8d08aac4744c18d18969b0b16517c"><td class="memItemLeft" align="right" valign="top"><a id="a33f8d08aac4744c18d18969b0b16517c"></a>
+GLuint *&#160;</td><td class="memItemRight" valign="bottom"><b>getVBOListItem</b> (int index)</td></tr>
+<tr class="separator:a33f8d08aac4744c18d18969b0b16517c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82eae5adc714b8f00a23e7ad8d2aee85"><td class="memItemLeft" align="right" valign="top"><a id="a82eae5adc714b8f00a23e7ad8d2aee85"></a>
+std::vector&lt; GLuint &gt; *&#160;</td><td class="memItemRight" valign="bottom"><b>getVBOList</b> ()</td></tr>
+<tr class="separator:a82eae5adc714b8f00a23e7ad8d2aee85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fc99dde6285a3b0ffc14b86f9844edc"><td class="memItemLeft" align="right" valign="top"><a id="a7fc99dde6285a3b0ffc14b86f9844edc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>generateVBO</b> ()</td></tr>
+<tr class="separator:a7fc99dde6285a3b0ffc14b86f9844edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a098351d44d9b56a3ca3f4643a0dec302"><td class="memItemLeft" align="right" valign="top"><a id="a098351d44d9b56a3ca3f4643a0dec302"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>generateVAO</b> ()</td></tr>
+<tr class="separator:a098351d44d9b56a3ca3f4643a0dec302"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a179fb745e2097440a88f6818a14a457e"><td class="memItemLeft" align="right" valign="top"><a id="a179fb745e2097440a88f6818a14a457e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>generateIBO</b> ()</td></tr>
+<tr class="separator:a179fb745e2097440a88f6818a14a457e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba84c9ac9d87bedca07244b8d4525c1d"><td class="memItemLeft" align="right" valign="top"><a id="aba84c9ac9d87bedca07244b8d4525c1d"></a>
 GLsizei&#160;</td><td class="memItemRight" valign="bottom"><b>getVertexCount</b> (int index)</td></tr>
 <tr class="separator:aba84c9ac9d87bedca07244b8d4525c1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,12 +160,12 @@ glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>getTrans</b> (in
 <tr class="memitem:a9ef8478602bab51965e25100bc109562"><td class="memItemLeft" align="right" valign="top"><a id="a9ef8478602bab51965e25100bc109562"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addOrigin</b> ()</td></tr>
 <tr class="separator:a9ef8478602bab51965e25100bc109562"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad95001321522ebdfc67dede69b11c3da"><td class="memItemLeft" align="right" valign="top"><a id="ad95001321522ebdfc67dede69b11c3da"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addCube</b> (<a class="el" href="classglimac_1_1Cube.html">Cube</a> cube, std::vector&lt; GLuint &gt; &amp;iboList, std::vector&lt; GLuint &gt; &amp;vaoList, std::vector&lt; GLuint &gt; &amp;vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE)</td></tr>
-<tr class="separator:ad95001321522ebdfc67dede69b11c3da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2820d63092fbba52ec8e1d22234b34f"><td class="memItemLeft" align="right" valign="top"><a id="af2820d63092fbba52ec8e1d22234b34f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>deleteCube</b> (int index, std::vector&lt; GLuint &gt; &amp;iboList, std::vector&lt; GLuint &gt; &amp;vaoList, std::vector&lt; GLuint &gt; &amp;vboList)</td></tr>
-<tr class="separator:af2820d63092fbba52ec8e1d22234b34f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaa2b032e1ee67cd7dc9feaab94edc6d"><td class="memItemLeft" align="right" valign="top"><a id="adaa2b032e1ee67cd7dc9feaab94edc6d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addCube</b> (<a class="el" href="classglimac_1_1Cube.html">Cube</a> cube)</td></tr>
+<tr class="separator:adaa2b032e1ee67cd7dc9feaab94edc6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8ffe918d3ff2788edd5c5bbfba45135"><td class="memItemLeft" align="right" valign="top"><a id="ac8ffe918d3ff2788edd5c5bbfba45135"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>deleteCube</b> (int index)</td></tr>
+<tr class="separator:ac8ffe918d3ff2788edd5c5bbfba45135"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace7f18a7aab16f50e724eab7d66d27b2"><td class="memItemLeft" align="right" valign="top"><a id="ace7f18a7aab16f50e724eab7d66d27b2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>translateCube</b> (int index, GLfloat tx, GLfloat ty, GLfloat tz)</td></tr>
 <tr class="separator:ace7f18a7aab16f50e724eab7d66d27b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -151,9 +178,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>save</b> (std::string
 <tr class="memitem:a59d87cac2e218d617940ccdab5235b31"><td class="memItemLeft" align="right" valign="top"><a id="a59d87cac2e218d617940ccdab5235b31"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>read</b> (std::string filePath, std::vector&lt; int &gt; &amp;destination)</td></tr>
 <tr class="separator:a59d87cac2e218d617940ccdab5235b31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae19a74d3042c27a827e04df09ed1b4dd"><td class="memItemLeft" align="right" valign="top"><a id="ae19a74d3042c27a827e04df09ed1b4dd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>load</b> (std::vector&lt; int &gt; file, std::vector&lt; GLuint &gt; &amp;iboList, std::vector&lt; GLuint &gt; &amp;vaoList, std::vector&lt; GLuint &gt; &amp;vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE, std::vector&lt; int &gt; &amp;cursorPosition, int &amp;currentActive, int &amp;item_LightD, std::vector&lt; int &gt; &amp;positionLightD, int &amp;item_LightP, std::vector&lt; int &gt; &amp;positionLightP)</td></tr>
-<tr class="separator:ae19a74d3042c27a827e04df09ed1b4dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f615ea1238b29f8e19859b528ac6f26"><td class="memItemLeft" align="right" valign="top"><a id="a6f615ea1238b29f8e19859b528ac6f26"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>load</b> (std::vector&lt; int &gt; file, std::vector&lt; int &gt; &amp;cursorPosition, int &amp;currentActive, int &amp;item_LightD, std::vector&lt; int &gt; &amp;positionLightD, int &amp;item_LightP, std::vector&lt; int &gt; &amp;positionLightP)</td></tr>
+<tr class="separator:a6f615ea1238b29f8e19859b528ac6f26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c3e997708642903eb6b4c806de0cdf9"><td class="memItemLeft" align="right" valign="top"><a id="a5c3e997708642903eb6b4c806de0cdf9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>printCubes</b> ()</td></tr>
 <tr class="separator:a5c3e997708642903eb6b4c806de0cdf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,6 +196,24 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a571bd6927341c00bba36750788a6eda8"><td class="memItemLeft" align="right" valign="top"><a id="a571bd6927341c00bba36750788a6eda8"></a>
 std::vector&lt; <a class="el" href="classglimac_1_1Cube.html">Cube</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_cubeList</b></td></tr>
 <tr class="separator:a571bd6927341c00bba36750788a6eda8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd897d76c4194e98e406ecd276bfa67c"><td class="memItemLeft" align="right" valign="top"><a id="abd897d76c4194e98e406ecd276bfa67c"></a>
+std::vector&lt; GLuint &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>vboList</b></td></tr>
+<tr class="separator:abd897d76c4194e98e406ecd276bfa67c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3275ec3106283c5661d78bd5c547b5f0"><td class="memItemLeft" align="right" valign="top"><a id="a3275ec3106283c5661d78bd5c547b5f0"></a>
+std::vector&lt; GLuint &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>vaoList</b></td></tr>
+<tr class="separator:a3275ec3106283c5661d78bd5c547b5f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1957da945ddd55800df7d190257db456"><td class="memItemLeft" align="right" valign="top"><a id="a1957da945ddd55800df7d190257db456"></a>
+std::vector&lt; GLuint &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>iboList</b></td></tr>
+<tr class="separator:a1957da945ddd55800df7d190257db456"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd0c91ad6e9b8ec2d2e764d8594fd6df"><td class="memItemLeft" align="right" valign="top"><a id="afd0c91ad6e9b8ec2d2e764d8594fd6df"></a>
+const GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>VERTEX_ATTR_POSITION</b> = 0</td></tr>
+<tr class="separator:afd0c91ad6e9b8ec2d2e764d8594fd6df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e8ace9eaedb3df93cbb3f96ea6ad993"><td class="memItemLeft" align="right" valign="top"><a id="a6e8ace9eaedb3df93cbb3f96ea6ad993"></a>
+const GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>VERTEX_ATTR_NORMAL</b> = 1</td></tr>
+<tr class="separator:a6e8ace9eaedb3df93cbb3f96ea6ad993"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0532ab3a5ceaa052c6f859a1e08ede62"><td class="memItemLeft" align="right" valign="top"><a id="a0532ab3a5ceaa052c6f859a1e08ede62"></a>
+const GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>VERTEX_ATTR_TEXTURE</b> = 2</td></tr>
+<tr class="separator:a0532ab3a5ceaa052c6f859a1e08ede62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/media/msgro/Maxtor/World_Imaker/World_Imaker/glimac/include/glimac/<a class="el" href="CubeList_8hpp_source.html">CubeList.hpp</a></li>

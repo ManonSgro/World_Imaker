@@ -9,11 +9,15 @@
 namespace glimac {
 
     // Créer liste (vecteur), ajouter/supprimer cube, trier cubes selon texture ?
-    CubeList::CubeList(){};
+    CubeList::CubeList(){
+        vboList.resize(1);
+        vaoList.resize(1);
+        iboList.resize(1);
+    };
     CubeList::~CubeList(){};
     
     // Generate VBO
-    void CubeList::generateVBO(std::vector<GLuint> &vboList){
+    void CubeList::generateVBO(){
         for(int i=0; i<m_cubeList.size(); i++){
             glGenBuffers(1, &vboList[i+1]);
             glBindBuffer(GL_ARRAY_BUFFER, vboList[i+1]);
@@ -23,7 +27,7 @@ namespace glimac {
     };
 
     // Generate VAO
-    void CubeList::generateVAO(std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE){
+    void CubeList::generateVAO(){
         for(int i=0; i<m_cubeList.size(); i++){
             glGenVertexArrays(1, &vaoList[i+1]);
             glBindVertexArray(vaoList[i+1]);
@@ -39,7 +43,7 @@ namespace glimac {
     };
     
     // Generate IBO
-    void CubeList::generateIBO(std::vector<GLuint> &iboList){
+    void CubeList::generateIBO(){
         for(int i=0; i<m_cubeList.size(); i++){
             glGenBuffers(1, &iboList[i+1]);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[i+1]);
@@ -78,7 +82,7 @@ namespace glimac {
     }
 
     // Push back a new cube at the end of the list
-    void CubeList::addCube(Cube cube, std::vector<GLuint> &iboList, std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE){
+    void CubeList::addCube(Cube cube){
         m_cubeList.push_back(cube);
         m_cubeList[m_cubeList.size()-1].setCubeIndex(m_cubeList.size()-1);
 
@@ -109,7 +113,7 @@ namespace glimac {
     }
 
     // Erase a cube at index "index" if exists
-    void CubeList::deleteCube(int index, std::vector<GLuint> &iboList, std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList){
+    void CubeList::deleteCube(int index){
         if(index<=m_cubeList.size()){
             m_cubeList.erase(m_cubeList.begin()+index);
             std::cout<< "Erase cube " << index <<std::endl;
@@ -361,10 +365,10 @@ namespace glimac {
         loadFile.close();
     }
 
-    void CubeList::load(std::vector<int> file, std::vector<GLuint> &iboList, std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE, std::vector<int> &cursorPosition, int &currentActive, int &item_LightD, std::vector<int> &positionLightD, int &item_LightP, std::vector<int> &positionLightP){
+    void CubeList::load(std::vector<int> file, std::vector<int> &cursorPosition, int &currentActive, int &item_LightD, std::vector<int> &positionLightD, int &item_LightP, std::vector<int> &positionLightP){
         std::cout << "Loading... " << (file.size()-2)/5 << "...cubes" << std::endl; 
         for(int i=0; i<file.size()-8; i+=5){
-            this->addCube(Cube(), iboList, vaoList, vboList, VERTEX_ATTR_POSITION, VERTEX_ATTR_NORMAL, VERTEX_ATTR_TEXTURE);
+            this->addCube(Cube());
             this->setTrans(file[i], file[i+1],file[i+2],file[i+3]);
             this->setTextureIndex(file[i], file[i+4]);
             if(this->getTrans(i).x==cursorPosition[0] && this->getTrans(i).y==cursorPosition[1] && this->getTrans(i).z==cursorPosition[2]){
