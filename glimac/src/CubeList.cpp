@@ -319,5 +319,33 @@ namespace glimac {
         return (int)z;
     }
 
+    void CubeList::save(std::string filepath, int item_LightD, std::vector<int> positionLightD, int item_LightP, std::vector<int> positionLightP){
+        std::ofstream file;
+        file.open(filepath);
+        if (!file) {
+                std::cout << "Unable to open file";
+                exit(1); // terminate with error
+            }
+        for(int i=0; i<m_cubeList.size(); i++){
+            file << std::to_string(m_cubeList[i].getCubeIndex())+" "
+            +std::to_string((int)m_cubeList[i].getTrans().x)+" "
+            +std::to_string((int)m_cubeList[i].getTrans().y)+" "
+            +std::to_string((int)m_cubeList[i].getTrans().z)+" "
+            +std::to_string(m_cubeList[i].getTextureIndex())+" "+"\n";
+        }
+        // Write lights
+        file << std::to_string(item_LightD)+" "
+        +std::to_string(positionLightD[0])+" "
+        +std::to_string(positionLightD[1])+" "
+        +std::to_string(positionLightD[2])+"\n";
+
+        file << std::to_string(item_LightP)+" "
+        +std::to_string(positionLightP[0])+" "
+        +std::to_string(positionLightP[1])+" "
+        +std::to_string(positionLightP[2])+"\n";
+        
+        file.close();
+    };
+
 }
 

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <Eigen/Dense>
+#include <fstream>
 
 #include "common.hpp"
 #include "Cube.hpp"
@@ -93,6 +94,8 @@ public:
 
     //bool compareCubes(const int index1, const int index2);
     void sortCubes();
+
+    void save(std::string filepath, int item_LightD, std::vector<int> positionLightD, int item_LightP, std::vector<int> positionLightP);
 
     void printCubes();
     Eigen::VectorXd RBF(Eigen::MatrixXd points);

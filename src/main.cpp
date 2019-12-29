@@ -259,14 +259,10 @@ int main(int argc, char** argv) {
     int item_LightD = 0; // Directive light on/off
 
     // Directive light position
-    int xLightD = 1;
-    int yLightD = 1;
-    int zLightD = 1;
+    std::vector<int> positionLightD{1,1,1};
 
     // Spotlight position
-    int xLightP = 1;
-    int yLightP = 1;
-    int zLightP = 1;
+    std::vector<int> positionLightP{1,1,1};
 
     // Extrude/Dig state
     bool thereIsACubeAbove = false;
@@ -293,16 +289,7 @@ int main(int argc, char** argv) {
             ImGui_ImplSDL2_ProcessEvent(&e);           
 
             if(e.type == SDL_QUIT){
-                std::ofstream autoSauv;
-                autoSauv.open ("../backup/backup.txt");
-                for(int i=0; i<myCubeList.getSize(); i++){
-                    autoSauv << std::to_string(myCubeList.getCubeIndex(i))+" "
-                    +std::to_string((int)myCubeList.getTrans(i).x)+" "
-                    +std::to_string((int)myCubeList.getTrans(i).y)+" "
-                    +std::to_string((int)myCubeList.getTrans(i).z)+" "
-                    +std::to_string(myCubeList.getTextureIndex(i))+" "+"\n";
-                }
-                autoSauv.close();
+                myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP);
                 done = true;
             }
 
@@ -411,21 +398,21 @@ int main(int argc, char** argv) {
         ImGui::Text("Lumiere directionnelle :");
         ImGui::Combo("D", &item_LightD, itemsLight, IM_ARRAYSIZE(itemsLight));
         ImGui::Text("Coordinates D");
-        ImGui::InputInt("xD", &xLightD);
+        ImGui::InputInt("xD", &positionLightD[0]);
         ImGui::Text("Y :");
-        ImGui::InputInt("yD", &yLightD);
+        ImGui::InputInt("yD", &positionLightD[1]);
         ImGui::Text("Z :");
-        ImGui::InputInt("zD", &zLightD);
+        ImGui::InputInt("zD", &positionLightD[2]);
 
         // Spotlight
         ImGui::Text("Lumiere ponctuelle :");
         ImGui::Combo("P", &item_LightP, itemsLight, IM_ARRAYSIZE(itemsLight));
         ImGui::Text("Coordinates P");
-        ImGui::InputInt("xP", &xLightP);
+        ImGui::InputInt("xP", &positionLightP[0]);
         ImGui::Text("Y :");
-        ImGui::InputInt("yP", &yLightP);
+        ImGui::InputInt("yP", &positionLightP[1]);
         ImGui::Text("Z :");
-        ImGui::InputInt("zP", &zLightP);
+        ImGui::InputInt("zP", &positionLightP[2]);
 
         ImGui::End();
 
@@ -488,41 +475,19 @@ int main(int argc, char** argv) {
             }
             
             // Load file
-            std::cout << "Loading... " << file.size()/5 << "...cubes" << std::endl; 
-            for(int i=0; i<file.size(); i+=5){
+            std::cout << "Loading... " << (file.size()-2)/5 << "...cubes" << std::endl; 
+            for(int i=0; i<file.size()-8; i+=5){
                 myCubeList.addCube(Cube(), iboList, vaoList, vboList, VERTEX_ATTR_POSITION, VERTEX_ATTR_NORMAL, VERTEX_ATTR_TEXTURE);
                 myCubeList.setTrans(file[i], file[i+1],file[i+2],file[i+3]);
                 myCubeList.setTextureIndex(file[i], file[i+4]);
                 if(myCubeList.getTrans(i).x==xCursor && myCubeList.getTrans(i).y==yCursor && myCubeList.getTrans(i).z==zCursor){
                     currentActive = myCubeList.getSize()-1;
                 }
-/*
-                // VBO
-                vboList.resize(vboList.size()+1);
-                glGenBuffers(1, &vboList[vboList.size()-1]);
-                glBindBuffer(GL_ARRAY_BUFFER, vboList[vboList.size()-1]);
-                glBufferData(GL_ARRAY_BUFFER, myCubeList.getVertexCount(myCubeList.getSize()-1)*sizeof(Vertex3DTexture), myCubeList.getDataPointer(myCubeList.getSize()-1), GL_STATIC_DRAW);
-                glBindBuffer(GL_ARRAY_BUFFER, vboList.back());
-
-                //VAO
-                vaoList.resize(vaoList.size()+1);
-                glGenVertexArrays(1, &vaoList[vaoList.size()-1]);
-                glBindVertexArray(vaoList[vaoList.size()-1]);
-                glBindBuffer(GL_ARRAY_BUFFER, vboList[vaoList.size()-1]);
-                glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
-                glVertexAttribPointer(VERTEX_ATTR_POSITION,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, position));
-                glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
-                glVertexAttribPointer(VERTEX_ATTR_NORMAL,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, normal));
-                glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
-                glVertexAttribPointer(VERTEX_ATTR_TEXTURE,2,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, texture));
-
-                //IBO
-                iboList.resize(iboList.size()+1);
-                glGenBuffers(1, &iboList[iboList.size()-1]);
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[iboList.size()-1]);
-                glBufferData(GL_ELEMENT_ARRAY_BUFFER, myCubeList.getIBOCount(myCubeList.getSize()-1)*sizeof(uint32_t), myCubeList.getIBOPointer(myCubeList.getSize()-1), GL_STATIC_DRAW);
-            */
             }
+            item_LightD = file[file.size()-8];
+            positionLightD = {file[file.size()-7], file[file.size()-6],file[file.size()-5]};
+            item_LightP = file[file.size()-4];
+            positionLightP = {file[file.size()-3], file[file.size()-2],file[file.size()-1]};
         }
 
         ImGui::End();
@@ -557,33 +522,6 @@ int main(int argc, char** argv) {
                 myCubeList.setTrans(myCubeList.getSize()-1, xCursor, yCursor, zCursor);
                 myCubeList.setTextureIndex(myCubeList.getSize()-1, item_currentTexture+1);
                 currentActive = myCubeList.getSize()-1;
-
-/*
-                // VBO
-                vboList.resize(vboList.size()+1);
-                glGenBuffers(1, &vboList[vboList.size()-1]);
-                glBindBuffer(GL_ARRAY_BUFFER, vboList[vboList.size()-1]);
-                glBufferData(GL_ARRAY_BUFFER, myCubeList.getVertexCount(myCubeList.getSize()-1)*sizeof(Vertex3DTexture), myCubeList.getDataPointer(myCubeList.getSize()-1), GL_STATIC_DRAW);
-                glBindBuffer(GL_ARRAY_BUFFER, vboList.back());
-
-                //VAO
-                vaoList.resize(vaoList.size()+1);
-                glGenVertexArrays(1, &vaoList[vaoList.size()-1]);
-                glBindVertexArray(vaoList[vaoList.size()-1]);
-                glBindBuffer(GL_ARRAY_BUFFER, vboList[vaoList.size()-1]);
-                glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
-                glVertexAttribPointer(VERTEX_ATTR_POSITION,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, position));
-                glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
-                glVertexAttribPointer(VERTEX_ATTR_NORMAL,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, normal));
-                glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
-                glVertexAttribPointer(VERTEX_ATTR_TEXTURE,2,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, texture));
-
-                //IBO
-                iboList.resize(iboList.size()+1);
-                glGenBuffers(1, &iboList[iboList.size()-1]);
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[iboList.size()-1]);
-                glBufferData(GL_ELEMENT_ARRAY_BUFFER, myCubeList.getIBOCount(myCubeList.getSize()-1)*sizeof(uint32_t), myCubeList.getIBOPointer(myCubeList.getSize()-1), GL_STATIC_DRAW);*/
-
             }else{
                 std::cout << "[ERROR] Cannot extrude a non-cube or cube with no space above!" << std::endl;
             }
@@ -608,32 +546,6 @@ int main(int argc, char** argv) {
             myCubeList.setTrans(myCubeList.getSize()-1, xCursor, yCursor, zCursor);
             myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
             currentActive = myCubeList.getSize()-1;
-
-            // VBO
-            /*vboList.resize(vboList.size()+1);
-            glGenBuffers(1, &vboList[vboList.size()-1]);
-            glBindBuffer(GL_ARRAY_BUFFER, vboList[vboList.size()-1]);
-            glBufferData(GL_ARRAY_BUFFER, myCubeList.getVertexCount(myCubeList.getSize()-1)*sizeof(Vertex3DTexture), myCubeList.getDataPointer(myCubeList.getSize()-1), GL_STATIC_DRAW);
-            glBindBuffer(GL_ARRAY_BUFFER, vboList.back());
-
-            //VAO
-            vaoList.resize(vaoList.size()+1);
-            glGenVertexArrays(1, &vaoList[vaoList.size()-1]);
-            glBindVertexArray(vaoList[vaoList.size()-1]);
-            glBindBuffer(GL_ARRAY_BUFFER, vboList[vaoList.size()-1]);
-            glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
-            glVertexAttribPointer(VERTEX_ATTR_POSITION,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, position));
-            glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
-            glVertexAttribPointer(VERTEX_ATTR_NORMAL,3,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, normal));
-            glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
-            glVertexAttribPointer(VERTEX_ATTR_TEXTURE,2,GL_FLOAT, GL_FALSE, sizeof(Vertex3DTexture), (const GLvoid*)offsetof(Vertex3DTexture, texture));
-
-            //IBO
-            iboList.resize(iboList.size()+1);
-            glGenBuffers(1, &iboList[iboList.size()-1]);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboList[iboList.size()-1]);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, myCubeList.getIBOCount(myCubeList.getSize()-1)*sizeof(uint32_t), myCubeList.getIBOPointer(myCubeList.getSize()-1), GL_STATIC_DRAW);
-*/
         }else if(deleteCube == true){
             myCubeList.deleteCube(selectedCube, iboList, vaoList, vboList);
             currentActive = -1;
@@ -643,9 +555,9 @@ int main(int argc, char** argv) {
         glUniform3f(uKd, 0.6, 0.6, 0.6);
         glUniform3f(uKs, 0, 0.0, 0.0);
         glUniform1f(uShininess, 32.0);
-        glm::vec4 LightPos = ViewMatrix * glm::vec4((float) xLightP, (float) yLightP, (float) zLightP, 1);
+        glm::vec4 LightPos = ViewMatrix * glm::vec4((float) positionLightP[0], (float) positionLightP[1], (float) positionLightP[2], 1);
         glUniform3f(uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
-        glm::vec4 LightDir = ViewMatrix * glm::vec4((float) xLightD, (float) yLightD, (float) zLightD, 1);
+        glm::vec4 LightDir = ViewMatrix * glm::vec4((float) positionLightD[0], (float) positionLightD[1], (float) positionLightD[2], 1);
         glUniform3f(uLightDir_vs, LightDir.x, LightDir.y, LightDir.z);
         
         // On/Off lights
