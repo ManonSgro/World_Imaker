@@ -81,17 +81,14 @@ apt-get install libsdl2-dev
 ```
 - CMake
 
-On Linux, make sure CMake is installed for building the project. If not, install it :
+Make sure CMake is installed for building the project. If not, install it :
 ```
 apt-get install cmake
 ```
-On Windows, CMake can be installed downloading the <a href="https://cmake.org/download/">binary file</a> and running it.
-
 More information about CMake installing and running for different platforms on <a href="https://cmake.org">CMake official website</a>.
 
-### Installation
+### Installation (Linux)
  
-- On Linux (command lines):
 1. Clone the repository
 ```sh
 git clone https://github.com/ManonSgro/World_Imaker.git
@@ -112,18 +109,6 @@ make
 ./bin/World_Imaker
 ```
 5. A window should appear. Have fun!
-
-- On Windows:
-1. Download the repository from Github or clone it with the command line :
-```sh
-git clone https://github.com/ManonSgro/World_Imaker.git
-```
-2. Once CMake is installed, run the `cmake-gui.exe` program. A window should appear.
-3. Fill the `source code` input with `your/path/to/World_Imaker` and the `binary` input with the folder of your choice.
-4. Click on `Configure`, choose an installed generator, then click on `Finish`.
-5. Click on `Generate` to build the project.
-6. Run the project by 
-
 
 
 <!-- USAGE EXAMPLES -->
