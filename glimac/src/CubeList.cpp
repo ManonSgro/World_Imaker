@@ -153,7 +153,7 @@ namespace glimac {
     }
 
     //Renvoit la matrice de poids
-    Eigen::VectorXd CubeList::RBF(Eigen::MatrixXd points){
+    Eigen::VectorXd CubeList::radialBasisFunction(Eigen::MatrixXd points){
         std::cout << "Trying hard to use radial basis function." << std::endl;
         // Build distances matrix
         /*Eigen::MatrixXd distances(points.rows(), points.rows());
@@ -219,7 +219,8 @@ namespace glimac {
                 pow(points(xj,2) - points(xi, 2), 2));
                 //A.insert(xi,xj) = exp( -distance);
                 //A.insert(xi,xj) = 1/(1+sqrt(1+distance));
-                A(xi,xj) = distance;
+                //A(xi,xj) = distance;
+                A(xi,xj) = sqrt(1+pow(distance,2));
                 //A(xi,xj) = -exp(-pow(-0.2*distance,2));
                 //A(xi,xj) = pow((1+pow(0.2*distance, 2)), -1);
                 std::cout << "Distance entre : " << xi << " et " << xj << " = " << A(xi,xj) << std::endl;
@@ -229,7 +230,7 @@ namespace glimac {
         std::cout << A << std::endl;
         //fill b
         for(int i=0; i<points.rows(); i++){
-            b(i) = points(i, 2);
+            b(i) = points(i, 1);
         }
         std::cout << "Here is b:" << std::endl;
         std::cout << b << std::endl;
@@ -312,11 +313,11 @@ namespace glimac {
     double CubeList::interpolatePoints(double x, double y, Eigen::MatrixXd points){
         //g(x,y) = sum(w_i*rbf(|(x,y)-(xi, yi)))
         double z=0;
-        Eigen::VectorXd w = this->RBF(points);
+        Eigen::VectorXd w = this->radialBasisFunction(points);
         for(int i=0; i<points.rows(); i++){
             double distance = sqrt(pow(points(i,0) - x, 2) +  
-                pow(points(i,1) - y, 2) +  
-                pow(points(i,2) - 0, 2) * 1.0);
+                pow(points(i,2) - y, 2) +  
+                pow(points(i,1) - 0, 2) * 1.0);
             z += w(i)*distance;
         }
         std::cout << "ZZZ:" << z << std::endl;

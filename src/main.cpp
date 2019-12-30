@@ -93,15 +93,7 @@ int main(int argc, char** argv) {
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
 
-    /** INITIALIZE SCENE **/
-    // std::vector<GLuint> vboList(1);
-    // std::vector<GLuint> vaoList(1);
-    // std::vector<GLuint> iboList(1);
-    // // VAO attributes index
-    // const GLuint VERTEX_ATTR_POSITION = 0;
-    // const GLuint VERTEX_ATTR_NORMAL = 1;
-    // const GLuint VERTEX_ATTR_TEXTURE = 2;
-    
+    /** INITIALIZE SCENE **/    
     // Add 3 cubes
     CubeList myCubeList;
     myCubeList.addCube(Cube());
@@ -109,9 +101,9 @@ int main(int argc, char** argv) {
     myCubeList.addCube(Cube());
 
     // Translate cubes
-    myCubeList.setTrans(0, 0,0,0);
-    myCubeList.setTrans(1, 1,0,0);
-    myCubeList.setTrans(2, -1,0,0);
+    myCubeList.setTrans(0, 0,10,0);
+    myCubeList.setTrans(1, -10,0,0);
+    myCubeList.setTrans(2, 10,0,0);
 
     // Link cubes with textures
     myCubeList.setTextureIndex(0, 1);
@@ -122,6 +114,19 @@ int main(int argc, char** argv) {
     Cube cursor;
     cursor.setTrans(myCubeList.getTrans(0).x,myCubeList.getTrans(0).y,myCubeList.getTrans(0).z);
     cursor.setTextureIndex(0);
+
+    /*Eigen::MatrixXd points(3,3);
+    points << 0,10,0,
+            -10,0,0,
+            10,0,0;
+    //Eigen::VectorXd poids = myCubeList.RBF(points);
+    for(int i=-10;i<10;i++){
+        myCubeList.addCube(Cube());
+        int y = myCubeList.interpolatePoints(i,0, points);
+        myCubeList.setTrans(myCubeList.getSize()-1, i,y,0);
+        myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
+    }*/
+
 
     /** INITIALIZE IMGUI */
 
@@ -240,7 +245,6 @@ int main(int argc, char** argv) {
     myCubeList.generateVBO();
 
     /** INITIALIZE VAOs **/
-
     // Generate a VAO
     glGenVertexArrays(1, myCubeList.getVAOListItem(0));
     // VAO Binding
@@ -327,70 +331,73 @@ int main(int argc, char** argv) {
 
             c.calculateVectors();   // Calculate the new vectors of the camera
             if(e.type == SDL_KEYDOWN){
-                // Move the cursor
-                if (e.key.keysym.sym == SDLK_a){
-                    cursor.setTrans(cursor.getTrans().x - 1, cursor.getTrans().y, cursor.getTrans().z);
-                }
-                if (e.key.keysym.sym == SDLK_q){
-                    cursor.setTrans(cursor.getTrans().x + 1, cursor.getTrans().y, cursor.getTrans().z);
-                }
-                if (e.key.keysym.sym == SDLK_z){
-                    cursor.setTrans(cursor.getTrans().x, cursor.getTrans().y  - 1, cursor.getTrans().z);
-                }
-                if (e.key.keysym.sym == SDLK_s){
-                    cursor.setTrans(cursor.getTrans().x, cursor.getTrans().y + 1, cursor.getTrans().z);
-                }
-                if (e.key.keysym.sym == SDLK_e){
-                    cursor.setTrans(cursor.getTrans().x, cursor.getTrans().y, cursor.getTrans().z - 1);
-                }
-                if (e.key.keysym.sym == SDLK_d){
-                    cursor.setTrans(cursor.getTrans().x, cursor.getTrans().y, cursor.getTrans().z + 1);
-                }
+                if(!ImGui::IsAnyItemActive()){
+                    // Move the cursor
+                    if (e.key.keysym.sym == SDLK_a){
+                        cursor.setTrans(cursor.getTrans().x - 1, cursor.getTrans().y, cursor.getTrans().z);
+                    }
+                    if (e.key.keysym.sym == SDLK_q){
+                        cursor.setTrans(cursor.getTrans().x + 1, cursor.getTrans().y, cursor.getTrans().z);
+                    }
+                    if (e.key.keysym.sym == SDLK_z){
+                        cursor.setTrans(cursor.getTrans().x, cursor.getTrans().y  - 1, cursor.getTrans().z);
+                    }
+                    if (e.key.keysym.sym == SDLK_s){
+                        cursor.setTrans(cursor.getTrans().x, cursor.getTrans().y + 1, cursor.getTrans().z);
+                    }
+                    if (e.key.keysym.sym == SDLK_e){
+                        cursor.setTrans(cursor.getTrans().x, cursor.getTrans().y, cursor.getTrans().z - 1);
+                    }
+                    if (e.key.keysym.sym == SDLK_d){
+                        cursor.setTrans(cursor.getTrans().x, cursor.getTrans().y, cursor.getTrans().z + 1);
+                    }
 
-                // Move the camera
-                if (e.key.keysym.sym == SDLK_KP_8){
-                    glm::vec3 newPos = c.getPosition() + (c.getUp() * c.getSpeed());
-                    c.setPosition(newPos);
+                    // Move the camera
+                    if (e.key.keysym.sym == SDLK_KP_8){
+                        glm::vec3 newPos = c.getPosition() + (c.getUp() * c.getSpeed());
+                        c.setPosition(newPos);
+                    }
+                    if (e.key.keysym.sym == SDLK_KP_2){
+                        glm::vec3 newPos = c.getPosition() - (c.getUp() * c.getSpeed());
+                        c.setPosition(newPos);
+                    }
+                    if (e.key.keysym.sym == SDLK_KP_6){
+                        glm::vec3 newPos = c.getPosition() + (c.getRight() * c.getSpeed());
+                        c.setPosition(newPos);
+                    }
+                    if (e.key.keysym.sym == SDLK_KP_4){
+                        glm::vec3 newPos = c.getPosition() - (c.getRight() * c.getSpeed());
+                        c.setPosition(newPos);
+                    }
+                    if (e.key.keysym.sym == SDLK_KP_PLUS){
+                        glm::vec3 newPos = c.getPosition() + (c.getDirection() * c.getSpeed());
+                        c.setPosition(newPos);
+                    }
+                    if (e.key.keysym.sym == SDLK_KP_MINUS){
+                        glm::vec3 newPos = c.getPosition() - (c.getDirection() * c.getSpeed());
+                        c.setPosition(newPos);
+                    }
+                    if (e.key.keysym.sym == SDLK_KP_9){
+                        c.calculateVectors();
+                        c.setHorizontalAngle(c.getHorizontalAngle() + c.getSpeed());
+                        c.computeMatricesFromInputs();
+                    }
+                    if (e.key.keysym.sym == SDLK_KP_7){
+                        c.setHorizontalAngle(c.getHorizontalAngle() - c.getSpeed());
+                    }
+                    if (e.key.keysym.sym == SDLK_KP_3){
+                        c.setVerticalAngle(c.getVerticalAngle() + c.getSpeed());
+                    }
+                    if (e.key.keysym.sym == SDLK_KP_1){
+                        c.setVerticalAngle(c.getVerticalAngle() - c.getSpeed());
+                    }
+                    if (e.key.keysym.sym == SDLK_KP_5){
+                        c.setPosition(glm::vec3(0,0,5));
+                        c.setHorizontalAngle(3.14f);
+                        c.setVerticalAngle(0.0f);
+                    }
                 }
-                if (e.key.keysym.sym == SDLK_KP_2){
-                    glm::vec3 newPos = c.getPosition() - (c.getUp() * c.getSpeed());
-                    c.setPosition(newPos);
-                }
-                if (e.key.keysym.sym == SDLK_KP_6){
-                    glm::vec3 newPos = c.getPosition() + (c.getRight() * c.getSpeed());
-                    c.setPosition(newPos);
-                }
-                if (e.key.keysym.sym == SDLK_KP_4){
-                    glm::vec3 newPos = c.getPosition() - (c.getRight() * c.getSpeed());
-                    c.setPosition(newPos);
-                }
-                if (e.key.keysym.sym == SDLK_KP_PLUS){
-                    glm::vec3 newPos = c.getPosition() + (c.getDirection() * c.getSpeed());
-                    c.setPosition(newPos);
-                }
-                if (e.key.keysym.sym == SDLK_KP_MINUS){
-                    glm::vec3 newPos = c.getPosition() - (c.getDirection() * c.getSpeed());
-                    c.setPosition(newPos);
-                }
-                if (e.key.keysym.sym == SDLK_KP_9){
-                    c.calculateVectors();
-                    c.setHorizontalAngle(c.getHorizontalAngle() + c.getSpeed());
-                    c.computeMatricesFromInputs();
-                }
-                if (e.key.keysym.sym == SDLK_KP_7){
-                    c.setHorizontalAngle(c.getHorizontalAngle() - c.getSpeed());
-                }
-                if (e.key.keysym.sym == SDLK_KP_3){
-                    c.setVerticalAngle(c.getVerticalAngle() + c.getSpeed());
-                }
-                if (e.key.keysym.sym == SDLK_KP_1){
-                    c.setVerticalAngle(c.getVerticalAngle() - c.getSpeed());
-                }
-                if (e.key.keysym.sym == SDLK_KP_5){
-                    c.setPosition(glm::vec3(0,0,5));
-                    c.setHorizontalAngle(3.14f);
-                    c.setVerticalAngle(0.0f);
-                }
+                
             }
             c.computeMatricesFromInputs();   // Calculate the new matrix for the camera
         }
@@ -415,14 +422,14 @@ int main(int argc, char** argv) {
         ImGui::SetWindowSize(ImVec2(menuWidth,windowHeight+menuWidth));
 
         ImGui::Text("Coordinates");
-        ImGui::Text("X :");
         cursorPosition[0] = cursor.getTrans().x;
+        cursorPosition[1] = cursor.getTrans().y;
+        cursorPosition[2] = cursor.getTrans().z;
+        ImGui::Text("X :");
         ImGui::InputInt("x", &cursorPosition[0]);
         ImGui::Text("Y :");
-        cursorPosition[1] = cursor.getTrans().y;
         ImGui::InputInt("y", &cursorPosition[1]);
         ImGui::Text("Z :");
-        cursorPosition[2] = cursor.getTrans().z;
         ImGui::InputInt("z", &cursorPosition[2]);
         
         // Directive light
@@ -590,12 +597,12 @@ int main(int argc, char** argv) {
         glUniform1i(textures[myCubeList.getTextureIndex(0)].getUniformLocation(), 0);
         
         // Active first MVP
-        ModelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f));
+        /*ModelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f));
         ModelMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(0.0f), glm::vec3(0.0f,0.0f,0.0f));
         ModelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f));
         glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjectionMatrix * ViewMatrix * ModelMatrix)); //Model View Projection
         glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(ViewMatrix * ModelMatrix)); //Model View Projection
-        glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix)); //Model View Projection
+        glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix)); //Model View Projection*/
 
         // Reset variables
         currentActive = -1;
