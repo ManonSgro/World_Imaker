@@ -337,7 +337,7 @@ int main(int argc, char** argv) {
     std::string loadFilePath;
     Controls c;
     c.calculateVectors();
-    c.computeMatricesFromInputs(windowWidth,windowHeight);
+    c.computeFinalMatrices();
     while(!done) {
         bool addCube = false;
         bool deleteCube = false;
@@ -445,7 +445,7 @@ int main(int argc, char** argv) {
                 if (e.key.keysym.sym == SDLK_KP_9){
                     c.calculateVectors();
                     c.setHorizontalAngle(c.getHorizontalAngle() + c.getSpeed());
-                    c.computeMatricesFromInputs(windowWidth,windowHeight);
+                    c.computeFinalMatrices();
                 }
                 if (e.key.keysym.sym == SDLK_KP_7){
                     c.setHorizontalAngle(c.getHorizontalAngle() - c.getSpeed());
@@ -462,7 +462,7 @@ int main(int argc, char** argv) {
                     c.setVerticalAngle(0.0f);
                 }
             }
-            c.computeMatricesFromInputs(windowWidth,windowHeight);
+            c.computeFinalMatrices();
 
         }
                     
@@ -473,7 +473,6 @@ int main(int argc, char** argv) {
 
             /*** CAMERA ***/
             //c.calculateVectors();
-            //c.computeMatricesFromInputs(windowWidth,windowHeight);
             const glm::mat4 ProjectionMatrix = c.getProjectionMatrix();
             const glm::mat4 ViewMatrix = c.getViewMatrix();
 
