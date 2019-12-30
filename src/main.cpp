@@ -101,9 +101,9 @@ int main(int argc, char** argv) {
     myCubeList.addCube(Cube());
 
     // Translate cubes
-    myCubeList.setTrans(0, 0,10,0);
-    myCubeList.setTrans(1, -10,0,0);
-    myCubeList.setTrans(2, 10,0,0);
+    myCubeList.setTrans(0, 0,0,0);
+    myCubeList.setTrans(1, -1,0,0);
+    myCubeList.setTrans(2, 1,0,0);
 
     // Link cubes with textures
     myCubeList.setTextureIndex(0, 1);
@@ -115,17 +115,7 @@ int main(int argc, char** argv) {
     cursor.setTrans(myCubeList.getTrans(0).x,myCubeList.getTrans(0).y,myCubeList.getTrans(0).z);
     cursor.setTextureIndex(0);
 
-    /*Eigen::MatrixXd points(3,3);
-    points << 0,10,0,
-            -10,0,0,
-            10,0,0;
-    //Eigen::VectorXd poids = myCubeList.RBF(points);
-    for(int i=-10;i<10;i++){
-        myCubeList.addCube(Cube());
-        int y = myCubeList.interpolatePoints(i,0, points);
-        myCubeList.setTrans(myCubeList.getSize()-1, i,y,0);
-        myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
-    }*/
+    
 
 
     /** INITIALIZE IMGUI */
@@ -313,6 +303,10 @@ int main(int argc, char** argv) {
     c.calculateVectors();
     c.computeMatricesFromInputs();
 
+    // Initialize control points matrix for RBF
+    Eigen::MatrixXd controlPoints(0,3);
+    //controlPoints << 1,1,0;
+
     /** APPLICATION LOOP **/
     while(!done){
         bool addCube = false;
@@ -331,7 +325,7 @@ int main(int argc, char** argv) {
 
             c.calculateVectors();   // Calculate the new vectors of the camera
             if(e.type == SDL_KEYDOWN){
-                if(!ImGui::IsAnyItemActive()){
+                if(!ImGui::IsAnyItemActive()){ // Avoid keyboard events when an input is focused
                     // Move the cursor
                     if (e.key.keysym.sym == SDLK_a){
                         cursor.setTrans(cursor.getTrans().x - 1, cursor.getTrans().y, cursor.getTrans().z);
@@ -487,6 +481,73 @@ int main(int argc, char** argv) {
             
             // Load file
             myCubeList.load(file, cursorPosition, currentActive, item_LightD, positionLightD, item_LightP, positionLightP);
+        }
+
+        ImGui::End();
+
+        // File menu
+        ImGui::Begin("Procedural generation", NULL);
+        
+        // Save
+        ImGui::Text("Control points :");
+        for(int i=0; i<controlPoints.rows(); i++){
+            const char labelX[] = {'X', (char)i};
+            const char labelZ[] = {'Z', (char)i};
+            ImGui::Text("Point %d:", i);
+            ImGui::InputDouble(labelX, &controlPoints(i,0));
+            ImGui::InputDouble(labelZ, &controlPoints(i,1));
+        }
+        if(ImGui::Button("Add control point")){
+            controlPoints.resize(controlPoints.rows()+1, 3);
+            controlPoints(controlPoints.rows()-1, 0) =1;
+            controlPoints(controlPoints.rows()-1, 1) =1;
+            controlPoints(controlPoints.rows()-1, 2) =0;
+            std::cout << controlPoints << std::endl;
+        }
+
+        // Generate
+        if(ImGui::Button("Generate scene")){
+            // Save current file
+            myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP);
+
+            // Reset cube list
+            std::cout << "Deleting ..." << myCubeList.getSize() << "...cubes" << std::endl;
+            while(myCubeList.getSize()){
+                int i = 0;
+                myCubeList.deleteCube(i);
+                currentActive = -1;
+            }
+            
+            // Generate scene
+            /*Eigen::MatrixXd points(3,3);
+            points << 0,4,0,
+                    -10,0,0,
+                    10,0,0;
+            //Eigen::VectorXd poids = myCubeList.RBF(points);*/
+            int lowerX = controlPoints(0,0);
+            int higherX = controlPoints(0,0);
+            int lowerZ = controlPoints(0,1);
+            int higherZ = controlPoints(0,1);
+            for(int i=0; i<controlPoints.rows(); i++){
+                if(controlPoints(i,0)<lowerX){
+                    lowerX=controlPoints(i,0);
+                }else if(controlPoints(i,0)>higherX){
+                    higherX=controlPoints(i,0);
+                }else if(controlPoints(i,1)>higherZ){
+                    higherZ=controlPoints(i,1);
+                }else if(controlPoints(i,1)<lowerZ){
+                    lowerZ=controlPoints(i,1);
+                }
+            }
+            std::cout << lowerX << higherX << lowerZ << higherZ << std::endl;
+            for(int i=lowerX;i<=higherX;i++){
+                for(int j=lowerZ; j<=higherZ; j++){
+                    myCubeList.addCube(Cube());
+                    int y = myCubeList.interpolatePoints(i,j, controlPoints);
+                    myCubeList.setTrans(myCubeList.getSize()-1, i,y,j);
+                    myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
+                }
+            }
         }
 
         ImGui::End();

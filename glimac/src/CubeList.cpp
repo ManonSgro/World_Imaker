@@ -212,18 +212,20 @@ namespace glimac {
         Eigen::MatrixXd A(rows, rows);
         Eigen::VectorXd x(points.rows()), b(points.rows());
         //fill A
-        for(int xi=0; xi<points.rows(); xi++){
-            for(int xj=0; xj<points.rows(); xj++){
-                float distance = sqrt(pow(points(xj,0) - points(xi, 0), 2) +  
-                pow(points(xj,1) - points(xi, 1), 2) +  
-                pow(points(xj,2) - points(xi, 2), 2));
+        for(int pointI=0; pointI<points.rows(); pointI++){
+            for(int pointJ=0; pointJ<points.rows(); pointJ++){
+                float distance = sqrt(pow(points(pointJ,0) - points(pointI, 0), 2) +  
+                pow(points(pointJ,1) - points(pointI, 1), 2) +  
+                pow(points(pointJ,2) - points(pointI, 2), 2));
+                // RBF
                 //A.insert(xi,xj) = exp( -distance);
                 //A.insert(xi,xj) = 1/(1+sqrt(1+distance));
-                //A(xi,xj) = distance;
-                A(xi,xj) = sqrt(1+pow(distance,2));
+                //A(pointI,pointJ) = distance;
+                A(pointI,pointJ) = sqrt(1+pow(distance,2));
+                //A(xi,xj) = sqrt(1+pow(distance,2));
                 //A(xi,xj) = -exp(-pow(-0.2*distance,2));
                 //A(xi,xj) = pow((1+pow(0.2*distance, 2)), -1);
-                std::cout << "Distance entre : " << xi << " et " << xj << " = " << A(xi,xj) << std::endl;
+                std::cout << "Distance entre : " << pointI << " et " << pointJ << " = " << A(pointI,pointJ) << std::endl;
             }
         }
         std::cout << "Here is A:" << std::endl;
@@ -310,18 +312,18 @@ namespace glimac {
         // return matrice(vecteur?) de poids == x
     }
     //Entrée: x et y random dans l'enceinte de la grille -- Sortie : z calculé grâce aux poids trouvés au-dessus
-    double CubeList::interpolatePoints(double x, double y, Eigen::MatrixXd points){
+    double CubeList::interpolatePoints(double x, double z, Eigen::MatrixXd points){
         //g(x,y) = sum(w_i*rbf(|(x,y)-(xi, yi)))
-        double z=0;
+        double y=0;
         Eigen::VectorXd w = this->radialBasisFunction(points);
         for(int i=0; i<points.rows(); i++){
             double distance = sqrt(pow(points(i,0) - x, 2) +  
-                pow(points(i,2) - y, 2) +  
+                pow(points(i,2) - z, 2) +  
                 pow(points(i,1) - 0, 2) * 1.0);
-            z += w(i)*distance;
+            y += w(i)*distance;
         }
-        std::cout << "ZZZ:" << z << std::endl;
-        return (int)z;
+        std::cout << "y:" << y << std::endl;
+        return (int)y;
     }
 
     void CubeList::save(std::string filepath, int item_LightD, std::vector<int> positionLightD, int item_LightP, std::vector<int> positionLightP){
