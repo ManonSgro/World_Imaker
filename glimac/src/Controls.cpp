@@ -1,7 +1,14 @@
-#include <cmath>
-#include <vector>
-#include <iostream>
-#include "glimac/common.hpp"
+/**
+ * \file Controls.cpp
+ * \brief Gestion des caméras
+ * \author MANSION Amélia & SGRO' Manon
+ * \version 0.1
+ * \date 20 décembre 2019
+ *
+ * Gestion des caméras dans la scène (sur les axes x,y,z)
+ *
+ */
+
 #include "glimac/Controls.hpp"
 
 namespace glimac {
@@ -108,7 +115,7 @@ void Controls::setDirection(glm::vec3 newDirection){
     direction = newDirection;
 }
 
-void Controls::computeMatricesFromInputs(){
+void Controls::computeFinalMatrices(){
 
 	
     float FoV = initialFoV;//  * MouseWheel();
