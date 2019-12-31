@@ -69,67 +69,618 @@ $(function() {
 <div class="title">glimac::Controls Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Classe representant une camera.  
+ <a href="classglimac_1_1Controls.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="Controls_8hpp_source.html">Controls.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1937e9b03344764ec2bb608cf5d42f20"><td class="memItemLeft" align="right" valign="top"><a id="a1937e9b03344764ec2bb608cf5d42f20"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>calculateVectors</b> ()</td></tr>
+<tr class="memitem:a79e53d145de5f030bf72689db7bc928c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#a79e53d145de5f030bf72689db7bc928c">Controls</a> ()</td></tr>
+<tr class="memdesc:a79e53d145de5f030bf72689db7bc928c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructeur.  <a href="#a79e53d145de5f030bf72689db7bc928c">More...</a><br /></td></tr>
+<tr class="separator:a79e53d145de5f030bf72689db7bc928c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2fdd147ad3c35e410b70a58559544e3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#ac2fdd147ad3c35e410b70a58559544e3">~Controls</a> ()</td></tr>
+<tr class="memdesc:ac2fdd147ad3c35e410b70a58559544e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructeur.  <a href="#ac2fdd147ad3c35e410b70a58559544e3">More...</a><br /></td></tr>
+<tr class="separator:ac2fdd147ad3c35e410b70a58559544e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1937e9b03344764ec2bb608cf5d42f20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#a1937e9b03344764ec2bb608cf5d42f20">calculateVectors</a> ()</td></tr>
+<tr class="memdesc:a1937e9b03344764ec2bb608cf5d42f20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mise à jour des informations caméra.  <a href="#a1937e9b03344764ec2bb608cf5d42f20">More...</a><br /></td></tr>
 <tr class="separator:a1937e9b03344764ec2bb608cf5d42f20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c54964b99d3231ce427ffbff4cd1590"><td class="memItemLeft" align="right" valign="top"><a id="a3c54964b99d3231ce427ffbff4cd1590"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>computeMatricesFromInputs</b> ()</td></tr>
-<tr class="separator:a3c54964b99d3231ce427ffbff4cd1590"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac71089c5a9f4f1d78c5bbfeec6fef620"><td class="memItemLeft" align="right" valign="top"><a id="ac71089c5a9f4f1d78c5bbfeec6fef620"></a>
-glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>getViewMatrix</b> ()</td></tr>
+<tr class="memitem:a03104d031d93fdb96ab945d385ecdca0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#a03104d031d93fdb96ab945d385ecdca0">computeFinalMatrices</a> ()</td></tr>
+<tr class="memdesc:a03104d031d93fdb96ab945d385ecdca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mise à jour des informations caméra.  <a href="#a03104d031d93fdb96ab945d385ecdca0">More...</a><br /></td></tr>
+<tr class="separator:a03104d031d93fdb96ab945d385ecdca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac71089c5a9f4f1d78c5bbfeec6fef620"><td class="memItemLeft" align="right" valign="top">glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#ac71089c5a9f4f1d78c5bbfeec6fef620">getViewMatrix</a> ()</td></tr>
+<tr class="memdesc:ac71089c5a9f4f1d78c5bbfeec6fef620"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informations de la ViewMatrix.  <a href="#ac71089c5a9f4f1d78c5bbfeec6fef620">More...</a><br /></td></tr>
 <tr class="separator:ac71089c5a9f4f1d78c5bbfeec6fef620"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb14a40e7d273aec1b6095d8bde08437"><td class="memItemLeft" align="right" valign="top"><a id="aeb14a40e7d273aec1b6095d8bde08437"></a>
-glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>getProjectionMatrix</b> ()</td></tr>
+<tr class="memitem:aeb14a40e7d273aec1b6095d8bde08437"><td class="memItemLeft" align="right" valign="top">glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#aeb14a40e7d273aec1b6095d8bde08437">getProjectionMatrix</a> ()</td></tr>
+<tr class="memdesc:aeb14a40e7d273aec1b6095d8bde08437"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informations de la ProjectionMatrix.  <a href="#aeb14a40e7d273aec1b6095d8bde08437">More...</a><br /></td></tr>
 <tr class="separator:aeb14a40e7d273aec1b6095d8bde08437"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f0ffddd68aec95f01abf802be75a686"><td class="memItemLeft" align="right" valign="top"><a id="a2f0ffddd68aec95f01abf802be75a686"></a>
-glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>getPosition</b> ()</td></tr>
+<tr class="memitem:a2f0ffddd68aec95f01abf802be75a686"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#a2f0ffddd68aec95f01abf802be75a686">getPosition</a> ()</td></tr>
+<tr class="memdesc:a2f0ffddd68aec95f01abf802be75a686"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informations de la position.  <a href="#a2f0ffddd68aec95f01abf802be75a686">More...</a><br /></td></tr>
 <tr class="separator:a2f0ffddd68aec95f01abf802be75a686"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a106c6381601ce5aace8ffdc0b4b7dd95"><td class="memItemLeft" align="right" valign="top"><a id="a106c6381601ce5aace8ffdc0b4b7dd95"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setPosition</b> (glm::vec3 newPos)</td></tr>
+<tr class="memitem:a106c6381601ce5aace8ffdc0b4b7dd95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#a106c6381601ce5aace8ffdc0b4b7dd95">setPosition</a> (glm::vec3 newPos)</td></tr>
+<tr class="memdesc:a106c6381601ce5aace8ffdc0b4b7dd95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Edition de la position.  <a href="#a106c6381601ce5aace8ffdc0b4b7dd95">More...</a><br /></td></tr>
 <tr class="separator:a106c6381601ce5aace8ffdc0b4b7dd95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae96ae04755ebbcf8528d8299a637225f"><td class="memItemLeft" align="right" valign="top"><a id="ae96ae04755ebbcf8528d8299a637225f"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getHorizontalAngle</b> ()</td></tr>
+<tr class="memitem:ae96ae04755ebbcf8528d8299a637225f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#ae96ae04755ebbcf8528d8299a637225f">getHorizontalAngle</a> ()</td></tr>
+<tr class="memdesc:ae96ae04755ebbcf8528d8299a637225f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informations de l'angle horizontal.  <a href="#ae96ae04755ebbcf8528d8299a637225f">More...</a><br /></td></tr>
 <tr class="separator:ae96ae04755ebbcf8528d8299a637225f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30b750a3e70f3a273a2abc6bc4932896"><td class="memItemLeft" align="right" valign="top"><a id="a30b750a3e70f3a273a2abc6bc4932896"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setHorizontalAngle</b> (float newAngle)</td></tr>
+<tr class="memitem:a30b750a3e70f3a273a2abc6bc4932896"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#a30b750a3e70f3a273a2abc6bc4932896">setHorizontalAngle</a> (float newAngle)</td></tr>
+<tr class="memdesc:a30b750a3e70f3a273a2abc6bc4932896"><td class="mdescLeft">&#160;</td><td class="mdescRight">Edition de l'angle horizontal.  <a href="#a30b750a3e70f3a273a2abc6bc4932896">More...</a><br /></td></tr>
 <tr class="separator:a30b750a3e70f3a273a2abc6bc4932896"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a098df45aa771926c1b25e4ef2cdbf52a"><td class="memItemLeft" align="right" valign="top"><a id="a098df45aa771926c1b25e4ef2cdbf52a"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getVerticalAngle</b> ()</td></tr>
+<tr class="memitem:a098df45aa771926c1b25e4ef2cdbf52a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#a098df45aa771926c1b25e4ef2cdbf52a">getVerticalAngle</a> ()</td></tr>
+<tr class="memdesc:a098df45aa771926c1b25e4ef2cdbf52a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informations de l'angle vertical.  <a href="#a098df45aa771926c1b25e4ef2cdbf52a">More...</a><br /></td></tr>
 <tr class="separator:a098df45aa771926c1b25e4ef2cdbf52a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83626414d05716552bfe4a919ea0ff5c"><td class="memItemLeft" align="right" valign="top"><a id="a83626414d05716552bfe4a919ea0ff5c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setVerticalAngle</b> (float newAngle)</td></tr>
+<tr class="memitem:a83626414d05716552bfe4a919ea0ff5c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#a83626414d05716552bfe4a919ea0ff5c">setVerticalAngle</a> (float newAngle)</td></tr>
+<tr class="memdesc:a83626414d05716552bfe4a919ea0ff5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Edition de l'angle vertical.  <a href="#a83626414d05716552bfe4a919ea0ff5c">More...</a><br /></td></tr>
 <tr class="separator:a83626414d05716552bfe4a919ea0ff5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d030431b293ace529d7696c2444fd68"><td class="memItemLeft" align="right" valign="top"><a id="a6d030431b293ace529d7696c2444fd68"></a>
-glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>getUp</b> ()</td></tr>
+<tr class="memitem:a6d030431b293ace529d7696c2444fd68"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#a6d030431b293ace529d7696c2444fd68">getUp</a> ()</td></tr>
+<tr class="memdesc:a6d030431b293ace529d7696c2444fd68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informations de up.  <a href="#a6d030431b293ace529d7696c2444fd68">More...</a><br /></td></tr>
 <tr class="separator:a6d030431b293ace529d7696c2444fd68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9d4839c153b46efa419af8599d07d7b"><td class="memItemLeft" align="right" valign="top"><a id="aa9d4839c153b46efa419af8599d07d7b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setUp</b> (glm::vec3 newVec)</td></tr>
+<tr class="memitem:aa9d4839c153b46efa419af8599d07d7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#aa9d4839c153b46efa419af8599d07d7b">setUp</a> (glm::vec3 newVec)</td></tr>
+<tr class="memdesc:aa9d4839c153b46efa419af8599d07d7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Edition de up.  <a href="#aa9d4839c153b46efa419af8599d07d7b">More...</a><br /></td></tr>
 <tr class="separator:aa9d4839c153b46efa419af8599d07d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac3ad087d701019eede9beb547fe7425"><td class="memItemLeft" align="right" valign="top"><a id="aac3ad087d701019eede9beb547fe7425"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getSpeed</b> ()</td></tr>
+<tr class="memitem:aac3ad087d701019eede9beb547fe7425"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#aac3ad087d701019eede9beb547fe7425">getSpeed</a> ()</td></tr>
+<tr class="memdesc:aac3ad087d701019eede9beb547fe7425"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informations sur speed.  <a href="#aac3ad087d701019eede9beb547fe7425">More...</a><br /></td></tr>
 <tr class="separator:aac3ad087d701019eede9beb547fe7425"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdd360d577810fddb2f01a96dc5baacc"><td class="memItemLeft" align="right" valign="top"><a id="abdd360d577810fddb2f01a96dc5baacc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setSpeed</b> (float newSpeed)</td></tr>
+<tr class="memitem:abdd360d577810fddb2f01a96dc5baacc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#abdd360d577810fddb2f01a96dc5baacc">setSpeed</a> (float newSpeed)</td></tr>
+<tr class="memdesc:abdd360d577810fddb2f01a96dc5baacc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Edition de speed.  <a href="#abdd360d577810fddb2f01a96dc5baacc">More...</a><br /></td></tr>
 <tr class="separator:abdd360d577810fddb2f01a96dc5baacc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65b6d95a26fab1a0fba7b3e0dfbf7178"><td class="memItemLeft" align="right" valign="top"><a id="a65b6d95a26fab1a0fba7b3e0dfbf7178"></a>
-glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>getRight</b> ()</td></tr>
+<tr class="memitem:a65b6d95a26fab1a0fba7b3e0dfbf7178"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#a65b6d95a26fab1a0fba7b3e0dfbf7178">getRight</a> ()</td></tr>
+<tr class="memdesc:a65b6d95a26fab1a0fba7b3e0dfbf7178"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informations de right.  <a href="#a65b6d95a26fab1a0fba7b3e0dfbf7178">More...</a><br /></td></tr>
 <tr class="separator:a65b6d95a26fab1a0fba7b3e0dfbf7178"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae42a699a28d327cd7c9e1d01e78ae693"><td class="memItemLeft" align="right" valign="top"><a id="ae42a699a28d327cd7c9e1d01e78ae693"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setRight</b> (glm::vec3 newRight)</td></tr>
+<tr class="memitem:ae42a699a28d327cd7c9e1d01e78ae693"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#ae42a699a28d327cd7c9e1d01e78ae693">setRight</a> (glm::vec3 newRight)</td></tr>
+<tr class="memdesc:ae42a699a28d327cd7c9e1d01e78ae693"><td class="mdescLeft">&#160;</td><td class="mdescRight">Edition de right.  <a href="#ae42a699a28d327cd7c9e1d01e78ae693">More...</a><br /></td></tr>
 <tr class="separator:ae42a699a28d327cd7c9e1d01e78ae693"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb5245c5972c2d065f693e6899b805f6"><td class="memItemLeft" align="right" valign="top"><a id="acb5245c5972c2d065f693e6899b805f6"></a>
-glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>getDirection</b> ()</td></tr>
+<tr class="memitem:acb5245c5972c2d065f693e6899b805f6"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#acb5245c5972c2d065f693e6899b805f6">getDirection</a> ()</td></tr>
+<tr class="memdesc:acb5245c5972c2d065f693e6899b805f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informations de direction.  <a href="#acb5245c5972c2d065f693e6899b805f6">More...</a><br /></td></tr>
 <tr class="separator:acb5245c5972c2d065f693e6899b805f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeecf9a01133bdfa844e6282437601a00"><td class="memItemLeft" align="right" valign="top"><a id="aeecf9a01133bdfa844e6282437601a00"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setDirection</b> (glm::vec3 newDirection)</td></tr>
+<tr class="memitem:aeecf9a01133bdfa844e6282437601a00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classglimac_1_1Controls.html#aeecf9a01133bdfa844e6282437601a00">setDirection</a> (glm::vec3 newDirection)</td></tr>
+<tr class="memdesc:aeecf9a01133bdfa844e6282437601a00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Edition de direction.  <a href="#aeecf9a01133bdfa844e6282437601a00">More...</a><br /></td></tr>
 <tr class="separator:aeecf9a01133bdfa844e6282437601a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Classe representant une camera. </p>
+<p>La classe gère la création et la manipulation de la caméra dans une scène 3D. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a79e53d145de5f030bf72689db7bc928c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79e53d145de5f030bf72689db7bc928c">&#9670;&nbsp;</a></span>Controls()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glimac::Controls::Controls </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructeur. </p>
+<p>Constructeur de la classe <a class="el" href="classglimac_1_1Controls.html" title="Classe representant une camera. ">Controls</a></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">null</td><td>: aucuns parametres nécéssaires </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac2fdd147ad3c35e410b70a58559544e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2fdd147ad3c35e410b70a58559544e3">&#9670;&nbsp;</a></span>~Controls()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">glimac::Controls::~Controls </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destructeur. </p>
+<p>Destructeur de la classe <a class="el" href="classglimac_1_1Controls.html" title="Classe representant une camera. ">Controls</a></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">null</td><td>: aucuns parametres nécéssaires </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1937e9b03344764ec2bb608cf5d42f20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1937e9b03344764ec2bb608cf5d42f20">&#9670;&nbsp;</a></span>calculateVectors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void glimac::Controls::calculateVectors </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Mise à jour des informations caméra. </p>
+<p>Mise à jours de direction &amp; right &amp; up</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">null</td><td>: aucuns parametres nécéssaires </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a03104d031d93fdb96ab945d385ecdca0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03104d031d93fdb96ab945d385ecdca0">&#9670;&nbsp;</a></span>computeFinalMatrices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void glimac::Controls::computeFinalMatrices </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Mise à jour des informations caméra. </p>
+<p>Mise à jour de la ProjectionMatrix &amp; ViewMatrix</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">null</td><td>: aucuns parametres nécéssaires </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acb5245c5972c2d065f693e6899b805f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb5245c5972c2d065f693e6899b805f6">&#9670;&nbsp;</a></span>getDirection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::vec3 glimac::Controls::getDirection </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Informations de direction. </p>
+<p>Récuperer les informations du vecteur direction</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">null</td><td>: aucuns parametres nécéssaires </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae96ae04755ebbcf8528d8299a637225f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae96ae04755ebbcf8528d8299a637225f">&#9670;&nbsp;</a></span>getHorizontalAngle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float glimac::Controls::getHorizontalAngle </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Informations de l'angle horizontal. </p>
+<p>Récuperer les informations du vecteur HorizontalAngle</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">null</td><td>: aucuns parametres nécéssaires </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2f0ffddd68aec95f01abf802be75a686"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f0ffddd68aec95f01abf802be75a686">&#9670;&nbsp;</a></span>getPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::vec3 glimac::Controls::getPosition </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Informations de la position. </p>
+<p>Récuperer les informations du vecteur position</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">null</td><td>: aucuns parametres nécéssaires </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aeb14a40e7d273aec1b6095d8bde08437"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb14a40e7d273aec1b6095d8bde08437">&#9670;&nbsp;</a></span>getProjectionMatrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::mat4 glimac::Controls::getProjectionMatrix </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Informations de la ProjectionMatrix. </p>
+<p>Récuperer les informations de la ProjectionMatrix</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">null</td><td>: aucuns parametres nécéssaires </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a65b6d95a26fab1a0fba7b3e0dfbf7178"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65b6d95a26fab1a0fba7b3e0dfbf7178">&#9670;&nbsp;</a></span>getRight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::vec3 glimac::Controls::getRight </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Informations de right. </p>
+<p>Récuperer les informations du vecteur right</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">null</td><td>: aucuns parametres nécéssaires </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aac3ad087d701019eede9beb547fe7425"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac3ad087d701019eede9beb547fe7425">&#9670;&nbsp;</a></span>getSpeed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float glimac::Controls::getSpeed </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Informations sur speed. </p>
+<p>Récuperer les informations du float speed</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">null</td><td>: aucuns parametres nécéssaires </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6d030431b293ace529d7696c2444fd68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d030431b293ace529d7696c2444fd68">&#9670;&nbsp;</a></span>getUp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::vec3 glimac::Controls::getUp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Informations de up. </p>
+<p>Récuperer les informations du vecteur up</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">null</td><td>: aucuns parametres nécéssaires </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a098df45aa771926c1b25e4ef2cdbf52a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a098df45aa771926c1b25e4ef2cdbf52a">&#9670;&nbsp;</a></span>getVerticalAngle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float glimac::Controls::getVerticalAngle </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Informations de l'angle vertical. </p>
+<p>Récuperer les informations du vecteur VerticalAngle</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">null</td><td>: aucuns parametres nécéssaires </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac71089c5a9f4f1d78c5bbfeec6fef620"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac71089c5a9f4f1d78c5bbfeec6fef620">&#9670;&nbsp;</a></span>getViewMatrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::mat4 glimac::Controls::getViewMatrix </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Informations de la ViewMatrix. </p>
+<p>Récuperer les informations de la ViewMatrix</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">null</td><td>: aucuns parametres nécéssaires </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aeecf9a01133bdfa844e6282437601a00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeecf9a01133bdfa844e6282437601a00">&#9670;&nbsp;</a></span>setDirection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void glimac::Controls::setDirection </td>
+          <td>(</td>
+          <td class="paramtype">glm::vec3&#160;</td>
+          <td class="paramname"><em>newDirection</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Edition de direction. </p>
+<p>Modifier les informations du vecteur direction</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newDirection</td><td>: nouveau vecteur rigdirectionht </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a30b750a3e70f3a273a2abc6bc4932896"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30b750a3e70f3a273a2abc6bc4932896">&#9670;&nbsp;</a></span>setHorizontalAngle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void glimac::Controls::setHorizontalAngle </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>newAngle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Edition de l'angle horizontal. </p>
+<p>Modifier les informations du vecteur HorizontalAngle</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newAngle</td><td>: nouveau vecteur HorizontalAngle </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a106c6381601ce5aace8ffdc0b4b7dd95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a106c6381601ce5aace8ffdc0b4b7dd95">&#9670;&nbsp;</a></span>setPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void glimac::Controls::setPosition </td>
+          <td>(</td>
+          <td class="paramtype">glm::vec3&#160;</td>
+          <td class="paramname"><em>newPos</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Edition de la position. </p>
+<p>Modifier les informations du vecteur position</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newPos</td><td>: nouveau vecteur position </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae42a699a28d327cd7c9e1d01e78ae693"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae42a699a28d327cd7c9e1d01e78ae693">&#9670;&nbsp;</a></span>setRight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void glimac::Controls::setRight </td>
+          <td>(</td>
+          <td class="paramtype">glm::vec3&#160;</td>
+          <td class="paramname"><em>newRight</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Edition de right. </p>
+<p>Modifier les informations du vecteur right</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newRight</td><td>: nouveau vecteur right </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abdd360d577810fddb2f01a96dc5baacc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdd360d577810fddb2f01a96dc5baacc">&#9670;&nbsp;</a></span>setSpeed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void glimac::Controls::setSpeed </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>newSpeed</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Edition de speed. </p>
+<p>Modifier les informations du float speed</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newSpeed</td><td>: nouveau float speed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa9d4839c153b46efa419af8599d07d7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9d4839c153b46efa419af8599d07d7b">&#9670;&nbsp;</a></span>setUp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void glimac::Controls::setUp </td>
+          <td>(</td>
+          <td class="paramtype">glm::vec3&#160;</td>
+          <td class="paramname"><em>newVec</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Edition de up. </p>
+<p>Modifier les informations du vecteur up</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newVec</td><td>: nouveau vecteur up </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a83626414d05716552bfe4a919ea0ff5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83626414d05716552bfe4a919ea0ff5c">&#9670;&nbsp;</a></span>setVerticalAngle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void glimac::Controls::setVerticalAngle </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>newAngle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Edition de l'angle vertical. </p>
+<p>Modifier les informations du vecteur VerticalAngle</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newAngle</td><td>: nouveau VerticalAngle </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/media/msgro/Maxtor/World_Imaker/World_Imaker/glimac/include/glimac/<a class="el" href="Controls_8hpp_source.html">Controls.hpp</a></li>
-<li>/media/msgro/Maxtor/World_Imaker/World_Imaker/glimac/src/Controls.cpp</li>
+<li>/media/msgro/Maxtor/World_Imaker/World_Imaker_merge/World_Imaker/glimac/include/glimac/<a class="el" href="Controls_8hpp_source.html">Controls.hpp</a></li>
+<li>/media/msgro/Maxtor/World_Imaker/World_Imaker_merge/World_Imaker/glimac/src/<a class="el" href="Controls_8cpp.html">Controls.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

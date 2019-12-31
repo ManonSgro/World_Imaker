@@ -43,8 +43,6 @@ Controls::Controls(){
     up = glm::cross( right, direction );
 }
 
-Controls::~Controls(){}
-
 void Controls::calculateVectors(){
     
     // Direction : Spherical coordinates to Cartesian coordinates conversion

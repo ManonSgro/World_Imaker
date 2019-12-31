@@ -301,7 +301,7 @@ int main(int argc, char** argv) {
     // Camera initialisation
     Controls c;
     c.calculateVectors();
-    c.computeMatricesFromInputs();
+    c.computeFinalMatrices();
 
     // Initialize control points matrix for RBF
     Eigen::MatrixXd controlPoints(0,3);
@@ -374,7 +374,7 @@ int main(int argc, char** argv) {
                     if (e.key.keysym.sym == SDLK_KP_9){
                         c.calculateVectors();
                         c.setHorizontalAngle(c.getHorizontalAngle() + c.getSpeed());
-                        c.computeMatricesFromInputs();
+                        c.computeFinalMatrices();
                     }
                     if (e.key.keysym.sym == SDLK_KP_7){
                         c.setHorizontalAngle(c.getHorizontalAngle() - c.getSpeed());
@@ -393,7 +393,7 @@ int main(int argc, char** argv) {
                 }
                 
             }
-            c.computeMatricesFromInputs();   // Calculate the new matrix for the camera
+            c.computeFinalMatrices();   // Calculate the new matrix for the camera
         }
                     
         // Feed inputs to Dear ImGui, start new frame
