@@ -5,6 +5,7 @@
 #include "glimac/common.hpp"
 #include "glimac/CubeList.hpp"
 #include<Eigen/SparseLU> 
+#include<Eigen/Dense> 
 
 namespace glimac {
 
@@ -225,7 +226,7 @@ namespace glimac {
                 //A(xi,xj) = sqrt(1+pow(distance,2));
                 //A(xi,xj) = -exp(-pow(-0.2*distance,2));
                 //A(xi,xj) = pow((1+pow(0.2*distance, 2)), -1);
-                std::cout << "Distance entre : " << pointI << " et " << pointJ << " = " << A(pointI,pointJ) << std::endl;
+                //std::cout << "Distance entre : " << pointI << " et " << pointJ << " = " << A(pointI,pointJ) << std::endl;
             }
         }
         std::cout << "Here is A:" << std::endl;
@@ -237,6 +238,7 @@ namespace glimac {
         std::cout << "Here is b:" << std::endl;
         std::cout << b << std::endl;
         x = A.colPivHouseholderQr().solve(b);
+        //x = A.colPivHouseholderQr().solve(b);
         std::cout << "The solution is:\n" << x << std::endl;
         /*Eigen::VectorXd x(points.rows()), b(points.rows());
         Eigen::SparseMatrix<double> A(rows, rows);

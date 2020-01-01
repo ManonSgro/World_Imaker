@@ -545,12 +545,15 @@ int main(int argc, char** argv) {
                     lowerZ=controlPoints(i,2);
                 }
             }
-            std::cout << lowerX << higherX << lowerZ << higherZ << std::endl;
+            std::cout << "Lower/higher:" << lowerX << higherX << lowerZ << higherZ << std::endl;
             for(int i=lowerX;i<=higherX;i++){
                 for(int j=lowerZ; j<=higherZ; j++){
                     myCubeList.addCube(Cube());
                     int y = myCubeList.interpolatePoints(i,j, controlPoints);
                     myCubeList.setTrans(myCubeList.getSize()-1, i,y,j);
+                    if(i==controlPoints(0,0) && y==controlPoints(0,1)&&j==controlPoints(0,2)){
+                        myCubeList.setTextureIndex(myCubeList.getSize()-1, 2);
+                    }
                     myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
                 }
             }
