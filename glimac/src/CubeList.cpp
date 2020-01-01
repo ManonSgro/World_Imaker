@@ -221,8 +221,8 @@ namespace glimac {
                 // RBF
                 //A.insert(xi,xj) = exp( -distance);
                 //A.insert(xi,xj) = 1/(1+sqrt(1+distance));
-                A(pointI,pointJ) = distance;
-                //A(pointI,pointJ) = sqrt(1+pow(distance,2));
+                //A(pointI,pointJ) = distance;
+                A(pointI,pointJ) = sqrt(1+pow(distance,2));
                 //A(xi,xj) = sqrt(1+pow(distance,2));
                 //A(xi,xj) = -exp(-pow(-0.2*distance,2));
                 //A(xi,xj) = pow((1+pow(0.2*distance, 2)), -1);
@@ -240,78 +240,8 @@ namespace glimac {
         x = A.colPivHouseholderQr().solve(b);
         //x = A.colPivHouseholderQr().solve(b);
         std::cout << "The solution is:\n" << x << std::endl;
-        /*Eigen::VectorXd x(points.rows()), b(points.rows());
-        Eigen::SparseMatrix<double> A(rows, rows);
-        Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> >   solver;
-        // fill A and b;
-        for(int xi=0; xi<points.rows(); xi++){
-            for(int xj=0; xj<points.rows(); xj++){
-                float distance = sqrt(pow(points(xj,0) - points(xi, 0), 2) +  
-                pow(points(xj,1) - points(xi, 1), 2) +  
-                pow(points(xj,2) - points(xi, 2), 2));
-                //A.insert(xi,xj) = exp( -distance);
-                //A.insert(xi,xj) = 1/(1+sqrt(1+distance));
-                A.insert(xi,xj) = distance;
-                std::cout << "Distance entre : " << xi << " et " << xj << " = " << A.coeff(xi,xj) << std::endl;
-            }
-        }
-        std::cout << "Here is A:" << std::endl;
-        std::cout << A << std::endl;
-        for(int i=0; i<points.rows(); i++){
-            b(i) = points(i, 2);
-        }
-        std::cout << "Here is b:" << std::endl;
-        std::cout << b << std::endl;
-        // Compute the ordering permutation vector from the structural pattern of A
-        solver.analyzePattern(A); 
-        // Compute the numerical factorization 
-        solver.factorize(A); 
-        //Use the factors to solve the linear system 
-        x = solver.solve(b); 
-        std::cout << "Here is w:" << std::endl;
-        std::cout << x << std::endl;*/
 
         return x;
-        
-        //Test
-        /*for(int i=1; i<points.rows(); i++){
-            std::cout << "x: " << points(i, 0) << " y: " << points(i, 1) << " z: " << points(i, 2) << std::endl;
-            GLfloat distance = sqrt(pow(points(i,0) - points(i-1, 0), 2) +  
-                pow(points(i,1) - points(i-1, 1), 2) +  
-                pow(points(i,2) - points(i-1, 2), 2) * 1.0);
-            std::cout << "Distance entre : " << i << " et " << i-1 << " = " << distance << std::endl;
-        }
-        //pour chaque point consécutif jusqu'à la fin de la matrice points:
-            //calculer la distance entre les deux points consécutifs
-            //calculer la multiquadrique : sqrt(1+(epsilon*d)²)
-            //ou alors pour les premiers test : function(d)=d
-        /*GLfloat distance = sqrt(pow(points[1][0] - points[0][0], 2) +  
-                pow(points[1][1] - points[0][1], 2) +  
-                pow(points[1][2] - points[0][2], 2) * 1.0);*/
-        //pour chaque points de controle
-            //resoudre systeme (somme des distances de tous les pts consécutifs x/y)*poidsInconnu = z
-            //Step 1 : create Mat(distances) // create w_i vector(k) // create z_i vector(k) (k=size=points.size())
-            //Step 2 : decompose A lu_decomp Eigen
-                /*
-                Matrix5x3 m = Matrix5x3::Random();
-                cout << "Here is the matrix m:" << endl << m << endl;
-                Eigen::FullPivLU<Matrix5x3> lu(m);
-                cout << "Here is, up to permutations, its LU decomposition matrix:"
-                    << endl << lu.matrixLU() << endl;
-                cout << "Here is the L part:" << endl;
-                Matrix5x5 l = Matrix5x5::Identity();
-                l.block<5,3>(0,0).triangularView<StrictlyLower>() = lu.matrixLU();
-                cout << l << endl;
-                cout << "Here is the U part:" << endl;
-                Matrix5x3 u = lu.matrixLU().triangularView<Upper>();
-                cout << u << endl;
-                cout << "Let us now reconstruct the original matrix m:" << endl;
-                cout << lu.permutationP().inverse() * l * u * lu.permutationQ().inverse() << endl;
-                */
-            //Step 3 : b / A_lu.upper = y(à trouver)
-            //Step 4 : y / A_lu.lower = x(à trouver) 
-
-        // return matrice(vecteur?) de poids == x
     }
     //Entrée: x et y random dans l'enceinte de la grille -- Sortie : z calculé grâce aux poids trouvés au-dessus
     double CubeList::interpolatePoints(double x, double z, Eigen::MatrixXd points){
