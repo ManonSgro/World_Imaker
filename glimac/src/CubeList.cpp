@@ -220,8 +220,8 @@ namespace glimac {
                 // RBF
                 //A.insert(xi,xj) = exp( -distance);
                 //A.insert(xi,xj) = 1/(1+sqrt(1+distance));
-                //A(pointI,pointJ) = distance;
-                A(pointI,pointJ) = sqrt(1+pow(distance,2));
+                A(pointI,pointJ) = distance;
+                //A(pointI,pointJ) = sqrt(1+pow(distance,2));
                 //A(xi,xj) = sqrt(1+pow(distance,2));
                 //A(xi,xj) = -exp(-pow(-0.2*distance,2));
                 //A(xi,xj) = pow((1+pow(0.2*distance, 2)), -1);

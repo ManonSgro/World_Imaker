@@ -43,6 +43,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstring>
 #include <cstddef>
 #include <vector>
 #include <stack>
@@ -305,7 +306,7 @@ int main(int argc, char** argv) {
 
     // Initialize control points matrix for RBF
     Eigen::MatrixXd controlPoints(0,3);
-    //controlPoints << 1,1,0;
+    //controlPoints << 0,0,0;
 
     /** APPLICATION LOOP **/
     while(!done){
@@ -491,16 +492,21 @@ int main(int argc, char** argv) {
         // Save
         ImGui::Text("Control points :");
         for(int i=0; i<controlPoints.rows(); i++){
-            const char labelX[] = {'X', (char)i};
-            const char labelZ[] = {'Z', (char)i};
+            char labelX[i+1];
+            sprintf(labelX, "%s%d", "X", i);
+            char labelY[i+1];
+            sprintf(labelY, "%s%d", "Y", i);
+            char labelZ[i+1];
+            sprintf(labelZ, "%s%d", "Z", i);
             ImGui::Text("Point %d:", i);
             ImGui::InputDouble(labelX, &controlPoints(i,0));
-            ImGui::InputDouble(labelZ, &controlPoints(i,1));
+            ImGui::InputDouble(labelY, &controlPoints(i,1));
+            ImGui::InputDouble(labelZ, &controlPoints(i,2));
         }
         if(ImGui::Button("Add control point")){
             controlPoints.resize(controlPoints.rows()+1, 3);
-            controlPoints(controlPoints.rows()-1, 0) =1;
-            controlPoints(controlPoints.rows()-1, 1) =1;
+            controlPoints(controlPoints.rows()-1, 0) =0;
+            controlPoints(controlPoints.rows()-1, 1) =0;
             controlPoints(controlPoints.rows()-1, 2) =0;
             std::cout << controlPoints << std::endl;
         }
@@ -526,17 +532,17 @@ int main(int argc, char** argv) {
             //Eigen::VectorXd poids = myCubeList.RBF(points);*/
             int lowerX = controlPoints(0,0);
             int higherX = controlPoints(0,0);
-            int lowerZ = controlPoints(0,1);
-            int higherZ = controlPoints(0,1);
+            int lowerZ = controlPoints(0,2);
+            int higherZ = controlPoints(0,2);
             for(int i=0; i<controlPoints.rows(); i++){
                 if(controlPoints(i,0)<lowerX){
                     lowerX=controlPoints(i,0);
                 }else if(controlPoints(i,0)>higherX){
                     higherX=controlPoints(i,0);
-                }else if(controlPoints(i,1)>higherZ){
-                    higherZ=controlPoints(i,1);
-                }else if(controlPoints(i,1)<lowerZ){
-                    lowerZ=controlPoints(i,1);
+                }else if(controlPoints(i,2)>higherZ){
+                    higherZ=controlPoints(i,2);
+                }else if(controlPoints(i,2)<lowerZ){
+                    lowerZ=controlPoints(i,2);
                 }
             }
             std::cout << lowerX << higherX << lowerZ << higherZ << std::endl;
