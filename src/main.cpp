@@ -43,6 +43,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstring>
 #include <cstddef>
 #include <vector>
 #include <stack>
@@ -278,8 +279,7 @@ int main(int argc, char** argv) {
 
     int currentActive = -1; // current selected cube
 
-    int item_LightP = 0; // Spotlight on/off
-    int item_LightD = 0; // Directive light on/off
+    int item_LightP, item_LightD = 0; // Lights on/off
 
     // Cursor position
     std::vector<int> cursorPosition{1,1,1};
@@ -291,12 +291,12 @@ int main(int argc, char** argv) {
     std::vector<int> positionLightP{1,1,1};
 
     // Extrude/Dig state
-    bool thereIsACubeAbove = false;
-    bool thereIsACubeUnder = false;
+    bool thereIsACubeAbove, thereIsACubeUnder = false;
 
     // Load/Save file
     std::string filePath;
-    std::string loadFilePath;
+    std::string loadFilePath, loadFilePathRBF;
+    std::string rbf = "default";
 
     // Camera initialisation
     Controls c;
@@ -305,12 +305,11 @@ int main(int argc, char** argv) {
 
     // Initialize control points matrix for RBF
     Eigen::MatrixXd controlPoints(0,3);
-    //controlPoints << 1,1,0;
 
     /** APPLICATION LOOP **/
     while(!done){
-        bool addCube = false;
-        bool deleteCube = false;
+        bool addCube, deleteCube, deleteControlPoints = false;
+        int indexDeleteControlPoint = -1;
 
         // Event loop
         SDL_Event e;
@@ -491,18 +490,97 @@ int main(int argc, char** argv) {
         // Save
         ImGui::Text("Control points :");
         for(int i=0; i<controlPoints.rows(); i++){
-            const char labelX[] = {'X', (char)i};
-            const char labelZ[] = {'Z', (char)i};
+            char labelX[i+1];
+            sprintf(labelX, "%s%d", "X", i);
+            char labelY[i+1];
+            sprintf(labelY, "%s%d", "Y", i);
+            char labelZ[i+1];
+            sprintf(labelZ, "%s%d", "Z", i);
             ImGui::Text("Point %d:", i);
             ImGui::InputDouble(labelX, &controlPoints(i,0));
-            ImGui::InputDouble(labelZ, &controlPoints(i,1));
+            ImGui::InputDouble(labelY, &controlPoints(i,1));
+            ImGui::InputDouble(labelZ, &controlPoints(i,2));
+
+            char labelButton[i+20];
+            sprintf(labelButton, "%s%d", "Delete control point", i);
+            if(ImGui::Button(labelButton)){
+                indexDeleteControlPoint = i;
+                deleteControlPoints = true;
+            }
+        }
+        if(deleteControlPoints){
+            for(int j=indexDeleteControlPoint+1; j<controlPoints.rows(); j++){
+                controlPoints.row(j-1) = controlPoints.row(j);
+            }
+            controlPoints.conservativeResize(controlPoints.rows()-1, Eigen::NoChange);
         }
         if(ImGui::Button("Add control point")){
-            controlPoints.resize(controlPoints.rows()+1, 3);
-            controlPoints(controlPoints.rows()-1, 0) =1;
-            controlPoints(controlPoints.rows()-1, 1) =1;
+            controlPoints.conservativeResize(controlPoints.rows()+1, Eigen::NoChange);
+            controlPoints(controlPoints.rows()-1, 0) =0;
+            controlPoints(controlPoints.rows()-1, 1) =0;
             controlPoints(controlPoints.rows()-1, 2) =0;
-            std::cout << controlPoints << std::endl;
+        }
+        
+        ImGui::Text("Load file :");
+        ImGui::InputText("Load Path", &loadFilePathRBF);
+        if(ImGui::Button("Load")){
+            // Read file to load
+            std::ifstream file;
+            file.open(loadFilePathRBF);
+            std::getline(file, rbf);
+            int x;
+            std::vector<int> res;
+            while (file >> x) {
+                res.push_back(x);
+            }
+            file.close();
+            controlPoints.resize(res.size()/3,3);
+            int row = 0;
+            for(int i=0; i<res.size(); i+=3){
+                controlPoints(row, 0) = res[i];
+                controlPoints(row, 1) = res[i+1];
+                controlPoints(row, 2) = res[i+2];
+                row++;
+            }
+            std::cout<<controlPoints<<std::endl;
+
+            
+            // // Save current file
+            // myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP);
+
+            // // Reset cube list
+            // std::cout << "Deleting ..." << myCubeList.getSize() << "...cubes" << std::endl;
+            // while(myCubeList.getSize()){
+            //     int i = 0;
+            //     myCubeList.deleteCube(i);
+            //     currentActive = -1;
+            // }
+            
+            // // Generate scene
+            // int lowerX, higherX = controlPoints(0,0);
+            // int lowerZ, higherZ = controlPoints(0,2);
+            // for(int i=0; i<controlPoints.rows(); i++){
+            //     if(controlPoints(i,0)<lowerX){
+            //         lowerX=controlPoints(i,0);
+            //     }else if(controlPoints(i,0)>higherX){
+            //         higherX=controlPoints(i,0);
+            //     }else if(controlPoints(i,2)>higherZ){
+            //         higherZ=controlPoints(i,2);
+            //     }else if(controlPoints(i,2)<lowerZ){
+            //         lowerZ=controlPoints(i,2);
+            //     }
+            // }
+            // for(int i=lowerX;i<=higherX;i++){
+            //     for(int j=lowerZ; j<=higherZ; j++){
+            //         myCubeList.addCube(Cube());
+            //         int y = myCubeList.interpolatePoints(i,j, controlPoints);
+            //         myCubeList.setTrans(myCubeList.getSize()-1, i,y,j);
+            //         if(i==controlPoints(0,0) && y==controlPoints(0,1)&&j==controlPoints(0,2)){
+            //             myCubeList.setTextureIndex(myCubeList.getSize()-1, 2);
+            //         }
+            //         myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
+            //     }
+            // }
         }
 
         // Generate
@@ -519,32 +597,28 @@ int main(int argc, char** argv) {
             }
             
             // Generate scene
-            /*Eigen::MatrixXd points(3,3);
-            points << 0,4,0,
-                    -10,0,0,
-                    10,0,0;
-            //Eigen::VectorXd poids = myCubeList.RBF(points);*/
-            int lowerX = controlPoints(0,0);
-            int higherX = controlPoints(0,0);
-            int lowerZ = controlPoints(0,1);
-            int higherZ = controlPoints(0,1);
-            for(int i=0; i<controlPoints.rows(); i++){
+            double lowerX, higherX = controlPoints(0,0);
+            double lowerZ, higherZ = controlPoints(0,2);
+
+            for(int i=1; i<controlPoints.rows(); i++){
                 if(controlPoints(i,0)<lowerX){
                     lowerX=controlPoints(i,0);
                 }else if(controlPoints(i,0)>higherX){
                     higherX=controlPoints(i,0);
-                }else if(controlPoints(i,1)>higherZ){
-                    higherZ=controlPoints(i,1);
-                }else if(controlPoints(i,1)<lowerZ){
-                    lowerZ=controlPoints(i,1);
+                }else if(controlPoints(i,2)>higherZ){
+                    higherZ=controlPoints(i,2);
+                }else if(controlPoints(i,2)<lowerZ){
+                    lowerZ=controlPoints(i,2);
                 }
             }
-            std::cout << lowerX << higherX << lowerZ << higherZ << std::endl;
             for(int i=lowerX;i<=higherX;i++){
                 for(int j=lowerZ; j<=higherZ; j++){
                     myCubeList.addCube(Cube());
-                    int y = myCubeList.interpolatePoints(i,j, controlPoints);
+                    int y = myCubeList.interpolatePoints(i,j, controlPoints, rbf);
                     myCubeList.setTrans(myCubeList.getSize()-1, i,y,j);
+                    if(i==controlPoints(0,0) && y==controlPoints(0,1)&&j==controlPoints(0,2)){
+                        myCubeList.setTextureIndex(myCubeList.getSize()-1, 2);
+                    }
                     myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
                 }
             }
