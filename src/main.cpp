@@ -404,7 +404,7 @@ int main(int argc, char** argv) {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame(windowManager.window);
         ImGui::NewFrame();
-        ImGui::SetWindowCollapsed(true, 1<<2);
+        ImGui::SetWindowCollapsed(true, ImGuiCond_Appearing);
 
         // Set up MVP from Camera
         const glm::mat4 ProjectionMatrix = c.getProjectionMatrix();
