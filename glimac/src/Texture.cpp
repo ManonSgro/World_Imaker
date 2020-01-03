@@ -1,3 +1,13 @@
+/**
+ * \file Texture.cpp
+ * \brief Gestion des textures
+ * \author MANSION Amélia & SGRO' Manon
+ * \version 0.1
+ * \date 20 décembre 2019
+ *
+ * Gestion des textures
+ *
+ */
 #include <iostream>
 #include "glimac/common.hpp"
 #include "glimac/Texture.hpp"

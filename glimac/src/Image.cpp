@@ -1,3 +1,14 @@
+/**
+ * \file Image.cpp
+ * \brief Gestion des images
+ * \author MANSION Amélia & SGRO' Manon
+ * \version 0.1
+ * \date 20 décembre 2019
+ *
+ * Gestion des images (pour appliquer des textures)
+ *
+ */
+
 #include "glimac/Image.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include "glimac/stb_image.h"

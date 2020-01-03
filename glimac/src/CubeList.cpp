@@ -1,11 +1,17 @@
-#include <cmath>
-#include <vector>
-#include <iostream>
-#include <algorithm>
+/**
+ * \file CubeList.cpp
+ * \brief Gestion d'une liste de cube
+ * \author MANSION Amélia & SGRO' Manon
+ * \version 0.1
+ * \date 20 décembre 2019
+ *
+ * Gestion d'une liste de cube dans la scène (addition/suppression/édition/affichage)
+ *
+ */
+
 #include "glimac/common.hpp"
 #include "glimac/CubeList.hpp"
-#include<Eigen/SparseLU> 
-#include<Eigen/Dense> 
+
 
 namespace glimac {
 

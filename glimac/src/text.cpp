@@ -1,3 +1,14 @@
+/**
+ * \file text.cpp
+ * \brief Gestion des textes pour objets 3D
+ * \author MANSION Amélia & SGRO' Manon
+ * \version 0.1
+ * \date 20 décembre 2019
+ *
+ * Gestion des importation d'objets 3D
+ *
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

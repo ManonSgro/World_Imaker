@@ -1,3 +1,14 @@
+/**
+ * \file objloader.cpp
+ * \brief Gestion des meshes
+ * \author MANSION Amélia & SGRO' Manon
+ * \version 0.1
+ * \date 20 décembre 2019
+ *
+ * Gestion des objets 3D dans la scène
+ *
+ */
+
 #include <vector>
 #include <stdio.h>
 #include <string>

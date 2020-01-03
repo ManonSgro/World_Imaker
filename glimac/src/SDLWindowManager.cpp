@@ -1,3 +1,14 @@
+/**
+ * \file SDLWindowManager.cpp
+ * \brief Gestion de la fenêtre
+ * \author MANSION Amélia & SGRO' Manon
+ * \version 0.1
+ * \date 20 décembre 2019
+ *
+ * Gestion de la fenêtre SDL2
+ *
+ */
+
 #include "glimac/SDLWindowManager.hpp"
 #include <iostream>
 #include <GL/gl.h>

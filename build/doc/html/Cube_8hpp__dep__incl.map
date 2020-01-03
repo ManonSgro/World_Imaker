@@ -1,6 +1,8 @@
 <map id="/media/msgro/Maxtor/World_Imaker/World_Imaker_merge/World_Imaker/glimac/include/glimac/Cube.hpp" name="/media/msgro/Maxtor/World_Imaker/World_Imaker_merge/World_Imaker/glimac/include/glimac/Cube.hpp">
-<area shape="rect" id="node2" href="$CubeList_8hpp_source.html" title="/media/msgro/Maxtor\l/World_Imaker/World\l_Imaker_merge/World_Imaker\l/glimac/include/glimac/CubeList.hpp" alt="" coords="5,124,237,195"/>
-<area shape="rect" id="node3" href="$main_8cpp.html" title="Programme principal &#45; Editeur de scène 3D. " alt="" coords="99,243,296,313"/>
-<area shape="rect" id="node4" href="$text_8hpp_source.html" title="/media/msgro/Maxtor\l/World_Imaker/World\l_Imaker_merge/World_Imaker\l/glimac/include/glimac/text.hpp" alt="" coords="312,124,515,195"/>
-<area shape="rect" id="node5" href="$Cube_8cpp.html" title="Gestion des cubes. " alt="" coords="539,124,736,195"/>
+<area shape="rect" id="node2" href="$CubeList_8hpp.html" title="Gestion d&#39;une liste de cubes. " alt="" coords="97,124,329,195"/>
+<area shape="rect" id="node4" href="$main_8cpp.html" title="Programme principal &#45; Editeur de scène 3D. " alt="" coords="227,243,424,313"/>
+<area shape="rect" id="node5" href="$text_8hpp_source.html" title="/media/msgro/Maxtor\l/World_Imaker/World\l_Imaker_merge/World_Imaker\l/glimac/include/glimac/text.hpp" alt="" coords="404,124,607,195"/>
+<area shape="rect" id="node7" href="$Cube_8cpp.html" title="Gestion des cubes. " alt="" coords="631,124,828,195"/>
+<area shape="rect" id="node3" href="$CubeList_8cpp.html" title="Gestion d&#39;une liste de cube. " alt="" coords="5,243,203,313"/>
+<area shape="rect" id="node6" href="$text_8cpp.html" title="Gestion des textes pour objets 3D. " alt="" coords="448,243,645,313"/>
 </map>
