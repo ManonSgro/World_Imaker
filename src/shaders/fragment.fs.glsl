@@ -18,12 +18,11 @@ uniform vec3 uLightIntensityP;
 uniform vec3 uLightIntensityD;
 
 vec3 blinnPhongP(vec3 position_vs, vec3 normal_vs){
-    float d = distance(uLightPos_vs, vPosition_vs);
+    float d = distance(uLightPos_vs, position_vs);
 	vec3 w_zero = normalize(-position_vs);
-	vec3 w_i = (normalize(uLightPos_vs - vPosition_vs));
+	vec3 w_i = (normalize(uLightPos_vs - position_vs));
 	vec3 halfVector = (w_zero + w_i) / 2;
 
-	//return uLightIntensity * ( uKd * ( dot(w_i, normal_vs ) ) + uKs * ( pow( dot(halfVector, normal_vs), uShininess ) ) );
 	return (uLightIntensityP / (d * d)) * ( uKd * ( dot(w_i, normal_vs ) ) + uKs * ( pow( dot(halfVector, normal_vs), uShininess ) ) );
 }
 
@@ -46,10 +45,12 @@ void main(){
 
     // Output color = color of the texture at the specified UV
     vec4 color = texture(uTextureSampler, vUV);
+	//fFragColor = ( blinnPhongD(vPosition_vs, normalize(vNormal_vs)) * blinnPhongP(vPosition_vs, normalize(vNormal_vs)) );
+	//fFragColor = vec4(result, 1.0);
 
 	
 
-    //fFragColor = color.rgb * (blinnPhongP(vPosition_vs, normalize(vNormal_vs)));
+    //fFragColor += color.rgb * (blinnPhongP(vPosition_vs, normalize(vNormal_vs)));
 	fFragColor = color.rgb * (blinnPhongP(vPosition_vs, normalize(vNormal_vs)) + blinnPhongD(vPosition_vs, normalize(vNormal_vs)));
     //fFragColor += color.rgb * blinnPhongD(vPosition_vs, normalize(vNormal_vs));
 }
