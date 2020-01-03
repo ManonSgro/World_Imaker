@@ -279,8 +279,7 @@ int main(int argc, char** argv) {
 
     int currentActive = -1; // current selected cube
 
-    int item_LightP = 0; // Spotlight on/off
-    int item_LightD = 0; // Directive light on/off
+    int item_LightP, item_LightD = 0; // Lights on/off
 
     // Cursor position
     std::vector<int> cursorPosition{1,1,1};
@@ -292,8 +291,7 @@ int main(int argc, char** argv) {
     std::vector<int> positionLightP{1,1,1};
 
     // Extrude/Dig state
-    bool thereIsACubeAbove = false;
-    bool thereIsACubeUnder = false;
+    bool thereIsACubeAbove, thereIsACubeUnder = false;
 
     // Load/Save file
     std::string filePath;
@@ -306,12 +304,11 @@ int main(int argc, char** argv) {
 
     // Initialize control points matrix for RBF
     Eigen::MatrixXd controlPoints(0,3);
-    //controlPoints << 0,0,0;
 
     /** APPLICATION LOOP **/
     while(!done){
-        bool addCube = false;
-        bool deleteCube = false;
+        bool addCube, deleteCube, deleteControlPoints = false;
+        int indexDeleteControlPoint = -1;
 
         // Event loop
         SDL_Event e;
@@ -502,11 +499,24 @@ int main(int argc, char** argv) {
             ImGui::InputDouble(labelX, &controlPoints(i,0));
             ImGui::InputDouble(labelY, &controlPoints(i,1));
             ImGui::InputDouble(labelZ, &controlPoints(i,2));
+
+            char labelButton[i+20];
+            sprintf(labelButton, "%s%d", "Delete control point", i);
+            if(ImGui::Button(labelButton)){
+                indexDeleteControlPoint = i;
+                deleteControlPoints = true;
+            }
+        }
+        if(deleteControlPoints){
+            for(int j=indexDeleteControlPoint+1; j<controlPoints.rows(); j++){
+                controlPoints.row(j-1) = controlPoints.row(j);
+            }
+            //int nbRows = controlPoints.rows()-indexDeleteControlPoint;
+            //controlPoints.block<nbRows,3>(indexDeleteControlPoint,0) = controlPoints.block<nbRows,3>(indexDeleteControlPoint+1,0);
+            controlPoints.conservativeResize(controlPoints.rows()-1, Eigen::NoChange);
         }
         if(ImGui::Button("Add control point")){
-            std::cout << "resize" << controlPoints << std::endl;
             controlPoints.conservativeResize(controlPoints.rows()+1, Eigen::NoChange);
-            std::cout << controlPoints << std::endl;
             controlPoints(controlPoints.rows()-1, 0) =0;
             controlPoints(controlPoints.rows()-1, 1) =0;
             controlPoints(controlPoints.rows()-1, 2) =0;
