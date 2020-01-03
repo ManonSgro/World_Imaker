@@ -129,7 +129,7 @@ The *file menu* allows you to save and load scenes. Your current scene will auto
 
 <img src="/img/screenshot5.png" alt="World Imaker - File Settings" title="World Imaker - File Settings" width="auto" height="600" />
 
-You can use the *procedural generation* option to create a new scene based on the chosen control points.
+You can use the *procedural generation* option to create a new scene based on the chosen control points. You can load the control points and the chosen radial basis function from a pre-written file.
 
 <img src="/img/screenshot6.png" alt="World Imaker - Procedural generation" title="World Imaker - Procedural generation" width="auto" height="600" />
 
@@ -145,7 +145,7 @@ _For more information on the functionalities, please refer to the [Documentation
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 
-* An IMAC Project
+* An IMAC project
 * Thanks to [N. Lienart](https://framagit.org/nicolaslienart) for his [SDL2 template](https://framagit.org/nicolaslienart/imac-s3-opengl/tree/master/GLImac-Template-SDL2).
 * Special thanks to C. Noel, [P. Thiel](https://github.com/opium75) and [J. Fouchy](https://github.com/julesfouchy) for their help on debugging this project.
 ```
