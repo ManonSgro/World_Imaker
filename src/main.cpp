@@ -295,7 +295,8 @@ int main(int argc, char** argv) {
 
     // Load/Save file
     std::string filePath;
-    std::string loadFilePath;
+    std::string loadFilePath, loadFilePathRBF;
+    std::string rbf = "default";
 
     // Camera initialisation
     Controls c;
@@ -511,8 +512,6 @@ int main(int argc, char** argv) {
             for(int j=indexDeleteControlPoint+1; j<controlPoints.rows(); j++){
                 controlPoints.row(j-1) = controlPoints.row(j);
             }
-            //int nbRows = controlPoints.rows()-indexDeleteControlPoint;
-            //controlPoints.block<nbRows,3>(indexDeleteControlPoint,0) = controlPoints.block<nbRows,3>(indexDeleteControlPoint+1,0);
             controlPoints.conservativeResize(controlPoints.rows()-1, Eigen::NoChange);
         }
         if(ImGui::Button("Add control point")){
@@ -520,6 +519,68 @@ int main(int argc, char** argv) {
             controlPoints(controlPoints.rows()-1, 0) =0;
             controlPoints(controlPoints.rows()-1, 1) =0;
             controlPoints(controlPoints.rows()-1, 2) =0;
+        }
+        
+        ImGui::Text("Load file :");
+        ImGui::InputText("Load Path", &loadFilePathRBF);
+        if(ImGui::Button("Load")){
+            // Read file to load
+            std::ifstream file;
+            file.open(loadFilePathRBF);
+            std::getline(file, rbf);
+            int x;
+            std::vector<int> res;
+            while (file >> x) {
+                res.push_back(x);
+            }
+            file.close();
+            controlPoints.resize(res.size()/3,3);
+            int row = 0;
+            for(int i=0; i<res.size(); i+=3){
+                controlPoints(row, 0) = res[i];
+                controlPoints(row, 1) = res[i+1];
+                controlPoints(row, 2) = res[i+2];
+                row++;
+            }
+            std::cout<<controlPoints<<std::endl;
+
+            
+            // // Save current file
+            // myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP);
+
+            // // Reset cube list
+            // std::cout << "Deleting ..." << myCubeList.getSize() << "...cubes" << std::endl;
+            // while(myCubeList.getSize()){
+            //     int i = 0;
+            //     myCubeList.deleteCube(i);
+            //     currentActive = -1;
+            // }
+            
+            // // Generate scene
+            // int lowerX, higherX = controlPoints(0,0);
+            // int lowerZ, higherZ = controlPoints(0,2);
+            // for(int i=0; i<controlPoints.rows(); i++){
+            //     if(controlPoints(i,0)<lowerX){
+            //         lowerX=controlPoints(i,0);
+            //     }else if(controlPoints(i,0)>higherX){
+            //         higherX=controlPoints(i,0);
+            //     }else if(controlPoints(i,2)>higherZ){
+            //         higherZ=controlPoints(i,2);
+            //     }else if(controlPoints(i,2)<lowerZ){
+            //         lowerZ=controlPoints(i,2);
+            //     }
+            // }
+            // for(int i=lowerX;i<=higherX;i++){
+            //     for(int j=lowerZ; j<=higherZ; j++){
+            //         myCubeList.addCube(Cube());
+            //         int y = myCubeList.interpolatePoints(i,j, controlPoints);
+            //         myCubeList.setTrans(myCubeList.getSize()-1, i,y,j);
+            //         if(i==controlPoints(0,0) && y==controlPoints(0,1)&&j==controlPoints(0,2)){
+            //             myCubeList.setTextureIndex(myCubeList.getSize()-1, 2);
+            //         }
+            //         myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
+            //     }
+            // }
         }
 
         // Generate
@@ -536,9 +597,10 @@ int main(int argc, char** argv) {
             }
             
             // Generate scene
-            int lowerX, higherX = controlPoints(0,0);
-            int lowerZ, higherZ = controlPoints(0,2);
-            for(int i=0; i<controlPoints.rows(); i++){
+            double lowerX, higherX = controlPoints(0,0);
+            double lowerZ, higherZ = controlPoints(0,2);
+
+            for(int i=1; i<controlPoints.rows(); i++){
                 if(controlPoints(i,0)<lowerX){
                     lowerX=controlPoints(i,0);
                 }else if(controlPoints(i,0)>higherX){
@@ -552,7 +614,7 @@ int main(int argc, char** argv) {
             for(int i=lowerX;i<=higherX;i++){
                 for(int j=lowerZ; j<=higherZ; j++){
                     myCubeList.addCube(Cube());
-                    int y = myCubeList.interpolatePoints(i,j, controlPoints);
+                    int y = myCubeList.interpolatePoints(i,j, controlPoints, rbf);
                     myCubeList.setTrans(myCubeList.getSize()-1, i,y,j);
                     if(i==controlPoints(0,0) && y==controlPoints(0,1)&&j==controlPoints(0,2)){
                         myCubeList.setTextureIndex(myCubeList.getSize()-1, 2);

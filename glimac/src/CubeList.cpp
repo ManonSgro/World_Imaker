@@ -154,62 +154,11 @@ namespace glimac {
     }
 
     //Renvoit la matrice de poids
-    Eigen::VectorXd CubeList::radialBasisFunction(Eigen::MatrixXd points){
-        std::cout << "Trying hard to use radial basis function." << std::endl;
-        // Build distances matrix
-        /*Eigen::MatrixXd distances(points.rows(), points.rows());
-        for(int xi=0; xi<points.rows(); xi++){
-            std::cout << "x: " << points(xi, 0) << " y: " << points(xi, 1) << " z: " << points(xi, 2) << std::endl;
-            for(int xj=0; xj<points.rows(); xj++){
-                distances(xi,xj) = sqrt(pow(points(xj,0) - points(xi, 0), 2) +  
-                pow(points(xj,1) - points(xi, 1), 2) +  
-                pow(points(xj,2) - points(xi, 2), 2) * 1.0);
-                std::cout << "Distance entre : " << xi << " et " << xj << " = " << distances(xi,xj) << std::endl;
-            }
-        }/*
-        // Build weight vector (k unknown weights)
-        Eigen::VectorXd w(points.rows());
-        // Build z vector (size = points count)
-        Eigen::VectorXd z(points.rows());
-        for(int i=0; i<points.rows(); i++){
-            z(i) = points(i, 2);
-        }
-
-        // Decompose distances matrix with LU
-        /*std::cout << "Here is the distances matrix :" << std::endl << distances << std::endl;
-        Eigen::FullPivLU<Eigen::MatrixXd> lu(distances);
-        std::cout << "Here is, up to permutations, its LU decomposition matrix:"
-            << std::endl << lu.matrixLU() << std::endl;
-        std::cout << "Here is the L part:" << std::endl;
-        int rows = points.rows();
-        int cols = points.cols();
-        Eigen::MatrixXd l = Eigen::MatrixXd::Identity(rows, rows);
-        l.block(0,0, rows, cols).triangularView<Eigen::StrictlyLower>() = lu.matrixLU();
-        std::cout << l << std::endl;
-        std::cout << "Here is the U part:" << std::endl;
-        Eigen::MatrixXd u = lu.matrixLU().triangularView<Eigen::Upper>();
-        std::cout << u << std::endl;
-        std::cout << "Let us now reconstruct the original matrix distances:" << std::endl;
-        std::cout << lu.permutationP().inverse() * l * u * lu.permutationQ().inverse() << std::endl;
-        // Find y = z*u
-        //Eigen::MatrixXd y = z*u;
-        std::cout << "Here is y :" << std::endl;
-        Eigen::VectorXd y(u.rows());
-        for(int i=u.rows(); i>0; i--){
-            double sum = 0;
-            if(i<u.rows()){
-                for(int j=u.rows(); j>i; j--){
-                    sum += y(j);
-                }
-            }
-            y(i) = (z(i) - sum)/
-        }
-        std::cout << z/u << std::endl;*/
-
+    Eigen::VectorXd CubeList::radialBasisFunction(Eigen::MatrixXd points, std::string rbf){
         // Solve distances*w = z
         int rows = points.rows();
         int cols = points.cols();
-
+        int epsilon = 0.2;
         Eigen::MatrixXd A(rows, rows);
         Eigen::VectorXd x(points.rows()), b(points.rows());
         //fill A
@@ -219,42 +168,59 @@ namespace glimac {
                 pow(points(pointJ,1) - points(pointI, 1), 2) +  
                 pow(points(pointJ,2) - points(pointI, 2), 2));
                 // RBF
+                if(rbf == "default"){
+                    A(pointI,pointJ) = distance;
+                }else if(rbf == "multiquadric"){
+                    A(pointI,pointJ) = sqrt(1+pow(distance,2));
+                }else if(rbf == "inverse_quadratic"){
+                    A(pointI,pointJ) = 1/(1+pow(distance,2));
+                }else if(rbf == "inverse_multiquadric"){
+                    A(pointI,pointJ) = -1/sqrt(1+pow(distance,2));
+                }else if(rbf== "thin_plate_spline"){
+                    A(pointI,pointJ) = pow(distance,2)*log10(distance);
+                }else if(rbf=="bump"){
+                    if(distance<(1/epsilon)){
+                        A(pointI,pointJ) = exp(-(1/(1-pow(distance,2))));
+                    }else{
+                        A(pointI,pointJ) = 0;
+                    }
+                }
                 //A.insert(xi,xj) = exp( -distance);
                 //A.insert(xi,xj) = 1/(1+sqrt(1+distance));
                 //A(pointI,pointJ) = distance;
-                A(pointI,pointJ) = sqrt(1+pow(distance,2));
+                //A(pointI,pointJ) = sqrt(1+pow(distance,2));
                 //A(xi,xj) = sqrt(1+pow(distance,2));
                 //A(xi,xj) = -exp(-pow(-0.2*distance,2));
                 //A(xi,xj) = pow((1+pow(0.2*distance, 2)), -1);
                 //std::cout << "Distance entre : " << pointI << " et " << pointJ << " = " << A(pointI,pointJ) << std::endl;
             }
         }
-        std::cout << "Here is A:" << std::endl;
-        std::cout << A << std::endl;
+        //std::cout << "Here is A:" << std::endl;
+        //std::cout << A << std::endl;
         //fill b
         for(int i=0; i<points.rows(); i++){
             b(i) = points(i, 1);
         }
-        std::cout << "Here is b:" << std::endl;
-        std::cout << b << std::endl;
+        //std::cout << "Here is b:" << std::endl;
+        //std::cout << b << std::endl;
         x = A.colPivHouseholderQr().solve(b);
         //x = A.colPivHouseholderQr().solve(b);
-        std::cout << "The solution is:\n" << x << std::endl;
+        //std::cout << "The solution is:\n" << x << std::endl;
 
         return x;
     }
     //Entrée: x et y random dans l'enceinte de la grille -- Sortie : z calculé grâce aux poids trouvés au-dessus
-    double CubeList::interpolatePoints(double x, double z, Eigen::MatrixXd points){
+    double CubeList::interpolatePoints(double x, double z, Eigen::MatrixXd points, std::string rbf){
         //g(x,y) = sum(w_i*rbf(|(x,y)-(xi, yi)))
         double y=0;
-        Eigen::VectorXd w = this->radialBasisFunction(points);
+        Eigen::VectorXd w = this->radialBasisFunction(points, rbf);
         for(int i=0; i<points.rows(); i++){
             double distance = sqrt(pow(points(i,0) - x, 2) +  
                 pow(points(i,2) - z, 2) +  
                 pow(points(i,1) - 0, 2) * 1.0);
             y += w(i)*distance;
         }
-        std::cout << "y:" << y << std::endl;
+        //std::cout << "y:" << y << std::endl;
         return (int)y;
     }
 

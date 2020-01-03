@@ -141,8 +141,8 @@ public:
     void load(std::vector<int> file, std::vector<int> &cursorPosition, int &currentActive, int &item_LightD, std::vector<int> &positionLightD, int &item_LightP, std::vector<int> &positionLightP);
 
     void printCubes();
-    Eigen::VectorXd radialBasisFunction(Eigen::MatrixXd points);
-    double interpolatePoints(double x, double y, Eigen::MatrixXd points);
+    Eigen::VectorXd radialBasisFunction(Eigen::MatrixXd points, std::string rbf="default");
+    double interpolatePoints(double x, double y, Eigen::MatrixXd points, std::string rbf="default");
 
 //private:
     std::vector<Cube> m_cubeList;
