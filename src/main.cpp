@@ -306,8 +306,13 @@ int main(int argc, char** argv) {
     // Initialize control points matrix for RBF
     Eigen::MatrixXd controlPoints(0,3);
 
+    // Nb menus
+    int nbMenus = 5;
+
     /** APPLICATION LOOP **/
     while(!done){
+        // Collapsed windows
+        int collapsedWindow = -1;
         bool addCube, deleteCube, deleteControlPoints = false;
         int indexDeleteControlPoint = -1;
 
@@ -399,6 +404,7 @@ int main(int argc, char** argv) {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame(windowManager.window);
         ImGui::NewFrame();
+        ImGui::SetWindowCollapsed(true, 1<<2);
 
         // Set up MVP from Camera
         const glm::mat4 ProjectionMatrix = c.getProjectionMatrix();
@@ -412,7 +418,11 @@ int main(int argc, char** argv) {
         // Cursor menu
         ImGui::Begin("CURSOR settings", NULL, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove);
         ImGui::SetWindowPos(ImVec2(windowWidth,0), true);
-        ImGui::SetWindowSize(ImVec2(menuWidth,windowHeight+menuWidth));
+        ImGui::SetWindowSize(ImVec2(menuWidth,windowHeight+menuWidth-16*nbMenus));
+        if(!ImGui::IsWindowCollapsed()){
+            collapsedWindow = 0;
+            ImGui::SetNextWindowCollapsed(true, 0);
+        }
 
         ImGui::Text("Coordinates");
         cursorPosition[0] = cursor.getTrans().x;
@@ -424,6 +434,21 @@ int main(int argc, char** argv) {
         ImGui::InputInt("y", &cursorPosition[1]);
         ImGui::Text("Z :");
         ImGui::InputInt("z", &cursorPosition[2]);
+
+        ImGui::End();
+
+        // Light menu
+        ImGui::Begin("LIGHT settings", NULL, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove);
+        ImGui::SetWindowSize(ImVec2(menuWidth,windowHeight+menuWidth-16*nbMenus));
+        if(!ImGui::IsWindowCollapsed()){
+            collapsedWindow = 1;
+            ImGui::SetNextWindowCollapsed(true, 0);
+        }
+        if(collapsedWindow==0){
+            ImGui::SetWindowPos(ImVec2(windowWidth,windowHeight+menuWidth-80), true);
+        }else{
+            ImGui::SetWindowPos(ImVec2(windowWidth,20), true);
+        }
         
         // Directive light
         const char* itemsLight[] = { "On", "Off"};
@@ -449,7 +474,17 @@ int main(int argc, char** argv) {
         ImGui::End();
 
         // File menu
-        ImGui::Begin("FILE settings", NULL);
+        ImGui::Begin("FILE settings", NULL, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove);
+        ImGui::SetWindowSize(ImVec2(menuWidth,windowHeight+menuWidth-16*nbMenus));
+        if(!ImGui::IsWindowCollapsed()){
+            collapsedWindow = 2;
+            ImGui::SetNextWindowCollapsed(true, 0);
+        }
+        if(collapsedWindow!=-1 && collapsedWindow<2){
+            ImGui::SetWindowPos(ImVec2(windowWidth,windowHeight+menuWidth-60), true);
+        }else{
+            ImGui::SetWindowPos(ImVec2(windowWidth,40), true);
+        }
         
         // Save
         ImGui::Text("Save file :");
@@ -485,7 +520,17 @@ int main(int argc, char** argv) {
         ImGui::End();
 
         // File menu
-        ImGui::Begin("Procedural generation", NULL);
+        ImGui::Begin("Procedural generation", NULL, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove);
+        ImGui::SetWindowSize(ImVec2(menuWidth,windowHeight+menuWidth-16*nbMenus));
+        if(!ImGui::IsWindowCollapsed()){
+            collapsedWindow = 3;
+            ImGui::SetNextWindowCollapsed(true, 0);
+        }
+        if(collapsedWindow!=-1 && collapsedWindow<3){
+            ImGui::SetWindowPos(ImVec2(windowWidth,windowHeight+menuWidth-40), true);
+        }else{
+            ImGui::SetWindowPos(ImVec2(windowWidth,60), true);
+        }
         
         // Save
         ImGui::Text("Control points :");
@@ -543,44 +588,6 @@ int main(int argc, char** argv) {
                 row++;
             }
             std::cout<<controlPoints<<std::endl;
-
-            
-            // // Save current file
-            // myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP);
-
-            // // Reset cube list
-            // std::cout << "Deleting ..." << myCubeList.getSize() << "...cubes" << std::endl;
-            // while(myCubeList.getSize()){
-            //     int i = 0;
-            //     myCubeList.deleteCube(i);
-            //     currentActive = -1;
-            // }
-            
-            // // Generate scene
-            // int lowerX, higherX = controlPoints(0,0);
-            // int lowerZ, higherZ = controlPoints(0,2);
-            // for(int i=0; i<controlPoints.rows(); i++){
-            //     if(controlPoints(i,0)<lowerX){
-            //         lowerX=controlPoints(i,0);
-            //     }else if(controlPoints(i,0)>higherX){
-            //         higherX=controlPoints(i,0);
-            //     }else if(controlPoints(i,2)>higherZ){
-            //         higherZ=controlPoints(i,2);
-            //     }else if(controlPoints(i,2)<lowerZ){
-            //         lowerZ=controlPoints(i,2);
-            //     }
-            // }
-            // for(int i=lowerX;i<=higherX;i++){
-            //     for(int j=lowerZ; j<=higherZ; j++){
-            //         myCubeList.addCube(Cube());
-            //         int y = myCubeList.interpolatePoints(i,j, controlPoints);
-            //         myCubeList.setTrans(myCubeList.getSize()-1, i,y,j);
-            //         if(i==controlPoints(0,0) && y==controlPoints(0,1)&&j==controlPoints(0,2)){
-            //             myCubeList.setTextureIndex(myCubeList.getSize()-1, 2);
-            //         }
-            //         myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
-            //     }
-            // }
         }
 
         // Generate
@@ -627,7 +634,16 @@ int main(int argc, char** argv) {
         ImGui::End();
 
         // Cube menu
-        ImGui::Begin("CUBE settings", NULL);
+        ImGui::Begin("CUBE settings", NULL, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove);
+        ImGui::SetWindowSize(ImVec2(menuWidth,windowHeight+menuWidth-16*nbMenus));
+        if(!ImGui::IsWindowCollapsed()){
+            collapsedWindow = 4;
+        }
+        if(collapsedWindow!=-1 && collapsedWindow<4){
+            ImGui::SetWindowPos(ImVec2(windowWidth,windowHeight+menuWidth-20), true);
+        }else{
+            ImGui::SetWindowPos(ImVec2(windowWidth,80), true);
+        }
 
         // Selected cube
         int selectedCube = currentActive;
@@ -702,7 +718,7 @@ int main(int argc, char** argv) {
             glUniform3f(uLightIntensityD, 0.0, 0.0, 0.0);
         }
         if (item_LightP == 0){
-            glUniform3f(uLightIntensityP, 2.0, 2.0, 2.0);   
+            glUniform3f(uLightIntensityP, 5.0, 5.0, 5.0);   
         }
         else {
             glUniform3f(uLightIntensityP, 0.0, 0.0, 0.0);
