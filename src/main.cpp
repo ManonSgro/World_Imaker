@@ -279,7 +279,8 @@ int main(int argc, char** argv) {
 
     int currentActive = -1; // current selected cube
 
-    int item_LightP, item_LightD = 0; // Lights on/off
+    int item_LightP = 0;
+    int item_LightD = 0; // Lights on/off
 
     // Cursor position
     std::vector<int> cursorPosition{1,1,1};
@@ -313,7 +314,9 @@ int main(int argc, char** argv) {
     while(!done){
         // Collapsed windows
         int collapsedWindow = -1;
-        bool addCube, deleteCube, deleteControlPoints = false;
+        bool addCube = false;
+        bool deleteCube = false;
+        bool deleteControlPoints = false;
         int indexDeleteControlPoint = -1;
 
         // Event loop
@@ -438,7 +441,7 @@ int main(int argc, char** argv) {
         ImGui::End();
 
         // Light menu
-        ImGui::Begin("LIGHT settings", NULL, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove);
+        ImGui::Begin("LIGHT settings", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
         ImGui::SetWindowSize(ImVec2(menuWidth,windowHeight+menuWidth-16*nbMenus));
         if(!ImGui::IsWindowCollapsed()){
             collapsedWindow = 1;
