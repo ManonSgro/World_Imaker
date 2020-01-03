@@ -504,11 +504,12 @@ int main(int argc, char** argv) {
             ImGui::InputDouble(labelZ, &controlPoints(i,2));
         }
         if(ImGui::Button("Add control point")){
-            controlPoints.resize(controlPoints.rows()+1, 3);
+            std::cout << "resize" << controlPoints << std::endl;
+            controlPoints.conservativeResize(controlPoints.rows()+1, Eigen::NoChange);
+            std::cout << controlPoints << std::endl;
             controlPoints(controlPoints.rows()-1, 0) =0;
             controlPoints(controlPoints.rows()-1, 1) =0;
             controlPoints(controlPoints.rows()-1, 2) =0;
-            std::cout << controlPoints << std::endl;
         }
 
         // Generate
@@ -525,15 +526,8 @@ int main(int argc, char** argv) {
             }
             
             // Generate scene
-            /*Eigen::MatrixXd points(3,3);
-            points << 0,4,0,
-                    -10,0,0,
-                    10,0,0;
-            //Eigen::VectorXd poids = myCubeList.RBF(points);*/
-            int lowerX = controlPoints(0,0);
-            int higherX = controlPoints(0,0);
-            int lowerZ = controlPoints(0,2);
-            int higherZ = controlPoints(0,2);
+            int lowerX, higherX = controlPoints(0,0);
+            int lowerZ, higherZ = controlPoints(0,2);
             for(int i=0; i<controlPoints.rows(); i++){
                 if(controlPoints(i,0)<lowerX){
                     lowerX=controlPoints(i,0);
@@ -545,7 +539,6 @@ int main(int argc, char** argv) {
                     lowerZ=controlPoints(i,2);
                 }
             }
-            std::cout << "Lower/higher:" << lowerX << higherX << lowerZ << higherZ << std::endl;
             for(int i=lowerX;i<=higherX;i++){
                 for(int j=lowerZ; j<=higherZ; j++){
                     myCubeList.addCube(Cube());
