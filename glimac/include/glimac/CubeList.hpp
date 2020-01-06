@@ -410,7 +410,7 @@ namespace glimac {
             *  \param rbf : choix de la RBF utilisée
             */
             double interpolatePoints(double x, double y, Eigen::MatrixXd points, std::string rbf="default");
-
+      
         private:
             // Attributes
             std::vector<Cube> m_cubeList; /*!< Liste de cubes*/

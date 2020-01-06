@@ -147,11 +147,10 @@ namespace glimac {
     }
 
     //Renvoit la matrice de poids
-    Eigen::VectorXd CubeList::radialBasisFunction(Eigen::MatrixXd points, std::string rbf){
+    Eigen::VectorXd CubeList::radialBasisFunction(Eigen::MatrixXd points, std::string rbf, float epsilon){
         // Solve distances*w = z
         int rows = points.rows();
         int cols = points.cols();
-        int epsilon = 0.2;
         Eigen::MatrixXd A(rows, rows);
         Eigen::VectorXd x(points.rows()), b(points.rows());
         //fill A
@@ -161,16 +160,18 @@ namespace glimac {
                 pow(points(pointJ,1) - points(pointI, 1), 2) +  
                 pow(points(pointJ,2) - points(pointI, 2), 2));
                 // RBF
-                if(rbf == "default"){
+                if(rbf == "default"){ //ok
                     A(pointI,pointJ) = distance;
-                }else if(rbf == "multiquadric"){
+                }else if(rbf == "multiquadric"){ //ok
                     A(pointI,pointJ) = sqrt(1+pow(distance,2));
-                }else if(rbf == "inverse_quadratic"){
-                    A(pointI,pointJ) = 1/(1+pow(distance,2));
-                }else if(rbf == "inverse_multiquadric"){
+                }else if(rbf == "inverse_quadratic"){ //ok
+                    A(pointI,pointJ) = -1/(1+pow(epsilon*distance,2))-0.5;
+                }else if(rbf == "inverse_multiquadric"){ //ok
                     A(pointI,pointJ) = -1/sqrt(1+pow(distance,2));
                 }else if(rbf== "thin_plate_spline"){
                     A(pointI,pointJ) = pow(distance,2)*log10(distance);
+                }else if(rbf== "gaussian"){ //ok
+                    A(pointI,pointJ) = -exp(-pow(epsilon*distance,2))-0.5;
                 }else if(rbf=="bump"){
                     if(distance<(1/epsilon)){
                         A(pointI,pointJ) = exp(-(1/(1-pow(distance,2))));
@@ -180,6 +181,7 @@ namespace glimac {
                 }
             }
         }
+        //fill b
         for(int i=0; i<points.rows(); i++){
             b(i) = points(i, 1);
         }
@@ -190,7 +192,7 @@ namespace glimac {
     //Entrée: x et y random dans l'enceinte de la grille -- Sortie : z calculé grâce aux poids trouvés au-dessus
     double CubeList::interpolatePoints(double x, double z, Eigen::MatrixXd points, std::string rbf){
         double y=0;
-        Eigen::VectorXd w = this->radialBasisFunction(points, rbf);
+        Eigen::VectorXd w = this->radialBasisFunction(points, rbf, epsilon);
         for(int i=0; i<points.rows(); i++){
             double distance = sqrt(pow(points(i,0) - x, 2) +  
                 pow(points(i,2) - z, 2) +  

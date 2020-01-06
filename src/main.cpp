@@ -298,6 +298,7 @@ int main(int argc, char** argv) {
     std::string filePath;
     std::string loadFilePath, loadFilePathRBF;
     std::string rbf = "default";
+    float epsilon = 1.0;
 
     // Camera initialisation
     Controls c;
@@ -576,12 +577,14 @@ int main(int argc, char** argv) {
             std::ifstream file;
             file.open(loadFilePathRBF);
             std::getline(file, rbf);
-            int x;
-            std::vector<int> res;
+            float x;
+            std::vector<float> res;
             while (file >> x) {
                 res.push_back(x);
             }
             file.close();
+            epsilon = res[0];
+            res.erase(res.begin());
             controlPoints.resize(res.size()/3,3);
             int row = 0;
             for(int i=0; i<res.size(); i+=3){
@@ -607,31 +610,36 @@ int main(int argc, char** argv) {
             }
             
             // Generate scene
-            double lowerX, higherX = controlPoints(0,0);
-            double lowerZ, higherZ = controlPoints(0,2);
+            if(controlPoints.rows()>0){
+                double lowerX, higherX = controlPoints(0,0);
+                double lowerZ, higherZ = controlPoints(0,2);
 
-            for(int i=1; i<controlPoints.rows(); i++){
-                if(controlPoints(i,0)<lowerX){
-                    lowerX=controlPoints(i,0);
-                }else if(controlPoints(i,0)>higherX){
-                    higherX=controlPoints(i,0);
-                }else if(controlPoints(i,2)>higherZ){
-                    higherZ=controlPoints(i,2);
-                }else if(controlPoints(i,2)<lowerZ){
-                    lowerZ=controlPoints(i,2);
-                }
-            }
-            for(int i=lowerX;i<=higherX;i++){
-                for(int j=lowerZ; j<=higherZ; j++){
-                    myCubeList.addCube(Cube());
-                    int y = myCubeList.interpolatePoints(i,j, controlPoints, rbf);
-                    myCubeList.setTrans(myCubeList.getSize()-1, i,y,j);
-                    if(i==controlPoints(0,0) && y==controlPoints(0,1)&&j==controlPoints(0,2)){
-                        myCubeList.setTextureIndex(myCubeList.getSize()-1, 2);
+                for(int i=1; i<controlPoints.rows(); i++){
+                    if(controlPoints(i,0)<lowerX){
+                        lowerX=controlPoints(i,0);
+                    }else if(controlPoints(i,0)>higherX){
+                        higherX=controlPoints(i,0);
+                    }else if(controlPoints(i,2)>higherZ){
+                        higherZ=controlPoints(i,2);
+                    }else if(controlPoints(i,2)<lowerZ){
+                        lowerZ=controlPoints(i,2);
                     }
-                    myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
+                }
+                for(int i=lowerX;i<=higherX;i++){
+                    for(int j=lowerZ; j<=higherZ; j++){
+                        int y = myCubeList.interpolatePoints(i,j, controlPoints, rbf, epsilon);
+                        if(y>-15){
+                            myCubeList.addCube(Cube());
+                            myCubeList.setTrans(myCubeList.getSize()-1, i,y,j);
+                            if(i==controlPoints(0,0) && y==controlPoints(0,1)&&j==controlPoints(0,2)){
+                                myCubeList.setTextureIndex(myCubeList.getSize()-1, 2);
+                            }
+                            myCubeList.setTextureIndex(myCubeList.getSize()-1, 1);
+                        }
+                    }
                 }
             }
+            
         }
 
         ImGui::End();
