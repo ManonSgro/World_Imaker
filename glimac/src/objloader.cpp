@@ -1,6 +1,6 @@
 /**
  * \file objloader.cpp
- * \brief Gestion des meshes
+ * \brief Gestion des objets 3D
  * \author MANSION Amélia & SGRO' Manon
  * \version 0.1
  * \date 20 décembre 2019
@@ -18,15 +18,6 @@
 
 #include "glimac/objloader.hpp"
 
-// Very, VERY simple OBJ loader.
-// Here is a short list of features a real function would provide :
-// - Binary files. Reading a model should be just a few memcpy's away, not parsing a file at runtime. In short : OBJ is not very great.
-// - Animations & bones (includes bones weights)
-// - Multiple UVs
-// - All attributes should be optional, not "forced"
-// - More stable. Change a line in the OBJ file and it crashes.
-// - More secure. Change another line and you can inject code.
-// - Loading from memory, stream, etc
 
 bool loadOBJ(
 	const char * path,

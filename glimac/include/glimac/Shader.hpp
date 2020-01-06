@@ -1,3 +1,14 @@
+/**
+ * \file Shader.hpp
+ * \brief Gestion des shaders
+ * \author MANSION Amélia & SGRO' Manon
+ * \version 0.1
+ * \date 20 décembre 2019
+ *
+ * Gestion des shaders
+ *
+ */
+
 #pragma once
 
 #include <GL/glew.h>

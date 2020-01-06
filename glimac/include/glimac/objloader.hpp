@@ -1,3 +1,14 @@
+/**
+ * \file objloader.hpp
+ * \brief Import des objets 3D
+ * \author MANSION Amélia & SGRO' Manon
+ * \version 0.1
+ * \date 20 décembre 2019
+ *
+ * Import des objets 3D
+ *
+ */
+
 #ifndef OBJLOADER_H
 #define OBJLOADER_H
 

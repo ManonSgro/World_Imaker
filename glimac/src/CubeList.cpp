@@ -9,7 +9,6 @@
  *
  */
 
-#include "glimac/common.hpp"
 #include "glimac/CubeList.hpp"
 
 
@@ -81,13 +80,6 @@ namespace glimac {
         m_cubeList[cubeIndex].setTrans(x, y, z);
     }
 
-    // Push back origin in the list (prefer call it before pushing other cubes)
-    void CubeList::addOrigin(){
-        m_cubeList.push_back(Cube());
-        m_cubeList[m_cubeList.size()-1].setScaleFloat(0.1,0.1,0.1);
-        m_cubeList[m_cubeList.size()-1].setCubeIndex(m_cubeList.size()-1);
-    }
-
     // Push back a new cube at the end of the list
     void CubeList::addCube(Cube cube){
         m_cubeList.push_back(cube);
@@ -142,11 +134,6 @@ namespace glimac {
         
     }
 
-    // Translate
-    void CubeList::translateCube(int index, GLfloat tx, GLfloat ty, GLfloat tz){
-        m_cubeList[index].translateVertices(tx, ty, tz);
-    };
-
     // Sort cubes according to texture
     void CubeList::sortCubes(){
         std::sort(m_cubeList.begin(), m_cubeList.end(), std::greater<Cube>());
@@ -199,12 +186,11 @@ namespace glimac {
             b(i) = points(i, 1);
         }
         x = A.colPivHouseholderQr().solve(b);
-
         return x;
     }
-    //Entrée: x et z random dans l'enceinte de la grille -- Sortie : y calculé grâce aux poids trouvés au-dessus
-    double CubeList::interpolatePoints(double x, double z, Eigen::MatrixXd points, std::string rbf, float epsilon){
-        //g(x,y) = sum(w_i*rbf(|(x,y)-(xi, yi)))
+
+    //Entrée: x et y random dans l'enceinte de la grille -- Sortie : z calculé grâce aux poids trouvés au-dessus
+    double CubeList::interpolatePoints(double x, double z, Eigen::MatrixXd points, std::string rbf){
         double y=0;
         Eigen::VectorXd w = this->radialBasisFunction(points, rbf, epsilon);
         for(int i=0; i<points.rows(); i++){

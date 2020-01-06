@@ -1,6 +1,16 @@
-#pragma once
+/**
+ * \file FilePath.hpp
+ * \brief Gestion des fichiers
+ * \author MANSION Amélia & SGRO' Manon
+ * \version 0.1
+ * \date 20 décembre 2019
+ *
+ * Gestion des fichiers
+ *
+ */
 
-#include <string>
+#pragma once
+#include "common.hpp"
 
 namespace glimac {
 

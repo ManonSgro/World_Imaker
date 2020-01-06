@@ -1,3 +1,14 @@
+/**
+ * \file Texture.hpp
+ * \brief Gestion des textures
+ * \author MANSION Amélia & SGRO' Manon
+ * \version 0.1
+ * \date 20 décembre 2019
+ *
+ * Gestion des textures dans la scène
+ *
+ */
+
 #pragma once
 
 #include "common.hpp"
@@ -6,49 +17,113 @@
 
 namespace glimac {
 
-// Represent a texture with Uniform Location, loaded image, GLuint index
-class Texture {
+    /*! \class Texture
+    * \brief Classe permettant la gestion des textures dans la scène
+    *
+    *  La classe gère la création et la manipulation de textures dans une scène 3D.
+    */
+    class Texture {
 
-public:
+    public:
+        // Constructor & destructor
+        /*!
+        *  \brief Constructeur
+        *
+        *  Constructeur de la classe Texture
+        *
+        *  \param null : aucuns parametres nécéssaires
+        */
+        Texture();
+        /*!
+        *  \brief Destructeur
+        *
+        *  Destructeur de la classe Texture
+        *
+        *  \param null : aucuns parametres nécéssaires
+        */
+        ~Texture();
+        /*!
+        *  \brief Mise à jour des informations de Uniform Location
+        *
+        *  Mise à jour des informations de Uniform Location
+        *
+        *  \param program : programme
+        *  \param name : nom de la UL
+        */
+        void setUniformLocation(Program &program, const GLchar* name);
+        /*!
+        *  \brief Mise à jour des informations de l'image
+        *
+        *  Mise à jour des informations de l'image
+        *
+        *  \param filepath : chemin d'acces au fichier
+        */
+        void setImage(const FilePath &filepath);
+        /*!
+        *  \brief Informations de la texture
+        *
+        *  Récuperer les informations de la texture
+        *
+        *  \param null : aucuns parametres nécéssaires
+        */
+        GLuint getTexture() const{
+            return m_texture;
+        }
+        /*!
+        *  \brief Pointeur sur la texture
+        *
+        *  Récuperer un pointeur sur la texture
+        *
+        *  \param null : aucuns parametres nécéssaires
+        */
+        GLuint* getTexturePointer(){
+            return &m_texture;
+        }
+        /*!
+        *  \brief Informations sur la taille de l'image
+        *
+        *  Récuperer les informations sur la largeur de l'image
+        *
+        *  \param null : aucuns parametres nécéssaires
+        */
+        unsigned int getImageWidth() const{
+            return m_image->getWidth();
+        }
+        /*!
+        *  \brief Informations sur la taille de l'image
+        *
+        *  Récuperer les informations sur la hauteur de l'image
+        *
+        *  \param null : aucuns parametres nécéssaires
+        */
+        unsigned int getImageHeight() const{
+            return m_image->getHeight();
+        }
+        /*!
+        *  \brief Informations sur les pixels de l'image
+        *
+        *  Récuperer le vecteur pixel de l'image
+        *
+        *  \param null : aucuns parametres nécéssaires
+        */
+        const glm::vec4* getImagePixels() const{
+            return m_image->getPixels();
+        }
+        /*!
+        *  \brief Informations sur la Uniform Location
+        *
+        *  Récuperer les informations sur la Uniform Location
+        *
+        *  \param null : aucuns parametres nécéssaires
+        */
+        GLuint getUniformLocation() const{
+            return m_uTexture;
+        }
 
-    // Constructeur
-    Texture();
-    // Destructeur
-    ~Texture();
-
-    // Renvoit le pointeur vers les données
-    void setUniformLocation(Program &program, const GLchar* name);
-
-    void setImage(const FilePath &filepath);
-
-    GLuint getTexture(){
-        return m_texture;
-    }
-
-    GLuint* getTexturePointer(){
-        return &m_texture;
-    }
-
-    unsigned int getImageWidth(){
-        return m_image->getWidth();
-    }
-
-    unsigned int getImageHeight(){
-        return m_image->getHeight();
-    }
-
-    const glm::vec4* getImagePixels() const{
-        return m_image->getPixels();
-    }
-
-    GLuint getUniformLocation(){
-        return m_uTexture;
-    }
-
-private:
-    GLint m_uTexture; // Uniform Location
-    std::unique_ptr<Image> m_image; // Image texture
-    GLuint m_texture; // Texture index to bind
-};
+    private:
+        GLint m_uTexture; /*!< Uniform Location*/
+        std::unique_ptr<Image> m_image; /*!< Image Texture*/
+        GLuint m_texture; /*!< Texture index qui necessite "bind"*/
+    };
 
 }
