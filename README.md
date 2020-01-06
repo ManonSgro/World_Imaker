@@ -121,7 +121,7 @@ You can move the cursor in the scene, add/delete cubes and modify their texture.
 <img src="/img/screenshot2.png" alt="World Imaker - Cube Editing" title="World Imaker - Cube Editing" width="auto" height="600" />
 
 
-You can control a directional light and a spotlight. Turn them on/off and move their position from the *light menu*.
+You can control a directional light and a spotlight. Turn them on/off and move their position from the *light menu*. You can also change their intensity.
 
 <img src="/img/screenshot4.png" alt="World Imaker - Light Editing" title="World Imaker - Light Editing" width="auto" height="600" />
 
