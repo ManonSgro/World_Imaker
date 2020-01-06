@@ -329,6 +329,7 @@ int main(int argc, char** argv) {
 
     // Directive light position
     std::vector<int> positionLightD{1,1,1};
+    std::vector<int> lightIntensity{2,2};
 
     // Spotlight position
     std::vector<int> positionLightP{1,1,1};
@@ -369,7 +370,7 @@ int main(int argc, char** argv) {
             ImGui_ImplSDL2_ProcessEvent(&e);           
 
             if(e.type == SDL_QUIT){
-                myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP);
+                myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP, lightIntensity);
                 done = true;
             }
 
@@ -536,7 +537,7 @@ int main(int argc, char** argv) {
         ImGui::Text("Save file :");
         ImGui::InputText("Save Path", &filePath);
         if(ImGui::Button("Save")){
-            myCubeList.save(filePath, item_LightD, positionLightD, item_LightP, positionLightP);
+            myCubeList.save(filePath, item_LightD, positionLightD, item_LightP, positionLightP, lightIntensity);
         }
 
         // Load
@@ -549,7 +550,7 @@ int main(int argc, char** argv) {
             myCubeList.read(loadFilePath, file);
             
             // Save current file
-            myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP);
+            myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP, lightIntensity);
 
             // Reset cube list
             std::cout << "Deleting ..." << myCubeList.getSize() << "...cubes" << std::endl;
@@ -560,7 +561,7 @@ int main(int argc, char** argv) {
             }
             
             // Load file
-            myCubeList.load(file, cursorPosition, currentActive, item_LightD, positionLightD, item_LightP, positionLightP);
+            myCubeList.load(file, cursorPosition, currentActive, item_LightD, positionLightD, item_LightP, positionLightP, lightIntensity);
         }
 
         ImGui::End();
@@ -641,7 +642,7 @@ int main(int argc, char** argv) {
         // Generate
         if(ImGui::Button("Generate scene")){
             // Save current file
-            myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP);
+            myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP, lightIntensity);
 
             // Reset cube list
             std::cout << "Deleting ..." << myCubeList.getSize() << "...cubes" << std::endl;
