@@ -453,9 +453,14 @@ int main(int argc, char** argv) {
         }
         
         // Directive light
-        const char* itemsLight[] = { "On", "Off"};
         ImGui::Text("Lumiere directionnelle :");
-        ImGui::Combo("D", &item_LightD, itemsLight, IM_ARRAYSIZE(itemsLight));
+        if(ImGui::Button("Directive light : On/Off")){
+            if(item_LightD==1){
+                item_LightD=0;
+            }else{
+                item_LightD=1;
+            }
+        }
         ImGui::Text("Coordinates D");
         ImGui::InputInt("xD", &positionLightD[0]);
         ImGui::Text("Y :");
@@ -465,7 +470,13 @@ int main(int argc, char** argv) {
 
         // Spotlight
         ImGui::Text("Lumiere ponctuelle :");
-        ImGui::Combo("P", &item_LightP, itemsLight, IM_ARRAYSIZE(itemsLight));
+        if(ImGui::Button("Spotlight : On/Off")){
+            if(item_LightP==1){
+                item_LightP=0;
+            }else{
+                item_LightP=1;
+            }
+        }
         ImGui::Text("Coordinates P");
         ImGui::InputInt("xP", &positionLightP[0]);
         ImGui::Text("Y :");
