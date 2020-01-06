@@ -298,6 +298,7 @@ int main(int argc, char** argv) {
     std::string filePath;
     std::string loadFilePath, loadFilePathRBF;
     std::string rbf = "default";
+    float epsilon = 1.0;
 
     // Camera initialisation
     Controls c;
@@ -582,6 +583,8 @@ int main(int argc, char** argv) {
                 res.push_back(x);
             }
             file.close();
+            epsilon = res[0];
+            res.erase(res.begin());
             controlPoints.resize(res.size()/3,3);
             int row = 0;
             for(int i=0; i<res.size(); i+=3){
@@ -624,7 +627,7 @@ int main(int argc, char** argv) {
                 }
                 for(int i=lowerX;i<=higherX;i++){
                     for(int j=lowerZ; j<=higherZ; j++){
-                        int y = myCubeList.interpolatePoints(i,j, controlPoints, rbf);
+                        int y = myCubeList.interpolatePoints(i,j, controlPoints, rbf, epsilon);
                         if(y>-15){
                             myCubeList.addCube(Cube());
                             myCubeList.setTrans(myCubeList.getSize()-1, i,y,j);
