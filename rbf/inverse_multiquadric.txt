@@ -1,4 +1,5 @@
 inverse_multiquadric
+1.0
 10 0 0
 -10 0 0
 0 0 0

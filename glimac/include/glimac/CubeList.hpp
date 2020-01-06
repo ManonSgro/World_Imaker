@@ -256,8 +256,8 @@ namespace glimac {
             void load(std::vector<int> file, std::vector<int> &cursorPosition, int &currentActive, int &item_LightD, std::vector<int> &positionLightD, int &item_LightP, std::vector<int> &positionLightP);
 
             void printCubes();
-            Eigen::VectorXd radialBasisFunction(Eigen::MatrixXd points, std::string rbf="default");
-            double interpolatePoints(double x, double y, Eigen::MatrixXd points, std::string rbf="default");
+            Eigen::VectorXd radialBasisFunction(Eigen::MatrixXd points, std::string rbf="default", float epsilon=1.0);
+            double interpolatePoints(double x, double y, Eigen::MatrixXd points, std::string rbf="default", float epsilon=1.0);
 
         //private:
             std::vector<Cube> m_cubeList;
