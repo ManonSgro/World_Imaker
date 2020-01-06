@@ -78,11 +78,11 @@ void \hyperlink{classglimac_1_1CubeList_ac8ffe918d3ff2788edd5c5bbfba45135}{delet
 \begin{DoxyCompactList}\small\item\em Suppression d\textquotesingle{}un cube. \end{DoxyCompactList}\item 
 void \hyperlink{classglimac_1_1CubeList_af6615c0db1a97fcae5df6f27de71b6d8}{sort\+Cubes} ()
 \begin{DoxyCompactList}\small\item\em Tri de la liste. \end{DoxyCompactList}\item 
-void \hyperlink{classglimac_1_1CubeList_a9e7ac57439f018d89b71c6071efd48e6}{save} (std\+::string filepath, int item\+\_\+\+LightD, std\+::vector$<$ int $>$ position\+LightD, int item\+\_\+\+LightP, std\+::vector$<$ int $>$ position\+LightP)
+void \hyperlink{classglimac_1_1CubeList_a2224458162725108e1451f76c2fc8aac}{save} (std\+::string filepath, int item\+\_\+\+LightD, std\+::vector$<$ int $>$ position\+LightD, int item\+\_\+\+LightP, std\+::vector$<$ int $>$ position\+LightP, std\+::vector$<$ int $>$ light\+Intensity)
 \begin{DoxyCompactList}\small\item\em Sauvegarde. \end{DoxyCompactList}\item 
 void \hyperlink{classglimac_1_1CubeList_a59d87cac2e218d617940ccdab5235b31}{read} (std\+::string file\+Path, std\+::vector$<$ int $>$ \&destination)
 \begin{DoxyCompactList}\small\item\em Lecture. \end{DoxyCompactList}\item 
-void \hyperlink{classglimac_1_1CubeList_a6f615ea1238b29f8e19859b528ac6f26}{load} (std\+::vector$<$ int $>$ file, std\+::vector$<$ int $>$ \&cursor\+Position, int \&current\+Active, int \&item\+\_\+\+LightD, std\+::vector$<$ int $>$ \&position\+LightD, int \&item\+\_\+\+LightP, std\+::vector$<$ int $>$ \&position\+LightP)
+void \hyperlink{classglimac_1_1CubeList_a09a9aede4ef7d31c9721b88fa575d3c6}{load} (std\+::vector$<$ int $>$ file, std\+::vector$<$ int $>$ \&cursor\+Position, int \&current\+Active, int \&item\+\_\+\+LightD, std\+::vector$<$ int $>$ \&position\+LightD, int \&item\+\_\+\+LightP, std\+::vector$<$ int $>$ \&position\+LightP, std\+::vector$<$ int $>$ \&light\+Intensity)
 \begin{DoxyCompactList}\small\item\em Chargement. \end{DoxyCompactList}\item 
 void \hyperlink{classglimac_1_1CubeList_a5c3e997708642903eb6b4c806de0cdf9}{print\+Cubes} ()
 \begin{DoxyCompactList}\small\item\em Affichage en console. \end{DoxyCompactList}\item 
@@ -583,11 +583,11 @@ Interpolation de points
 {\em rbf} & \+: choix de la R\+BF utilisée \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classglimac_1_1CubeList_a6f615ea1238b29f8e19859b528ac6f26}\label{classglimac_1_1CubeList_a6f615ea1238b29f8e19859b528ac6f26}} 
+\mbox{\Hypertarget{classglimac_1_1CubeList_a09a9aede4ef7d31c9721b88fa575d3c6}\label{classglimac_1_1CubeList_a09a9aede4ef7d31c9721b88fa575d3c6}} 
 \index{glimac\+::\+Cube\+List@{glimac\+::\+Cube\+List}!load@{load}}
 \index{load@{load}!glimac\+::\+Cube\+List@{glimac\+::\+Cube\+List}}
 \subsubsection{\texorpdfstring{load()}{load()}}
-{\footnotesize\ttfamily void glimac\+::\+Cube\+List\+::load (\begin{DoxyParamCaption}\item[{std\+::vector$<$ int $>$}]{file,  }\item[{std\+::vector$<$ int $>$ \&}]{cursor\+Position,  }\item[{int \&}]{current\+Active,  }\item[{int \&}]{item\+\_\+\+LightD,  }\item[{std\+::vector$<$ int $>$ \&}]{position\+LightD,  }\item[{int \&}]{item\+\_\+\+LightP,  }\item[{std\+::vector$<$ int $>$ \&}]{position\+LightP }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void glimac\+::\+Cube\+List\+::load (\begin{DoxyParamCaption}\item[{std\+::vector$<$ int $>$}]{file,  }\item[{std\+::vector$<$ int $>$ \&}]{cursor\+Position,  }\item[{int \&}]{current\+Active,  }\item[{int \&}]{item\+\_\+\+LightD,  }\item[{std\+::vector$<$ int $>$ \&}]{position\+LightD,  }\item[{int \&}]{item\+\_\+\+LightP,  }\item[{std\+::vector$<$ int $>$ \&}]{position\+LightP,  }\item[{std\+::vector$<$ int $>$ \&}]{light\+Intensity }\end{DoxyParamCaption})}
 
 
 
@@ -667,11 +667,11 @@ Lecture des éléments
 {\em destination} & \+: vecteur destination \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classglimac_1_1CubeList_a9e7ac57439f018d89b71c6071efd48e6}\label{classglimac_1_1CubeList_a9e7ac57439f018d89b71c6071efd48e6}} 
+\mbox{\Hypertarget{classglimac_1_1CubeList_a2224458162725108e1451f76c2fc8aac}\label{classglimac_1_1CubeList_a2224458162725108e1451f76c2fc8aac}} 
 \index{glimac\+::\+Cube\+List@{glimac\+::\+Cube\+List}!save@{save}}
 \index{save@{save}!glimac\+::\+Cube\+List@{glimac\+::\+Cube\+List}}
 \subsubsection{\texorpdfstring{save()}{save()}}
-{\footnotesize\ttfamily void glimac\+::\+Cube\+List\+::save (\begin{DoxyParamCaption}\item[{std\+::string}]{filepath,  }\item[{int}]{item\+\_\+\+LightD,  }\item[{std\+::vector$<$ int $>$}]{position\+LightD,  }\item[{int}]{item\+\_\+\+LightP,  }\item[{std\+::vector$<$ int $>$}]{position\+LightP }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void glimac\+::\+Cube\+List\+::save (\begin{DoxyParamCaption}\item[{std\+::string}]{filepath,  }\item[{int}]{item\+\_\+\+LightD,  }\item[{std\+::vector$<$ int $>$}]{position\+LightD,  }\item[{int}]{item\+\_\+\+LightP,  }\item[{std\+::vector$<$ int $>$}]{position\+LightP,  }\item[{std\+::vector$<$ int $>$}]{light\+Intensity }\end{DoxyParamCaption})}
 
 
 

@@ -358,7 +358,7 @@ namespace glimac {
             *  \param item_LightP : on / off (0 ou 1)
             *  \param positionLightP : vecteur position de la lumière ponctuelle
             */
-            void save(std::string filepath, int item_LightD, std::vector<int> positionLightD, int item_LightP, std::vector<int> positionLightP);
+            void save(std::string filepath, int item_LightD, std::vector<int> positionLightD, int item_LightP, std::vector<int> positionLightP, std::vector<int> lightIntensity);
             /*!
             *  \brief Lecture
             *
@@ -381,7 +381,7 @@ namespace glimac {
             *  \param item_LightP : on / off (0 ou 1)
             *  \param positionLightP : vecteur position de la lumière ponctuelle
             */
-            void load(std::vector<int> file, std::vector<int> &cursorPosition, int &currentActive, int &item_LightD, std::vector<int> &positionLightD, int &item_LightP, std::vector<int> &positionLightP);
+            void load(std::vector<int> file, std::vector<int> &cursorPosition, int &currentActive, int &item_LightD, std::vector<int> &positionLightD, int &item_LightP, std::vector<int> &positionLightP, std::vector<int> &lightIntensity);
             /*!
             *  \brief Affichage en console
             *

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['save',['save',['../classglimac_1_1CubeList.html#a9e7ac57439f018d89b71c6071efd48e6',1,'glimac::CubeList']]],
+  ['save',['save',['../classglimac_1_1CubeList.html#a2224458162725108e1451f76c2fc8aac',1,'glimac::CubeList']]],
   ['setcubeindex',['setCubeIndex',['../classglimac_1_1Cube.html#aa98b9f6d9554e658643eac25815b0b02',1,'glimac::Cube::setCubeIndex()'],['../classglimac_1_1CubeList.html#a6c10e49604014aa116a315aacbe6c850',1,'glimac::CubeList::setCubeIndex()']]],
   ['setdirection',['setDirection',['../classglimac_1_1Controls.html#aeecf9a01133bdfa844e6282437601a00',1,'glimac::Controls']]],
   ['sethorizontalangle',['setHorizontalAngle',['../classglimac_1_1Controls.html#a30b750a3e70f3a273a2abc6bc4932896',1,'glimac::Controls']]],

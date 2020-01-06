@@ -202,7 +202,7 @@ namespace glimac {
         return (int)y;
     }
 
-    void CubeList::save(std::string filepath, int item_LightD, std::vector<int> positionLightD, int item_LightP, std::vector<int> positionLightP){
+    void CubeList::save(std::string filepath, int item_LightD, std::vector<int> positionLightD, int item_LightP, std::vector<int> positionLightP, std::vector<int> lightIntensity){
         std::ofstream file;
         file.open(filepath);
         if (!file) {
@@ -220,12 +220,14 @@ namespace glimac {
         file << std::to_string(item_LightD)+" "
         +std::to_string(positionLightD[0])+" "
         +std::to_string(positionLightD[1])+" "
-        +std::to_string(positionLightD[2])+"\n";
+        +std::to_string(positionLightD[2])+" "
+        +std::to_string(lightIntensity[0])+"\n";
 
         file << std::to_string(item_LightP)+" "
         +std::to_string(positionLightP[0])+" "
         +std::to_string(positionLightP[1])+" "
-        +std::to_string(positionLightP[2])+"\n";
+        +std::to_string(positionLightP[2])+" "
+        +std::to_string(lightIntensity[1])+"\n";
         
         file.close();
     };
@@ -244,9 +246,9 @@ namespace glimac {
         loadFile.close();
     }
 
-    void CubeList::load(std::vector<int> file, std::vector<int> &cursorPosition, int &currentActive, int &item_LightD, std::vector<int> &positionLightD, int &item_LightP, std::vector<int> &positionLightP){
+    void CubeList::load(std::vector<int> file, std::vector<int> &cursorPosition, int &currentActive, int &item_LightD, std::vector<int> &positionLightD, int &item_LightP, std::vector<int> &positionLightP, std::vector<int> &lightIntensity){
         std::cout << "Loading... " << (file.size()-2)/5 << "...cubes" << std::endl; 
-        for(int i=0; i<file.size()-8; i+=5){
+        for(int i=0; i<file.size()-10; i+=5){
             this->addCube(Cube());
             this->setTrans(file[i], file[i+1],file[i+2],file[i+3]);
             this->setTextureIndex(file[i], file[i+4]);
@@ -254,10 +256,12 @@ namespace glimac {
                 currentActive = this->getSize()-1;
             }
         }
-        item_LightD = file[file.size()-8];
-        positionLightD = {file[file.size()-7], file[file.size()-6],file[file.size()-5]};
-        item_LightP = file[file.size()-4];
-        positionLightP = {file[file.size()-3], file[file.size()-2],file[file.size()-1]};
+        item_LightD = file[file.size()-10];
+        positionLightD = {file[file.size()-9], file[file.size()-8],file[file.size()-7]};
+        lightIntensity[0] = file[file.size()-6];
+        item_LightP = file[file.size()-5];
+        positionLightP = {file[file.size()-4], file[file.size()-3],file[file.size()-2]};
+        lightIntensity[1] = file[file.size()-1];
     }
 
 }
