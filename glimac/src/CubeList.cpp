@@ -179,11 +179,13 @@ namespace glimac {
                 }else if(rbf == "multiquadric"){
                     A(pointI,pointJ) = sqrt(1+pow(distance,2));
                 }else if(rbf == "inverse_quadratic"){
-                    A(pointI,pointJ) = 1/(1+pow(distance,2));
+                    A(pointI,pointJ) = -1/(1+pow(0.2*distance,2))-0.5;
                 }else if(rbf == "inverse_multiquadric"){
                     A(pointI,pointJ) = -1/sqrt(1+pow(distance,2));
                 }else if(rbf== "thin_plate_spline"){
                     A(pointI,pointJ) = pow(distance,2)*log10(distance);
+                }else if(rbf== "gaussian"){
+                    A(pointI,pointJ) = -exp(-pow(5*distance,2))-0.5;
                 }else if(rbf=="bump"){
                     if(distance<(1/epsilon)){
                         A(pointI,pointJ) = exp(-(1/(1-pow(distance,2))));

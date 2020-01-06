@@ -15,7 +15,7 @@ namespace glimac {
 
 Controls::Controls(){
     // Initial position : on +Z
-    position = glm::vec3(0,0,5);
+    position = glm::vec3(0,0,20);
     // Initial horizontal angle : toward -Z
     horizontalAngle = 3.14f;
     // Initial vertical angle : none
