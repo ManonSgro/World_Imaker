@@ -1,8 +1,8 @@
-<map id="/media/msgro/Maxtor/World_Imaker/World_Imaker_merge/World_Imaker/glimac/include/glimac/Image.hpp" name="/media/msgro/Maxtor/World_Imaker/World_Imaker_merge/World_Imaker/glimac/include/glimac/Image.hpp">
-<area shape="rect" id="node2" href="$text_8hpp.html" title="Gestion des elements avec bmp et ddds. " alt="" coords="5,243,208,313"/>
-<area shape="rect" id="node4" href="$Texture_8hpp.html" title="Gestion des textures. " alt="" coords="219,124,443,195"/>
-<area shape="rect" id="node6" href="$main_8cpp.html" title="Programme principal &#45; Editeur de scène 3D. " alt="" coords="453,243,651,313"/>
-<area shape="rect" id="node7" href="$Image_8cpp.html" title="Gestion des images. " alt="" coords="517,124,715,195"/>
-<area shape="rect" id="node3" href="$text_8cpp.html" title="Gestion des textes pour objets 3D. " alt="" coords="8,361,205,432"/>
-<area shape="rect" id="node5" href="$Texture_8cpp.html" title="Gestion des textures. " alt="" coords="232,243,429,313"/>
+<map id="/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include/glimac/Image.hpp" name="/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include/glimac/Image.hpp">
+<area shape="rect" id="node2" href="$text_8hpp.html" title="Gestion des elements avec bmp et ddds. " alt="" coords="5,243,201,313"/>
+<area shape="rect" id="node4" href="$Texture_8hpp.html" title="Gestion des textures. " alt="" coords="237,124,433,195"/>
+<area shape="rect" id="node6" href="$main_8cpp.html" title="Programme principal &#45; Editeur de scène 3D. " alt="" coords="469,250,665,306"/>
+<area shape="rect" id="node7" href="$Image_8cpp.html" title="Gestion des images. " alt="" coords="509,131,719,187"/>
+<area shape="rect" id="node3" href="$text_8cpp.html" title="Gestion des textes pour objets 3D. " alt="" coords="5,361,201,417"/>
+<area shape="rect" id="node5" href="$Texture_8cpp.html" title="Gestion des textures. " alt="" coords="226,250,445,306"/>
 </map>
