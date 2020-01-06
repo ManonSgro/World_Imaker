@@ -189,7 +189,7 @@ int main(int argc, char** argv) {
     GLint uLightIntensityD = glGetUniformLocation(program.getGLId(), "uLightIntensityD");
     
     /** INITIALIZE TEXTURES **/
-    uint nbOfTextures = 10;
+    uint nbOfTextures = 14;
     std::vector<Texture> textures(nbOfTextures);
 
     for(int i=0; i<textures.size(); i++){
@@ -208,6 +208,10 @@ int main(int argc, char** argv) {
     textures[7].setImage("../../World_Imaker/assets/textures/marbre.png");
     textures[8].setImage("../../World_Imaker/assets/textures/mosaique.png");
     textures[9].setImage("../../World_Imaker/assets/textures/sol_metalique.png");
+    textures[10].setImage("../../World_Imaker/assets/textures/white.png");
+    textures[11].setImage("../../World_Imaker/assets/textures/zero.png");
+    textures[12].setImage("../../World_Imaker/assets/textures/plus.png");
+    textures[13].setImage("../../World_Imaker/assets/textures/equal.png");
 
     // Textures
     for(uint i = 0; i<textures.size(); i++){
@@ -340,10 +344,10 @@ int main(int argc, char** argv) {
                     if (e.key.keysym.sym == SDLK_q){
                         cursor.setTrans(cursor.getTrans().x + 1, cursor.getTrans().y, cursor.getTrans().z);
                     }
-                    if (e.key.keysym.sym == SDLK_z){
+                    if (e.key.keysym.sym == SDLK_s){
                         cursor.setTrans(cursor.getTrans().x, cursor.getTrans().y  - 1, cursor.getTrans().z);
                     }
-                    if (e.key.keysym.sym == SDLK_s){
+                    if (e.key.keysym.sym == SDLK_z){
                         cursor.setTrans(cursor.getTrans().x, cursor.getTrans().y + 1, cursor.getTrans().z);
                     }
                     if (e.key.keysym.sym == SDLK_e){
@@ -676,7 +680,7 @@ int main(int argc, char** argv) {
         ImGui::InputInt("index", &selectedCube);
 
         // Texture
-        const char* itemsTextures[] = { "Bois", "Brique", "Cailloux", "Eau", "Goudron", "Herbe", "Marbre", "Mosaique", "Sol metalique"};
+        const char* itemsTextures[] = { "Bois", "Brique", "Cailloux", "Eau", "Goudron", "Herbe", "Marbre", "Mosaique", "Sol metalique", "Blanc", "Zero", "Plus", "Egal"};
         int item_currentTexture = myCubeList.getTextureIndex(selectedCube)-1;
         ImGui::Text("Texture:");
         ImGui::Combo("Texture", &item_currentTexture, itemsTextures, IM_ARRAYSIZE(itemsTextures));
