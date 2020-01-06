@@ -398,7 +398,7 @@ namespace glimac {
             *  \param points : matrice de points
             *  \param rbf : choix de la RBF utilisée
             */
-            Eigen::VectorXd radialBasisFunction(Eigen::MatrixXd points, std::string rbf="default");
+            Eigen::VectorXd radialBasisFunction(Eigen::MatrixXd points, std::string rbf="default", float epsilon = 1.0);
             /*!
             *  \brief Interpolation de points
             *
@@ -409,7 +409,7 @@ namespace glimac {
             *  \param points : matrice de points
             *  \param rbf : choix de la RBF utilisée
             */
-            double interpolatePoints(double x, double y, Eigen::MatrixXd points, std::string rbf="default");
+            double interpolatePoints(double x, double y, Eigen::MatrixXd points, std::string rbf="default", float epsilon = 1.0);
       
         private:
             // Attributes

@@ -116,8 +116,6 @@ int main(int argc, char** argv) {
     cursor.setTrans(myCubeList.getTrans(0).x,myCubeList.getTrans(0).y,myCubeList.getTrans(0).z);
     cursor.setTextureIndex(0);
 
-    
-
 
     /** INITIALIZE IMGUI */
 

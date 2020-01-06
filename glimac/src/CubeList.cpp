@@ -190,7 +190,7 @@ namespace glimac {
     }
 
     //Entrée: x et y random dans l'enceinte de la grille -- Sortie : z calculé grâce aux poids trouvés au-dessus
-    double CubeList::interpolatePoints(double x, double z, Eigen::MatrixXd points, std::string rbf){
+    double CubeList::interpolatePoints(double x, double z, Eigen::MatrixXd points, std::string rbf, float epsilon){
         double y=0;
         Eigen::VectorXd w = this->radialBasisFunction(points, rbf, epsilon);
         for(int i=0; i<points.rows(); i++){
