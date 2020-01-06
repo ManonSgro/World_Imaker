@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['translatevertices',['translateVertices',['../classglimac_1_1Cube.html#a57a197e614422f798de48546c3a31b86',1,'glimac::Cube']]]
+  ['operator_2b',['operator+',['../classglimac_1_1FilePath.html#a8113825c73d8a8f1f1cf3ca57de6bad8',1,'glimac::FilePath']]],
+  ['operator_3e',['operator&gt;',['../classglimac_1_1Cube.html#a46cb8692b9572361e283e88913089bad',1,'glimac::Cube']]]
 ];

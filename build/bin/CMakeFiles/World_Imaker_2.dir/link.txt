@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/World_Imaker_2.dir/main2.cpp.o  -o World_Imaker_2 -rdynamic -lstdc++fs -lstdc++fs ../glimac/libglimac.a ../third-party/include/imgui/libimgui.a -L/usr/lib/x86_64-linux-gnu  -lSDL2 -lGLU -lGL -lGLEW 

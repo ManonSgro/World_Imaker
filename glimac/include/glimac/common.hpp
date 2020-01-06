@@ -7,7 +7,13 @@
 #include <cstddef>
 #include <vector>
 #include <cmath>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <memory>
+#include <unordered_map>
 
+#include<Eigen/SparseLU>
 #include <Eigen/Dense>
 
 namespace glimac {

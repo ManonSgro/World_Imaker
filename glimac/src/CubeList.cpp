@@ -9,7 +9,6 @@
  *
  */
 
-#include "glimac/common.hpp"
 #include "glimac/CubeList.hpp"
 
 
@@ -81,13 +80,6 @@ namespace glimac {
         m_cubeList[cubeIndex].setTrans(x, y, z);
     }
 
-    // Push back origin in the list (prefer call it before pushing other cubes)
-    void CubeList::addOrigin(){
-        m_cubeList.push_back(Cube());
-        m_cubeList[m_cubeList.size()-1].setScaleFloat(0.1,0.1,0.1);
-        m_cubeList[m_cubeList.size()-1].setCubeIndex(m_cubeList.size()-1);
-    }
-
     // Push back a new cube at the end of the list
     void CubeList::addCube(Cube cube){
         m_cubeList.push_back(cube);
@@ -142,11 +134,6 @@ namespace glimac {
         
     }
 
-    // Translate
-    void CubeList::translateCube(int index, GLfloat tx, GLfloat ty, GLfloat tz){
-        m_cubeList[index].translateVertices(tx, ty, tz);
-    };
-
     // Sort cubes according to texture
     void CubeList::sortCubes(){
         std::sort(m_cubeList.begin(), m_cubeList.end(), std::greater<Cube>());
@@ -191,33 +178,17 @@ namespace glimac {
                         A(pointI,pointJ) = 0;
                     }
                 }
-                //A.insert(xi,xj) = exp( -distance);
-                //A.insert(xi,xj) = 1/(1+sqrt(1+distance));
-                //A(pointI,pointJ) = distance;
-                //A(pointI,pointJ) = sqrt(1+pow(distance,2));
-                //A(xi,xj) = sqrt(1+pow(distance,2));
-                //A(xi,xj) = -exp(-pow(-0.2*distance,2));
-                //A(xi,xj) = pow((1+pow(0.2*distance, 2)), -1);
-                //std::cout << "Distance entre : " << pointI << " et " << pointJ << " = " << A(pointI,pointJ) << std::endl;
             }
         }
-        //std::cout << "Here is A:" << std::endl;
-        //std::cout << A << std::endl;
-        //fill b
         for(int i=0; i<points.rows(); i++){
             b(i) = points(i, 1);
         }
-        //std::cout << "Here is b:" << std::endl;
-        //std::cout << b << std::endl;
         x = A.colPivHouseholderQr().solve(b);
-        //x = A.colPivHouseholderQr().solve(b);
-        //std::cout << "The solution is:\n" << x << std::endl;
-
         return x;
     }
+
     //Entrée: x et y random dans l'enceinte de la grille -- Sortie : z calculé grâce aux poids trouvés au-dessus
     double CubeList::interpolatePoints(double x, double z, Eigen::MatrixXd points, std::string rbf){
-        //g(x,y) = sum(w_i*rbf(|(x,y)-(xi, yi)))
         double y=0;
         Eigen::VectorXd w = this->radialBasisFunction(points, rbf);
         for(int i=0; i<points.rows(); i++){
@@ -226,7 +197,6 @@ namespace glimac {
                 pow(points(i,1) - 0, 2) * 1.0);
             y += w(i)*distance;
         }
-        //std::cout << "y:" << y << std::endl;
         return (int)y;
     }
 

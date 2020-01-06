@@ -151,7 +151,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            GLuint getTextureIndex(){
+            GLuint getTextureIndex() const{
                 return m_textureIndex;
             };
             /*!
@@ -169,7 +169,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            GLuint getCubeIndex(){
+            GLuint getCubeIndex() const{
                 return m_cubeIndex;
             };
             /*!
@@ -189,7 +189,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            glm::vec3 getScale(){
+            glm::vec3 getScale() const{
                 return m_scale;
             };
             /*!
@@ -220,7 +220,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            glm::vec3 getRot(){
+            glm::vec3 getRot() const{
                 return m_rot;
             };
             /*!
@@ -230,7 +230,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            GLfloat getRotDeg(){
+            GLfloat getRotDeg() const{
                 return m_rotDeg;
             };
             /*!
@@ -250,7 +250,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            glm::vec3 getTrans(){
+            glm::vec3 getTrans() const{
                 return m_trans;
             };
 

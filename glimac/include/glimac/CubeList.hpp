@@ -10,15 +10,6 @@
  */
 
 #pragma once
-
-#include <vector>
-#include <cmath>
-#include <iostream>
-#include <algorithm>
-#include<Eigen/SparseLU>
-#include <Eigen/Dense>
-#include <fstream>
-
 #include "common.hpp"
 #include "Cube.hpp"
 
@@ -59,7 +50,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            uint getSize(){
+            uint getSize() const{
                 return m_cubeList.size();
             };
 
@@ -70,7 +61,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            const GLuint getVBOPositionAttribute(){
+            const GLuint getVBOPositionAttribute() const{
                 return VERTEX_ATTR_POSITION;
             }
 
@@ -81,7 +72,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            const GLuint getVBONormalAttribute(){
+            const GLuint getVBONormalAttribute() const{
                 return VERTEX_ATTR_NORMAL;
             }
 
@@ -92,7 +83,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            const GLuint getVBOTextureAttribute(){
+            const GLuint getVBOTextureAttribute() const{
                 return VERTEX_ATTR_TEXTURE;
             }
 
@@ -103,7 +94,7 @@ namespace glimac {
             *
             *  \param index : index de l'item à renvoyer
             */
-            GLuint* getVAOListItem(int index){
+            GLuint* getVAOListItem(int index) {
                 return &vaoList[index];
             }
             /*!
@@ -123,7 +114,7 @@ namespace glimac {
             *
             *  \param index:index de l'item à renvoyer
             */
-            GLuint* getIBOListItem(int index){
+            GLuint* getIBOListItem(int index) {
                 return &iboList[index];
             }
             /*!
@@ -133,7 +124,7 @@ namespace glimac {
             *
             *  \param null : aucun paramètre nécessaire
             */
-            std::vector<GLuint>* getIBOList(){
+            std::vector<GLuint>* getIBOList() {
                 return &iboList;
             }
             /*!
@@ -143,7 +134,7 @@ namespace glimac {
             *
             *  \param index : index de l'item à renvoyer
             */
-            GLuint* getVBOListItem(int index){
+            GLuint* getVBOListItem(int index) {
                 return &vboList[index];
             }
             /*!
@@ -153,7 +144,7 @@ namespace glimac {
             *
             *  \param null : aucun paramètre nécessaire
             */
-            std::vector<GLuint>* getVBOList(){
+            std::vector<GLuint>* getVBOList() {
                 return &vboList;
             }
             /*!
@@ -185,86 +176,247 @@ namespace glimac {
             *
             *  Renvoit le nombre de vertex d'un cube
             *
-            *  \param index : index du cube associé aux vertex
+            *  \param index : index du cube associé
             */
-            GLsizei getVertexCount(int index){
+            GLsizei getVertexCount(int index) const{
                 return m_cubeList[index].getVertexCount();
             };
-
-            // Get data pointer
+            /*!
+            *  \brief Renvoit un pointeur sur données
+            *
+            *  Renvoit un pointeur sur données d'un cube
+            *
+            *  \param index : index du cube associé
+            */
             const Vertex3DTexture* getDataPointer(int index) const{
                 return m_cubeList[index].getDataPointer();
             };
-
-            // Get ibo count
+            /*!
+            *  \brief Renvoit le nombre d'ibo
+            *
+            *  Renvoit le nombre d'ibo d'un cube
+            *
+            *  \param index : index du cube associé
+            */
             GLsizei getIBOCount(int index) const{
                 return m_cubeList[index].getIBOCount();
             };
-
-            // Get ibo count
+            /*!
+            *  \brief Renvoit un pointeur sur ibo
+            *
+            *  Renvoit un pointeur sur ibo d'un cube
+            *
+            *  \param index : index du cube associé
+            */
             const uint32_t* getIBOPointer(int index) const{
                 return m_cubeList[index].getIBOPointer();
             };
-
-            // Get texture index
-            GLuint getTextureIndex(int index){
+            /*!
+            *  \brief Renvoit l'index de la texture
+            *
+            *  Renvoit l'index de la texture d'un cube
+            *
+            *  \param index : index du cube associé
+            */
+            GLuint getTextureIndex(int index) const{
                 return m_cubeList[index].getTextureIndex();
             };
-
-            // Set texture
+            /*!
+            *  \brief Modifie l'index de la texture
+            *
+            *  Modifie l'index de la texture d'un cube
+            *
+            *  \param index : index du cube associé
+            *  \param textureIndex : nouvelle index de la texture
+            */
             void setTextureIndex(int index, GLuint textureIndex);
-
-            // Set cube index
+            /*!
+            *  \brief Modifie l'index d'un cube
+            *
+            *  Modifie l'index d'un cube dans la liste
+            *
+            *  \param index : index du cube associé
+            *  \param cubeIndex : nouvelle index du cube
+            */
             void setCubeIndex(int index, GLuint cubeIndex);
+            /*!
+            *  \brief Renvoit l'index d'un cube
+            *
+            *  Renvoit l'index d'un cube dans la liste
+            *
+            *  \param index : index du cube associé
+            */
             GLuint getCubeIndex(int index){
                 return m_cubeList[index].getCubeIndex();
             };
-
-            // Scale
+            /*!
+            *  \brief Modifie l'echelle d'un cube
+            *
+            *  Modifie l'echelle d'un cube dans la liste
+            *
+            *  \param index : index du cube associé
+            *  \param x : nouvelles coordonées x
+            *  \param y : nouvelles coordonées y
+            *  \param z : nouvelles coordonées z
+            */
             void setScale(GLuint cubeIndex, GLfloat x, GLfloat y, GLfloat z);
-            glm::vec3 getScale(int index){
+            /*!
+            *  \brief Renvoit l'echelle d'un cube
+            *
+            *  Renvoit le vecteur echelle d'un cube dans la liste
+            *
+            *  \param index : index du cube associé
+            */
+            glm::vec3 getScale(int index) const{
                 return m_cubeList[index].getScale();
             };
-            // Rotate
+            /*!
+            *  \brief Modifie la rotation d'un cube
+            *
+            *  Modifie la rotation d'un cube dans la liste
+            *
+            *  \param index : index du cube associé
+            *  \param degrees : degre de rotation
+            *  \param x : nouvelles coordonées x
+            *  \param y : nouvelles coordonées y
+            *  \param z : nouvelles coordonées z
+            */
             void setRot(GLuint cubeIndex, GLfloat degrees, GLfloat x, GLfloat y, GLfloat z);
-            glm::vec3 getRot(int index){
+            /*!
+            *  \brief Renvoit la rotation d'un cube
+            *
+            *  Renvoit le vecteur rotation d'un cube dans la liste
+            *
+            *  \param index : index du cube associé
+            */
+            glm::vec3 getRot(int index) const{
                 return m_cubeList[index].getRot();
             };
-            GLfloat getRotDeg(int index){
+            /*!
+            *  \brief Renvoit le degre de rotation d'un cube
+            *
+            *  Renvoit le degre de rotation d'un cube dans la liste
+            *
+            *  \param index : index du cube associé
+            */
+            GLfloat getRotDeg(int index) const{
                 return m_cubeList[index].getRotDeg();
             };
-            // Translate
+            /*!
+            *  \brief Modifie la position d'un cube
+            *
+            *  Modifie la position d'un cube dans la liste
+            *
+            *  \param index : index du cube associé
+            *  \param x : nouvelles coordonées x
+            *  \param y : nouvelles coordonées y
+            *  \param z : nouvelles coordonées z
+            */
             void setTrans(GLuint cubeIndex, GLfloat x, GLfloat y, GLfloat z);
-            glm::vec3 getTrans(int index){
+            /*!
+            *  \brief Renvoit la translation d'un cube
+            *
+            *  Renvoit le vecteur de translation d'un cube dans la liste
+            *
+            *  \param index : index du cube associé
+            */
+            glm::vec3 getTrans(int index) const{
                 return m_cubeList[index].getTrans();
             };
-
-            //Ajouter/supprimer cube
-            void addOrigin();
-            //void addCube(Cube cube, std::vector<GLuint> &iboList, std::vector<GLuint> &vaoList, std::vector<GLuint> &vboList, GLuint VERTEX_ATTR_POSITION, GLuint VERTEX_ATTR_NORMAL, GLuint VERTEX_ATTR_TEXTURE);
+            /*!
+            *  \brief Ajout d'un cube
+            *
+            *  Ajout d'un cube à la liste
+            *
+            *  \param cube : cube à ajouter
+            */
             void addCube(Cube cube);
+            /*!
+            *  \brief Suppression d'un cube
+            *
+            *  Suppression d'un cube de la liste
+            *
+            *  \param index : index du cube à supprimer
+            */
             void deleteCube(int index);
-
-            // Translate
-            void translateCube(int index, GLfloat tx, GLfloat ty, GLfloat tz);
-
-            //bool compareCubes(const int index1, const int index2);
+            /*!
+            *  \brief Tri de la liste
+            *
+            *  Tri de la liste de cubes
+            *
+            *  \param null : aucun paramètre nécessaire
+            */
             void sortCubes();
-
+            /*!
+            *  \brief Sauvegarde
+            *
+            *  Sauvegardes des éléments
+            *
+            *  \param filepath : chemin de sauvegarde
+            *  \param item_LightD : on / off (0 ou 1)
+            *  \param positionLightD : vecteur position de la lumière directionnelle
+            *  \param item_LightP : on / off (0 ou 1)
+            *  \param positionLightP : vecteur position de la lumière ponctuelle
+            */
             void save(std::string filepath, int item_LightD, std::vector<int> positionLightD, int item_LightP, std::vector<int> positionLightP);
+            /*!
+            *  \brief Lecture
+            *
+            *  Lecture des éléments
+            *
+            *  \param filepath : chemin d'accès
+            *  \param destination : vecteur destination
+            */
             void read(std::string filePath, std::vector<int> &destination);
+            /*!
+            *  \brief Chargement
+            *
+            *  Chargement des éléments
+            *
+            *  \param file : vecteur file
+            *  \param cursorPosition : vecteur cursorPosition
+            *  \param currentActive : vecteur currentActive
+            *  \param item_LightD : on / off (0 ou 1)
+            *  \param positionLightD : vecteur position de la lumière directionnelle
+            *  \param item_LightP : on / off (0 ou 1)
+            *  \param positionLightP : vecteur position de la lumière ponctuelle
+            */
             void load(std::vector<int> file, std::vector<int> &cursorPosition, int &currentActive, int &item_LightD, std::vector<int> &positionLightD, int &item_LightP, std::vector<int> &positionLightP);
-
+            /*!
+            *  \brief Affichage en console
+            *
+            *  Affichage en console de la liste de cubes
+            *
+            *  \param null : aucun paramètre nécessaire
+            */
             void printCubes();
+            /*!
+            *  \brief Generation de Radial Basis Function
+            *
+            *  Generation de Radial Basis Function
+            *
+            *  \param points : matrice de points
+            *  \param rbf : choix de la RBF utilisée
+            */
             Eigen::VectorXd radialBasisFunction(Eigen::MatrixXd points, std::string rbf="default");
+            /*!
+            *  \brief Interpolation de points
+            *
+            *  Interpolation de points
+            *
+            *  \param x : point x
+            *  \param y : point y
+            *  \param points : matrice de points
+            *  \param rbf : choix de la RBF utilisée
+            */
             double interpolatePoints(double x, double y, Eigen::MatrixXd points, std::string rbf="default");
 
-        //private:
-            std::vector<Cube> m_cubeList;
-
-            std::vector<GLuint> vboList;
-            std::vector<GLuint> vaoList;
-            std::vector<GLuint> iboList;
+        private:
+            // Attributes
+            std::vector<Cube> m_cubeList; /*!< Liste de cubes*/
+            std::vector<GLuint> vboList; /*!< Liste vbo*/
+            std::vector<GLuint> vaoList; /*!< Liste vao*/
+            std::vector<GLuint> iboList; /*!< Liste ibo*/
             const GLuint VERTEX_ATTR_POSITION = 0;
             const GLuint VERTEX_ATTR_NORMAL = 1;
             const GLuint VERTEX_ATTR_TEXTURE = 2;

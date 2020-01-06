@@ -69,7 +69,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            glm::mat4 getViewMatrix();
+            glm::mat4 getViewMatrix() const;
             /*!
             *  \brief Informations de la ProjectionMatrix
             *
@@ -77,7 +77,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            glm::mat4 getProjectionMatrix();
+            glm::mat4 getProjectionMatrix() const;
             /*!
             *  \brief Informations de la position
             *
@@ -85,7 +85,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            glm::vec3 getPosition();
+            glm::vec3 getPosition() const;
             /*!
             *  \brief Edition de la position
             *
@@ -101,7 +101,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            float getHorizontalAngle();
+            float getHorizontalAngle() const;
             /*!
             *  \brief Edition de l'angle horizontal
             *
@@ -117,7 +117,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            float getVerticalAngle();
+            float getVerticalAngle() const;
             /*!
             *  \brief Edition de l'angle vertical
             *
@@ -133,7 +133,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            glm::vec3 getUp();
+            glm::vec3 getUp() const;
             /*!
             *  \brief Edition de up
             *
@@ -149,7 +149,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            float getSpeed();
+            float getSpeed() const;
             /*!
             *  \brief Edition de speed
             *
@@ -165,7 +165,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            glm::vec3 getRight();
+            glm::vec3 getRight() const;
             /*!
             *  \brief Edition de right
             *
@@ -181,7 +181,7 @@ namespace glimac {
             *
             *  \param null : aucuns parametres nécéssaires
             */
-            glm::vec3 getDirection();
+            glm::vec3 getDirection() const;
             /*!
             *  \brief Edition de direction
             *
@@ -194,19 +194,19 @@ namespace glimac {
 
         private :
             // Attributes
-            glm::mat4 ViewMatrix; /*!< Matrice de Vue*/
-            glm::mat4 ProjectionMatrix; /*!< Matrice de Projection*/
+            glm::mat4 m_ViewMatrix; /*!< Matrice de Vue*/
+            glm::mat4 m_ProjectionMatrix; /*!< Matrice de Projection*/
 
-            float horizontalAngle; /*!< Valeur de l'angle horizontal*/
-            float verticalAngle; /*!< Valeur de l'angle vertical*/
-            float initialFoV; /*!< Valeur du champ de vision (niveau de zoom)*/
+            float m_horizontalAngle; /*!< Valeur de l'angle horizontal*/
+            float m_verticalAngle; /*!< Valeur de l'angle vertical*/
+            float m_initialFoV; /*!< Valeur du champ de vision (niveau de zoom)*/
 
-            float speed; /*!< Valeur de la vitesse*/
+            float m_speed; /*!< Valeur de la vitesse*/
 
-            glm::vec3 position; /*!< Vecteur de postion*/
-            glm::vec3 direction; //*!< Vecteur de sur l'axe z */
-            glm::vec3 right; /*!< Vecteur de sur l'axe x */
-            glm::vec3 up; /*!< Vecteur de sur l'axe y */
+            glm::vec3 m_position; /*!< Vecteur de postion*/
+            glm::vec3 m_direction; //*!< Vecteur de sur l'axe z */
+            glm::vec3 m_right; /*!< Vecteur de sur l'axe x */
+            glm::vec3 m_up; /*!< Vecteur de sur l'axe y */
 
     };
 

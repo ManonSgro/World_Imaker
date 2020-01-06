@@ -1,8 +1,8 @@
-<map id="/media/msgro/Maxtor/World_Imaker/World_Imaker_merge/World_Imaker/glimac/include/glimac/Cube.hpp" name="/media/msgro/Maxtor/World_Imaker/World_Imaker_merge/World_Imaker/glimac/include/glimac/Cube.hpp">
-<area shape="rect" id="node2" href="$CubeList_8hpp.html" title="Gestion d&#39;une liste de cubes. " alt="" coords="97,124,329,195"/>
-<area shape="rect" id="node4" href="$main_8cpp.html" title="Programme principal &#45; Editeur de scène 3D. " alt="" coords="227,243,424,313"/>
-<area shape="rect" id="node5" href="$text_8hpp_source.html" title="/media/msgro/Maxtor\l/World_Imaker/World\l_Imaker_merge/World_Imaker\l/glimac/include/glimac/text.hpp" alt="" coords="404,124,607,195"/>
-<area shape="rect" id="node7" href="$Cube_8cpp.html" title="Gestion des cubes. " alt="" coords="631,124,828,195"/>
-<area shape="rect" id="node3" href="$CubeList_8cpp.html" title="Gestion d&#39;une liste de cube. " alt="" coords="5,243,203,313"/>
-<area shape="rect" id="node6" href="$text_8cpp.html" title="Gestion des textes pour objets 3D. " alt="" coords="448,243,645,313"/>
+<map id="/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include/glimac/Cube.hpp" name="/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include/glimac/Cube.hpp">
+<area shape="rect" id="node2" href="$CubeList_8hpp.html" title="Gestion d&#39;une liste de cubes. " alt="" coords="159,124,355,195"/>
+<area shape="rect" id="node4" href="$main_8cpp.html" title="Programme principal &#45; Editeur de scène 3D. " alt="" coords="254,243,450,299"/>
+<area shape="rect" id="node5" href="$text_8hpp.html" title="Gestion des elements avec bmp et ddds. " alt="" coords="431,124,627,195"/>
+<area shape="rect" id="node7" href="$Cube_8cpp.html" title="Gestion des cubes. " alt="" coords="652,131,855,187"/>
+<area shape="rect" id="node3" href="$CubeList_8cpp.html" title="Gestion d&#39;une liste de cube. " alt="" coords="5,243,229,299"/>
+<area shape="rect" id="node6" href="$text_8cpp.html" title="Gestion des textes pour objets 3D. " alt="" coords="474,243,670,299"/>
 </map>
