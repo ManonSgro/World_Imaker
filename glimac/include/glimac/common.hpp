@@ -16,13 +16,14 @@
 #include<Eigen/SparseLU>
 #include <Eigen/Dense>
 
-namespace glimac {
-
 /*! \namespace glimac
  * 
- * espace de nommage regroupant les outils de gestion 
- * d'une scène 3D en OpenGL
+ * \brief Outils de gestion d'une scène 3D
+ * 
+ * Espace de nommage regroupant les outils de gestion 
+ * d'une scène 3D en OpenGL.
  */
+namespace glimac {
 
 struct ShapeVertex {
     glm::vec3 position;

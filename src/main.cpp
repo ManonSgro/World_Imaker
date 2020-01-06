@@ -268,9 +268,9 @@ int main(int argc, char** argv) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     /** SORT CUBES BY TEXTURE **/
-    myCubeList.printCubes();
+    //myCubeList.printCubes();
     myCubeList.sortCubes();
-    myCubeList.printCubes();
+    //myCubeList.printCubes();
 
     /** INITIALIZE LOOP **/
     bool done = false; // is looping
@@ -285,6 +285,7 @@ int main(int argc, char** argv) {
 
     // Directive light position
     std::vector<int> positionLightD{1,1,1};
+    std::vector<int> lightIntensity{2,2};
 
     // Spotlight position
     std::vector<int> positionLightP{1,1,1};
@@ -325,7 +326,7 @@ int main(int argc, char** argv) {
             ImGui_ImplSDL2_ProcessEvent(&e);           
 
             if(e.type == SDL_QUIT){
-                myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP);
+                myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP, lightIntensity);
                 done = true;
             }
 
@@ -453,25 +454,40 @@ int main(int argc, char** argv) {
         }
         
         // Directive light
-        const char* itemsLight[] = { "On", "Off"};
         ImGui::Text("Lumiere directionnelle :");
-        ImGui::Combo("D", &item_LightD, itemsLight, IM_ARRAYSIZE(itemsLight));
+        if(ImGui::Button("Directive light : On/Off")){
+            if(item_LightD==1){
+                item_LightD=0;
+            }else{
+                item_LightD=1;
+            }
+        }
         ImGui::Text("Coordinates D");
         ImGui::InputInt("xD", &positionLightD[0]);
         ImGui::Text("Y :");
         ImGui::InputInt("yD", &positionLightD[1]);
         ImGui::Text("Z :");
         ImGui::InputInt("zD", &positionLightD[2]);
+        ImGui::Text("Intensity :");
+        ImGui::InputInt("Intensity D", &lightIntensity[0]);
 
         // Spotlight
         ImGui::Text("Lumiere ponctuelle :");
-        ImGui::Combo("P", &item_LightP, itemsLight, IM_ARRAYSIZE(itemsLight));
+        if(ImGui::Button("Spotlight : On/Off")){
+            if(item_LightP==1){
+                item_LightP=0;
+            }else{
+                item_LightP=1;
+            }
+        }
         ImGui::Text("Coordinates P");
         ImGui::InputInt("xP", &positionLightP[0]);
         ImGui::Text("Y :");
         ImGui::InputInt("yP", &positionLightP[1]);
         ImGui::Text("Z :");
         ImGui::InputInt("zP", &positionLightP[2]);
+        ImGui::Text("Intensity :");
+        ImGui::InputInt("Intensity P", &lightIntensity[1]);
 
         ImGui::End();
 
@@ -492,7 +508,7 @@ int main(int argc, char** argv) {
         ImGui::Text("Save file :");
         ImGui::InputText("Save Path", &filePath);
         if(ImGui::Button("Save")){
-            myCubeList.save(filePath, item_LightD, positionLightD, item_LightP, positionLightP);
+            myCubeList.save(filePath, item_LightD, positionLightD, item_LightP, positionLightP, lightIntensity);
         }
 
         // Load
@@ -505,7 +521,7 @@ int main(int argc, char** argv) {
             myCubeList.read(loadFilePath, file);
             
             // Save current file
-            myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP);
+            myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP, lightIntensity);
 
             // Reset cube list
             std::cout << "Deleting ..." << myCubeList.getSize() << "...cubes" << std::endl;
@@ -516,7 +532,7 @@ int main(int argc, char** argv) {
             }
             
             // Load file
-            myCubeList.load(file, cursorPosition, currentActive, item_LightD, positionLightD, item_LightP, positionLightP);
+            myCubeList.load(file, cursorPosition, currentActive, item_LightD, positionLightD, item_LightP, positionLightP, lightIntensity);
         }
 
         ImGui::End();
@@ -597,7 +613,7 @@ int main(int argc, char** argv) {
         // Generate
         if(ImGui::Button("Generate scene")){
             // Save current file
-            myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP);
+            myCubeList.save("../backup/backup.txt", item_LightD, positionLightD, item_LightP, positionLightP, lightIntensity);
 
             // Reset cube list
             std::cout << "Deleting ..." << myCubeList.getSize() << "...cubes" << std::endl;
@@ -721,13 +737,13 @@ int main(int argc, char** argv) {
         
         // On/Off lights
         if (item_LightD == 0){
-            glUniform3f(uLightIntensityD, 2.0, 2.0, 2.0);   
+            glUniform3f(uLightIntensityD, lightIntensity[0], lightIntensity[0], lightIntensity[0]);   
         }
         else {
             glUniform3f(uLightIntensityD, 0.0, 0.0, 0.0);
         }
         if (item_LightP == 0){
-            glUniform3f(uLightIntensityP, 5.0, 5.0, 5.0);   
+            glUniform3f(uLightIntensityP, lightIntensity[1], lightIntensity[1], lightIntensity[1]);   
         }
         else {
             glUniform3f(uLightIntensityP, 0.0, 0.0, 0.0);
