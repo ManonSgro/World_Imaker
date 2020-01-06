@@ -1,0 +1,102 @@
+[
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/glimac",
+  "command": "/usr/bin/c++    -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui    -std=c++11 -o CMakeFiles/glimac.dir/src/Controls.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/Controls.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/Controls.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/glimac",
+  "command": "/usr/bin/c++    -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui    -std=c++11 -o CMakeFiles/glimac.dir/src/Cube.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/Cube.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/Cube.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/glimac",
+  "command": "/usr/bin/c++    -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui    -std=c++11 -o CMakeFiles/glimac.dir/src/CubeList.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/CubeList.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/CubeList.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/glimac",
+  "command": "/usr/bin/c++    -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui    -std=c++11 -o CMakeFiles/glimac.dir/src/Image.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/Image.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/Image.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/glimac",
+  "command": "/usr/bin/c++    -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui    -std=c++11 -o CMakeFiles/glimac.dir/src/Program.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/Program.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/Program.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/glimac",
+  "command": "/usr/bin/c++    -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui    -std=c++11 -o CMakeFiles/glimac.dir/src/SDLWindowManager.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/SDLWindowManager.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/SDLWindowManager.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/glimac",
+  "command": "/usr/bin/c++    -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui    -std=c++11 -o CMakeFiles/glimac.dir/src/Shader.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/Shader.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/Shader.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/glimac",
+  "command": "/usr/bin/c++    -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui    -std=c++11 -o CMakeFiles/glimac.dir/src/Texture.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/Texture.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/Texture.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/glimac",
+  "command": "/usr/bin/c++    -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui    -std=c++11 -o CMakeFiles/glimac.dir/src/objloader.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/objloader.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/objloader.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/glimac",
+  "command": "/usr/bin/c++    -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui    -std=c++11 -o CMakeFiles/glimac.dir/src/text.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/text.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/text.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/glimac",
+  "command": "/usr/bin/c++    -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui    -std=c++11 -o CMakeFiles/glimac.dir/src/tiny_obj_loader.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/tiny_obj_loader.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/src/tiny_obj_loader.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/third-party/include/imgui",
+  "command": "/usr/bin/c++   -DIMGUI_IMPL_OPENGL_LOADER_GLEW -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include    -std=c++11 -o CMakeFiles/imgui.dir/include/imgui.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include/imgui.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include/imgui.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/third-party/include/imgui",
+  "command": "/usr/bin/c++   -DIMGUI_IMPL_OPENGL_LOADER_GLEW -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include    -std=c++11 -o CMakeFiles/imgui.dir/include/imgui_demo.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include/imgui_demo.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include/imgui_demo.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/third-party/include/imgui",
+  "command": "/usr/bin/c++   -DIMGUI_IMPL_OPENGL_LOADER_GLEW -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include    -std=c++11 -o CMakeFiles/imgui.dir/include/imgui_draw.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include/imgui_draw.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include/imgui_draw.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/third-party/include/imgui",
+  "command": "/usr/bin/c++   -DIMGUI_IMPL_OPENGL_LOADER_GLEW -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include    -std=c++11 -o CMakeFiles/imgui.dir/include/imgui_widgets.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include/imgui_widgets.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include/imgui_widgets.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/third-party/include/imgui",
+  "command": "/usr/bin/c++   -DIMGUI_IMPL_OPENGL_LOADER_GLEW -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include    -std=c++11 -o CMakeFiles/imgui.dir/examples/imgui_impl_opengl3.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/examples/imgui_impl_opengl3.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/examples/imgui_impl_opengl3.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/third-party/include/imgui",
+  "command": "/usr/bin/c++   -DIMGUI_IMPL_OPENGL_LOADER_GLEW -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include    -std=c++11 -o CMakeFiles/imgui.dir/examples/imgui_impl_sdl.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/examples/imgui_impl_sdl.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/examples/imgui_impl_sdl.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/third-party/include/imgui",
+  "command": "/usr/bin/c++   -DIMGUI_IMPL_OPENGL_LOADER_GLEW -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/include    -std=c++11 -o CMakeFiles/imgui.dir/misc/cpp/imgui_stdlib.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/misc/cpp/imgui_stdlib.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui/misc/cpp/imgui_stdlib.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/bin",
+  "command": "/usr/bin/c++    -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui    -std=c++11 -o CMakeFiles/World_Imaker_2.dir/main3D.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/src/main3D.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/src/main3D.cpp"
+},
+{
+  "directory": "/home/6im2/amansion/Documents/PROJET/World_Imaker/build/bin",
+  "command": "/usr/bin/c++    -I/usr/include/SDL2 -I/usr/include/eigen3 -I/usr/bin/doxygen -I/home/6im2/amansion/Documents/PROJET/World_Imaker/glimac/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include -I/home/6im2/amansion/Documents/PROJET/World_Imaker/third-party/include/imgui    -std=c++11 -o CMakeFiles/World_Imaker.dir/main.cpp.o -c /home/6im2/amansion/Documents/PROJET/World_Imaker/src/main.cpp",
+  "file": "/home/6im2/amansion/Documents/PROJET/World_Imaker/src/main.cpp"
+}
+]

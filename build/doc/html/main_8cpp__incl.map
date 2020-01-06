@@ -1,13 +1,13 @@
-<map id="/media/msgro/Maxtor/World_Imaker/World_Imaker_merge/World_Imaker/src/main.cpp" name="/media/msgro/Maxtor/World_Imaker/World_Imaker_merge/World_Imaker/src/main.cpp">
-<area shape="rect" id="node13" href="$SDLWindowManager_8hpp.html" title="Gestion de la fenetre d&#39;affichage. " alt="" coords="1272,131,1484,158"/>
-<area shape="rect" id="node16" href="$glm_8hpp_source.html" title="glm.hpp" alt="" coords="1276,512,1344,539"/>
-<area shape="rect" id="node22" href="$Program_8hpp.html" title="Gestion générale du programme. " alt="" coords="290,213,429,240"/>
-<area shape="rect" id="node31" href="$FilePath_8hpp.html" title="Gestion des fichiers. " alt="" coords="504,363,599,389"/>
-<area shape="rect" id="node32" href="$Image_8hpp.html" title="Gestion des images. " alt="" coords="555,288,681,315"/>
-<area shape="rect" id="node33" href="$Cube_8hpp.html" title="Gestion des cubes. " alt="" coords="655,213,775,240"/>
-<area shape="rect" id="node34" href="$Texture_8hpp.html" title="Gestion des textures. " alt="" coords="397,131,530,158"/>
-<area shape="rect" id="node35" href="$CubeList_8hpp.html" title="Gestion d&#39;une liste de cubes. " alt="" coords="753,131,894,158"/>
-<area shape="rect" id="node36" href="$Controls_8hpp.html" title="Gestion des caméras. " alt="" coords="806,363,945,389"/>
-<area shape="rect" id="node23" href="$common_8hpp_source.html" title="common.hpp" alt="" coords="631,437,728,464"/>
-<area shape="rect" id="node30" href="$Shader_8hpp.html" title="Gestion des shaders. " alt="" coords="214,288,302,315"/>
+<map id="/home/6im2/amansion/Documents/PROJET/World_Imaker/src/main.cpp" name="/home/6im2/amansion/Documents/PROJET/World_Imaker/src/main.cpp">
+<area shape="rect" id="node13" href="$SDLWindowManager_8hpp.html" title="Gestion de la fenetre d&#39;affichage. " alt="" coords="1324,117,1551,143"/>
+<area shape="rect" id="node16" href="$glm_8hpp_source.html" title="glm.hpp" alt="" coords="1330,497,1401,524"/>
+<area shape="rect" id="node22" href="$Program_8hpp.html" title="Gestion générale du programme. " alt="" coords="320,199,467,225"/>
+<area shape="rect" id="node31" href="$FilePath_8hpp.html" title="Gestion des fichiers. " alt="" coords="542,348,642,375"/>
+<area shape="rect" id="node32" href="$Image_8hpp.html" title="Gestion des images. " alt="" coords="593,273,725,300"/>
+<area shape="rect" id="node33" href="$Cube_8hpp.html" title="Gestion des cubes. " alt="" coords="696,199,821,225"/>
+<area shape="rect" id="node34" href="$Texture_8hpp.html" title="Gestion des textures. " alt="" coords="429,117,571,143"/>
+<area shape="rect" id="node35" href="$CubeList_8hpp.html" title="Gestion d&#39;une liste de cubes. " alt="" coords="796,117,943,143"/>
+<area shape="rect" id="node36" href="$Controls_8hpp.html" title="Gestion des caméras. " alt="" coords="849,348,996,375"/>
+<area shape="rect" id="node23" href="$common_8hpp_source.html" title="common.hpp" alt="" coords="670,423,773,449"/>
+<area shape="rect" id="node30" href="$Shader_8hpp.html" title="Gestion des shaders. " alt="" coords="231,273,326,300"/>
 </map>
