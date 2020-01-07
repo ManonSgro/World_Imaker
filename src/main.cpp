@@ -289,10 +289,13 @@ int main(int argc, char** argv) {
 
     // Directive light position
     std::vector<int> positionLightD{1,1,1};
-    std::vector<int> lightIntensity{2,2};
 
     // Spotlight position
     std::vector<int> positionLightP{1,1,1};
+
+    int tmpIntensityD = 2;
+    int tmpIntensityP = 2;
+    std::vector<int> lightIntensity{2,2};
 
     // Extrude/Dig state
     bool thereIsACubeAbove, thereIsACubeUnder = false;
@@ -462,8 +465,11 @@ int main(int argc, char** argv) {
         if(ImGui::Button("Directive light : On/Off")){
             if(item_LightD==1){
                 item_LightD=0;
+                lightIntensity[0] = tmpIntensityD;
             }else{
                 item_LightD=1;
+                tmpIntensityD = lightIntensity[0];
+                lightIntensity[0] = 0;
             }
         }
         ImGui::Text("Coordinates D");
@@ -474,14 +480,20 @@ int main(int argc, char** argv) {
         ImGui::InputInt("zD", &positionLightD[2]);
         ImGui::Text("Intensity :");
         ImGui::InputInt("Intensity D", &lightIntensity[0]);
-
+        if(lightIntensity[0]>0){
+            tmpIntensityD = lightIntensity[0];
+        }
+        
         // Spotlight
         ImGui::Text("Lumiere ponctuelle :");
         if(ImGui::Button("Spotlight : On/Off")){
             if(item_LightP==1){
                 item_LightP=0;
+                lightIntensity[1] = tmpIntensityP;
             }else{
                 item_LightP=1;
+                tmpIntensityP = lightIntensity[1];
+                lightIntensity[1] = 0;
             }
         }
         ImGui::Text("Coordinates P");
@@ -492,6 +504,9 @@ int main(int argc, char** argv) {
         ImGui::InputInt("zP", &positionLightP[2]);
         ImGui::Text("Intensity :");
         ImGui::InputInt("Intensity P", &lightIntensity[1]);
+        if(lightIntensity[1]>0){
+            tmpIntensityP = lightIntensity[1];
+        }
 
         ImGui::End();
 
@@ -740,18 +755,23 @@ int main(int argc, char** argv) {
         glUniform3f(uLightDir_vs, LightDir.x, LightDir.y, LightDir.z);
         
         // On/Off lights
-        if (item_LightD == 0){
-            glUniform3f(uLightIntensityD, lightIntensity[0], lightIntensity[0], lightIntensity[0]);   
+        /*if (item_LightD == 0){
+            lightIntensity[0] = tmpIntensityD;
         }
         else {
-            glUniform3f(uLightIntensityD, 0.0, 0.0, 0.0);
+            tmpIntensityD = lightIntensity[0];
+            lightIntensity[0] = 0;
         }
         if (item_LightP == 0){
-            glUniform3f(uLightIntensityP, lightIntensity[1], lightIntensity[1], lightIntensity[1]);   
+            lightIntensity[1] = tmpIntensityP;
         }
         else {
-            glUniform3f(uLightIntensityP, 0.0, 0.0, 0.0);
-        }
+            tmpIntensityP = lightIntensity[1];
+            lightIntensity[1] = 0;
+        }*/
+        glUniform3f(uLightIntensityD, lightIntensity[0], lightIntensity[0], lightIntensity[0]);   
+        glUniform3f(uLightIntensityP, lightIntensity[1], lightIntensity[1], lightIntensity[1]);   
+
 
         // Cursor move
         cursor.setTrans(cursorPosition[0], cursorPosition[1], cursorPosition[2]);
