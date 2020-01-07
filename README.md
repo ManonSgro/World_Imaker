@@ -93,7 +93,6 @@ More information about CMake installing and running for different platforms on <
 ```sh
 git clone https://github.com/ManonSgro/World_Imaker.git
 cd World_Imaker
-git checkout dev
 ```
 2. Create the build directory and move into it
 ```sh
