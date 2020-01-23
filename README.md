@@ -87,7 +87,7 @@ apt-get install cmake
 ```
 More information about CMake installing and running for different platforms on <a href="https://cmake.org">CMake official website</a>.
 
-### Installation (Linux)
+### Installation
  
 1. Clone the repository
 ```sh
